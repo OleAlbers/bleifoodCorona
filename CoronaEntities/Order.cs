@@ -10,7 +10,6 @@ namespace CoronaEntities
     {
         public decimal Tipp { get; set; }
         public Customer Customer { get; set; }
-        public DateTime Created { get; set; }
         public IEnumerable<OrderPosition> Positions { get; set; }
         public DateTime TimeSlot { get; set; }
 

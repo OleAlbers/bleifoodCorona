@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using CoronaBL.Interfaces;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,10 @@ namespace CoronaBL
     {
         private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private const string UserCookie = "BleifoodUsr";
-        private const string UserCookieId = "Id";
-        private const string UserCookeHash = "Hash";
         private TimeSpan UserCookieDuration = new TimeSpan(1, 0, 0);
 
         private IMail _mail;
-        private CoronaDL.IUser _dbUser = new CoronaDL.User();
+        private CoronaDL.Interfaces.IUser _dbUser = new CoronaDL.User();
 
         public void Activate(string mail, string validation)
         {
@@ -45,42 +43,21 @@ namespace CoronaBL
             var existingUser = _dbUser.SelectByMail(mail);
             if (existingUser == null || Hash.CreateHash(password) != existingUser.Password) throw new CoronaDL.Exceptions.WrongCredentialsException();
             if (existingUser.Validated == null) throw new CoronaDL.Exceptions.NotValidatedException();
-            SetCookie(existingUser, false);
+            existingUser.Hash = CreateRandomHash();
+            existingUser.HashValidUntil = Cookies.SetCookie(existingUser, UserCookieDuration);
+            _dbUser.Update(existingUser);
         }
 
-        public void SetCookie(CoronaEntities.User user, bool renew)
+        public CoronaEntities.User GetFromCookie()
         {
-            if (user == null)
-            {
-                _log.Error($"usr is null");
-                return;
-            }
-
-            if (!renew) user.Hash = CreateRandomHash();
-            HttpCookie userInfo = new HttpCookie(UserCookie);
-            userInfo.HttpOnly = true;
-            userInfo.Secure = true;
-            userInfo[UserCookieId] = user.Id.ToString();
-            userInfo[UserCookeHash] = user.Hash;
-            userInfo.Expires.Add(UserCookieDuration);
-            HttpContext.Current.Response.Cookies.Add(userInfo);
-            user.HashValidUntil = DateTime.Now.Add(UserCookieDuration);
-            _dbUser.Update(user);
+            var cookieUser = Cookies.GetCookie<CoronaEntities.User>();
+            if (cookieUser == null) throw new CoronaDL.Exceptions.NotLoggedInException();
+            var match = _dbUser.SelectByMail(cookieUser.LoginMail);
+            if (match == null || match.Hash != cookieUser.Hash) throw new CoronaDL.Exceptions.InvalidHashException();
+            if (match.HashValidUntil < DateTime.Now) throw new CoronaDL.Exceptions.NotLoggedInException(); // Expired
+            return match;
         }
 
-        private CoronaEntities.User GetUserFromCookie()
-        {
-            var cookie = HttpContext.Current.Request.Cookies[UserCookie];
-            if (cookie == null) return null;
-            var cookieId = Guid.Parse(cookie[UserCookieId]);
-            string cookieHash = cookie[UserCookeHash];
-            var usr = _dbUser.GetAll().FirstOrDefault(q => q.Id == cookieId && q.Hash == cookieHash);
-            if (usr == null) return null;
-            if (usr.HashValidUntil < DateTime.Now) return null;  // Hash expired
-
-            SetCookie(usr,true); 
-            return usr;
-        }
 
         private string CreateRandomHash()
         {

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaDL
+namespace CoronaDL.Interfaces
 {
     public interface ISchedule
     {
         IEnumerable<CoronaEntities.Schedule> GetForFoodtruck(Guid id);
-        void UpdateForFoodtruck(Guid id, IEnumerable<CoronaEntities.Schedule> schedule);
+        void UpdateForFoodtruck( IEnumerable<CoronaEntities.Schedule> schedule);
     }
 }

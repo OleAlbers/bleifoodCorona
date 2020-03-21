@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaDL
+namespace CoronaDL.Interfaces
 {
     public interface IFoodTruck
     {
         void Insert(CoronaEntities.FoodTruck truck);
         void Update(CoronaEntities.FoodTruck truck);
-        void SelectAll();
+        IEnumerable<CoronaEntities.FoodTruck> SelectAll();
     }
 }

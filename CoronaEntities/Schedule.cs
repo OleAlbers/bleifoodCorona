@@ -8,9 +8,9 @@ namespace CoronaEntities
 {
     public class Schedule
     {
-        public enum Weekdays { Montag, Dienstag, Mittwoch, Donnerstag, Samstag,Sonntag };
         public bool IsEven { get; set; }
-        public Weekdays Weekday { get; set; }
-        public Guid PlaceId { get; set; }
+        public int Weekday { get; set; }
+        public Guid? PlaceId { get; set; }
+        public Guid TruckId { get; set; }
     }
 }

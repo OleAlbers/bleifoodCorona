@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ShowToCustomerAttribute.cs" />
+    <Compile Include="Attributes\StoreInCookieAttribute.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Order.cs" />

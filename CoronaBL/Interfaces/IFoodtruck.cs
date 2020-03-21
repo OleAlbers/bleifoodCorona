@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CoronaBL.Interfaces
+{
+    public interface IFoodtruck
+    {
+        void CreateTruck(CoronaEntities.FoodTruck foodtruck);
+
+        CoronaEntities.FoodTruck GetTruck(Guid truckId);
+
+        IEnumerable<CoronaEntities.FoodTruck> GetAllTrucks(bool onlyActive = true);
+
+        void UpdateTruck(CoronaEntities.FoodTruck foodtruck);
+
+        IEnumerable<CoronaEntities.Place> GetPlacesForTruck(Guid truckId);
+
+        void InsertPlace(CoronaEntities.Place place);
+
+        void UpdatePlace(CoronaEntities.Place place);
+
+        IEnumerable<CoronaEntities.Position> GetCard(Guid truckId);
+
+        void UpdateCard(IEnumerable<CoronaEntities.Position> positions);
+
+        IEnumerable<CoronaEntities.Schedule> GetSchedule(Guid truckId);
+
+        void UpdateSchedule(Guid truckId, IEnumerable<CoronaEntities.Schedule> schedule);
+
+        IEnumerable<CoronaEntities.Slot> GetSlots(Guid truckId, Guid scheduleId);
+
+        void UpdateSlots(Guid truckId, Guid scheduleId, IEnumerable<CoronaEntities.Slot> slots);
+
+        void StartDay(Guid truckId);    // Reset slots etc.
+    }
+}

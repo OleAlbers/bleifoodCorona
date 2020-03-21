@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace CoronaDL
+namespace CoronaDL.Interfaces
 {
     public interface IUser
     {

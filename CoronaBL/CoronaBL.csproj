@@ -45,9 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cookies.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="Foodtruck.cs" />
     <Compile Include="Hash.cs" />
-    <Compile Include="IMail.cs" />
-    <Compile Include="IUser.cs" />
+    <Compile Include="Interfaces\ICustomer.cs" />
+    <Compile Include="Interfaces\IFoodtruck.cs" />
+    <Compile Include="Interfaces\IMail.cs" />
+    <Compile Include="Interfaces\IOrder.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

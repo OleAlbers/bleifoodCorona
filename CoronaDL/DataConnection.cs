@@ -34,5 +34,10 @@ namespace CoronaDL
             GetCollection<T>().Update(entity);
         }
 
+        public void Delete<T>(Guid id) 
+        {
+            GetCollection<T>().Delete(id);
+        }
+
     }
 }

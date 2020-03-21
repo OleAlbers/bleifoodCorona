@@ -54,15 +54,21 @@
     <Compile Include="Exceptions\InvalidHashException.cs" />
     <Compile Include="Exceptions\NotLoggedInException.cs" />
     <Compile Include="Exceptions\NotValidatedException.cs" />
+    <Compile Include="Exceptions\TruckAlreadyExistsException.cs" />
     <Compile Include="Exceptions\UserAlreadyExistsConnection.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
-    <Compile Include="IFoodTruck.cs" />
-    <Compile Include="IPlace.cs" />
-    <Compile Include="IPosition.cs" />
-    <Compile Include="ISchedule.cs" />
-    <Compile Include="ISlot.cs" />
-    <Compile Include="IUser.cs" />
+    <Compile Include="FoodTruck.cs" />
+    <Compile Include="Interfaces\IFoodTruck.cs" />
+    <Compile Include="Interfaces\IPlace.cs" />
+    <Compile Include="Interfaces\IPosition.cs" />
+    <Compile Include="Interfaces\ISchedule.cs" />
+    <Compile Include="Interfaces\ISlot.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
+    <Compile Include="Place.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule.cs" />
+    <Compile Include="Slot.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

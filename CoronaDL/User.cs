@@ -1,31 +1,19 @@
-﻿using CoronaDL.Exceptions;
-using log4net;
+﻿using CoronaDL.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace CoronaDL
 {
     public class User : IUser
     {
-
-
-        DataConnection _connection = new DataConnection();
-        
+        private DataConnection _connection = new DataConnection();
 
         public IEnumerable<CoronaEntities.User> GetAll()
         {
             return _connection.SelectAll<CoronaEntities.User>();
         }
-
-     
-
-   
-
 
         public void Insert(CoronaEntities.User user)
         {
