@@ -16,6 +16,19 @@ namespace CoronaDL
             _connection.Delete<CoronaEntities.Position>(id);
         }
 
+        public void DeleteForTruck(Guid id)
+        {
+            foreach (var position in GetForTruck(id))
+            {
+                _connection.Delete<CoronaEntities.Position>(position.Id);
+            }
+        }
+
+        public IEnumerable<CoronaEntities.Position> GetForTruck(Guid truckId)
+        {
+            return SelectAll().Where(q => q.TruckId == truckId);
+        }
+
         public void Insert(CoronaEntities.Position position)
         {
             _connection.Insert(position);

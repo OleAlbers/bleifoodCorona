@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoronaEntities
 {
-    public class Slot
+    public class Slot:BaseEntity    
     {
         public Guid TruckId { get; set; }
         public Guid ScheduleId { get; set; }

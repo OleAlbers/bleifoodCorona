@@ -14,8 +14,6 @@ namespace CoronaEntities
         public string Road { get; set; }
         public string City { get; set; }
         public double Distance { get; set; }
-        public DateTime StartDelivery { get; set; }
-        public DateTime EndDelivery { get; set; }
-        public DateTime StartOrder { get; set; }
+  
     }
 }

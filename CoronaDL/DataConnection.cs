@@ -24,6 +24,11 @@ namespace CoronaDL
             return GetCollection<T>().FindAll();
         }
 
+        public T SelectById<T>(Guid id)
+        {
+            return GetCollection<T>().FindById(id);
+        }
+
         public void Insert<T>(T entity)
         {
             GetCollection<T>().Insert(entity);

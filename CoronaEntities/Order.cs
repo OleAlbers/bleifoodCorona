@@ -12,6 +12,6 @@ namespace CoronaEntities
         public Customer Customer { get; set; }
         public IEnumerable<OrderPosition> Positions { get; set; }
         public DateTime TimeSlot { get; set; }
-
+        public string Comment { get; set; }
     }
 }

@@ -24,5 +24,23 @@ namespace CoronaDL
                 _connection.Update(scheduleItem);
             }
         }
+        public void DeleteOldSchedule(Guid truckId)
+        {
+            var oldSchedule = GetForFoodtruck(truckId);
+            foreach (var oldScheduleItem in oldSchedule)
+            {
+                _connection.Delete<CoronaEntities.Schedule>(oldScheduleItem.Id);
+            }
+        }
+
+        public void InsertSchedule(CoronaEntities.Schedule schedule)
+        {
+            _connection.Insert(schedule);
+        }
+
+        public CoronaEntities.Schedule GetById(Guid id)
+        {
+            return _connection.SelectById<CoronaEntities.Schedule>(id);
+        }
     }
 }

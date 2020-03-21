@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CoronaEntities
 {
-    public class Schedule
+    public class Schedule:BaseEntity
     {
         public bool IsEven { get; set; }
-        public int Weekday { get; set; }
+        public DayOfWeek Weekday { get; set; }
         public Guid? PlaceId { get; set; }
         public Guid TruckId { get; set; }
     }

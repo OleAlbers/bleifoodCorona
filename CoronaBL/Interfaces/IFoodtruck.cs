@@ -21,15 +21,15 @@ namespace CoronaBL.Interfaces
 
         IEnumerable<CoronaEntities.Position> GetCard(Guid truckId);
 
-        void UpdateCard(IEnumerable<CoronaEntities.Position> positions);
+        void UpdateCard(Guid truckId, IEnumerable<CoronaEntities.Position> positions);
 
         IEnumerable<CoronaEntities.Schedule> GetSchedule(Guid truckId);
 
         void UpdateSchedule(Guid truckId, IEnumerable<CoronaEntities.Schedule> schedule);
 
-        IEnumerable<CoronaEntities.Slot> GetSlots(Guid truckId, Guid scheduleId);
+        IEnumerable<CoronaEntities.Slot> GetSlots( Guid scheduleId);
 
-        void UpdateSlots(Guid truckId, Guid scheduleId, IEnumerable<CoronaEntities.Slot> slots);
+        void UpdateSlots( Guid scheduleId, IEnumerable<CoronaEntities.Slot> slots);
 
         void StartDay(Guid truckId);    // Reset slots etc.
     }

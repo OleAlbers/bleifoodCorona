@@ -8,8 +8,8 @@ namespace CoronaEntities
 {
     public class BaseEntity
     {
-        public Guid Id { get; set; }
-        public DateTime Created { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public DateTime Created { get; set; } = DateTime.Now;
         public DateTime? Modified { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace CoronaDL.Interfaces
         void Insert(CoronaEntities.Position position);
         void Update(CoronaEntities.Position position);
         IEnumerable<CoronaEntities.Position> SelectAll();
-        void Delete(Guid id);
+        IEnumerable<CoronaEntities.Position> GetForTruck(Guid truckId);
+        void DeleteForTruck(Guid id);
     }
 }

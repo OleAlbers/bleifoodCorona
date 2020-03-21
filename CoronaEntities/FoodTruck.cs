@@ -25,5 +25,9 @@ namespace CoronaEntities
 
 
         public bool Active { get; set; }
+
+        public DateTime StartDelivery { get; set; }
+        public DateTime EndDelivery { get; set; }
+        public DateTime StartOrder { get; set; }
     }
 }
