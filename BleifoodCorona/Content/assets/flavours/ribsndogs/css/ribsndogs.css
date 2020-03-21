@@ -1,0 +1,1214 @@
+/*@import url(https://fonts.googleapis.com/css?family=Kaushan+Script);
+@import url(https://fonts.googleapis.com/css?family=Bree+Serif);
+*/
+/* START EDIT HERE */
+body {
+  font-family: 'Bree Serif', serif;
+  font-weight: 400;
+  color: #584a41;
+  font-size: 14px;
+  line-height: 24px;
+  background: transparent url("../../../flavours/ribsndogs/images/bg-2.jpg") repeat-y top center;
+}
+/* headers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  color: #d74700;
+}
+.blog-sidebar .widget > h3 {
+  font-family: 'Bree Serif', serif;
+  color: #584A41;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 23px;
+  margin: 0 0 20px 0;
+}
+h4 {
+  font-size: 40px;
+  line-height: 41px;
+  margin-bottom: 20px;
+}
+p {
+  text-shadow: none;
+  color: #584a41;
+}
+p.bigger {
+  font-size: 16px;
+  line-height: 21px;
+  color: #584a41;
+}
+p.large {
+  font-size: 20px;
+  line-height: 23px;
+}
+p a {
+  color: #d74700;
+}
+.big {
+  color: #584a41;
+  font-family: 'Kaushan Script', cursive;
+  text-transform: none;
+  text-align: center;
+}
+.hdr1 {
+  width: 818px;
+  min-height: 63px;
+  padding-top: 5px;
+  background: transparent url("../../../flavours/ribsndogs/images/hdr-1.png") no-repeat top center;
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 36px;
+  text-transform: none;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+  margin-bottom: 50px;
+}
+.hdr1.type2 {
+  width: 722px;
+  height: 152px;
+  background: transparent url("../../../flavours/ribsndogs/images/hdr-1-a.png") no-repeat top center;
+  text-shadow: 2px 3px 0px rgba(59,127,139,0.14);
+  font-size: 33px;
+  line-height: 33px;
+  padding-left: 130px;
+  padding-right: 150px;
+  padding-top: 14px;
+}
+#menu .hdr1.type2 {
+  position: relative;
+  top: -72px;
+  margin-bottom: -120px;
+  pointer-events: none;
+}
+.flexFull .hdr2 {
+  color: #d74700;
+}
+.hdr2 {
+  font-family: 'Kaushan Script', cursive;
+  color: #584a41;
+  font-size: 40px;
+  line-height: 40px;
+  text-transform: none;
+  text-shadow: none;
+}
+.hdr2.special {
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  color: #d74700;
+  text-align: left;
+  margin-bottom: 35px;
+}
+.hdr3 {
+  color: #584a41;
+  text-align: center;
+  font-size: 23px;
+  line-height: 23px;
+  font-family: 'Bree Serif', serif;
+  font-weight: 400;
+  text-transform: none;
+  text-shadow: none;
+}
+.hdr3 a {
+  color: #d74700;
+}
+.hdr4 {
+  width: 657px;
+  min-height: 63px;
+  padding-top: 5px;
+  background: transparent url("../../../flavours/ribsndogs/images/hdr-4.png") no-repeat top center;
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 36px;
+  text-transform: none;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+  margin-bottom: 40px;
+}
+.hdr5 {
+  color: #584a41;
+  font-family: 'Bree Serif', serif;
+  font-weight: 400;
+  font-size: 30px;
+  text-transform: none;
+}
+.hdr5 span {
+  border-bottom: 0;
+}
+.hdr6 {
+  width: 571px;
+  padding: 8px 40px 0 40px;
+  margin: 0 auto 20px auto;
+  min-height: 199px;
+  background: transparent url("../../../flavours/ribsndogs/images/hdr-6.png") no-repeat top center;
+  text-align: center;
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  color: #fff;
+  font-size: 40px;
+  line-height: 46px;
+  text-transform: none;
+  text-shadow: 2px 3px 0px rgba(59,127,139,0.14);
+}
+.mapWithOverlay {
+  position: relative;
+}
+.mapWithOverlay .hdr6 {
+  top: 70px;
+  left: 50%;
+  margin-left: -285px;
+  pointer-events: none;
+}
+.btn {
+  padding-top: 11px;
+  padding-bottom: 13px;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 25px;
+  font-family: 'Bree Serif', serif;
+  text-transform: none;
+  -webkit-box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.25);
+  box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.25);
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+}
+.btn:focus {
+  outline: none;
+}
+.btn:active,
+.btn.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  position: relative;
+  top: 1px;
+}
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: .65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.btn-default {
+  background-image: -webkit-gradient(linear,left 0%,left 100%,from(#b32900),to(#da4f0b));
+  background-image: -webkit-linear-gradient(top,#b32900,0%,#da4f0b,100%);
+  background-image: -moz-linear-gradient(top,#b32900 0%,#da4f0b 100%);
+  background-image: linear-gradient(to bottom,#b32900 0%,#da4f0b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb32900', endColorstr='#ffda4f0b', GradientType=0);
+  color: #fff;
+  border: none;
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+  box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+}
+.btn-default:active,
+.btn-default.active,
+.btn-default:hover,
+.btn-default:focus {
+  background-image: -webkit-gradient(linear,left 0%,left 100%,from(#b32900),to(#da4f0b));
+  background-image: -webkit-linear-gradient(top,#b32900,0%,#da4f0b,100%);
+  background-image: -moz-linear-gradient(top,#b32900 0%,#da4f0b 100%);
+  background-image: linear-gradient(to bottom,#b32900 0%,#da4f0b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb32900', endColorstr='#ffda4f0b', GradientType=0);
+  color: #fff;
+  border: none;
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+  box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+}
+.btn.btn-primary {
+  font-family: 'Kaushan Script', cursive;
+  background-image: -webkit-gradient(linear,left 0%,left 100%,from(#b32900),to(#da4f0b));
+  background-image: -webkit-linear-gradient(top,#b32900,0%,#da4f0b,100%);
+  background-image: -moz-linear-gradient(top,#b32900 0%,#da4f0b 100%);
+  background-image: linear-gradient(to bottom,#b32900 0%,#da4f0b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb32900', endColorstr='#ffda4f0b', GradientType=0);
+  color: #fff;
+  border: none;
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+  box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+}
+.btn.btn-primary:active,
+.btn.btn-primary.active,
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  background-image: -webkit-gradient(linear,left 0%,left 100%,from(#b32900),to(#da4f0b));
+  background-image: -webkit-linear-gradient(top,#b32900,0%,#da4f0b,100%);
+  background-image: -moz-linear-gradient(top,#b32900 0%,#da4f0b 100%);
+  background-image: linear-gradient(to bottom,#b32900 0%,#da4f0b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb32900', endColorstr='#ffda4f0b', GradientType=0);
+  color: #fff;
+  border: none;
+  -webkit-box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+  box-shadow: 0px 3px 10px 0px rgba(38, 36, 25, 0.4),0px 2px 0px 0px rgba(255, 255, 255, 0.3) inset;;
+}
+.btn-sm {
+  padding: 9px 12px;
+  font-size: 19px;
+  line-height: 19px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+.priceHeader {
+  background: transparent url("../../../flavours/ribsndogs/images/priceheader-bg.png") repeat-x center top;
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  text-transform: none;
+  font-size: 30px;
+  line-height: 30px;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+  padding-top: 10px;
+}
+.priceHeader:before {
+  content: " ";
+  background: transparent url("../../../flavours/ribsndogs/images/priceheader-lft.png") no-repeat top center;
+}
+.priceHeader:after {
+  content: " ";
+  background: transparent url("../../../flavours/ribsndogs/images/priceheader-rt.png") no-repeat top center;
+}
+.priceHeader .lft {
+  float: left;
+  min-width: 230px;
+}
+.priceHeader .rt {
+  float: left;
+  min-width: 230px;
+}
+.priceHeader .price {
+  width: 112px;
+  height: 112px;
+  background: transparent url("../../../flavours/ribsndogs/images/priceheader-price.png") no-repeat center top;
+  float: left;
+  position: relative;
+  margin-top: -40px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.priceHeader .price .el_1 {
+  font-family: 'Kaushan Script', cursive;
+}
+.priceHeader .price .el_2 {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 22px;
+  letter-spacing: -0.1em;
+}
+.priceHeader .price .el_3 {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 39px;
+  line-height: 39px;
+  letter-spacing: -0.1em;
+}
+.priceHeader .price .el_4 {
+  display: inline-block;
+  font-size: 22px;
+  width: 31px;
+}
+hr.line1 {
+  padding: 20px 0 30px 0;
+  margin: 0;
+  height: 15px;
+  background: transparent url("../../../flavours/ribsndogs/images/line-1.png") no-repeat center 20px;
+}
+/* main menu */
+.is-sticky .full-sticky-menu {
+  width: 100%;
+  position: absolute;
+  z-index: 100;
+}
+@media (min-width: 990px) {
+  .is-sticky .full-sticky-menu .inner:before {
+    display: none;
+    height: 0;
+  }
+  .is-sticky .full-sticky-menu .small-brand {
+    margin-top: 6px;
+  }
+}
+@media (max-width: 990px) {
+  .navbar-default .navbar-collapse {
+    background: transparent url("../../../flavours/ribsndogs/images/bg-1.jpg") repeat-y top center;
+    z-index: 2;
+    position: relative;
+  }
+  .navbar-header .navbar-brand {
+    max-width: 190px !important;
+  }
+  #menu .hdr1.type2 {
+    top: 0;
+    margin-bottom: 0;
+    padding: 20px;
+    height: auto;
+  }
+  .navbar-default .navbar-nav > li {
+    background: none !important;
+  }
+  .hdr1,
+  .hdr4 {
+    color: #584A41 !important;
+  }
+  .priceHeader .lft,
+  .priceHeader .rt {
+    color: #584A41 !important;
+  }
+  .small-brand {
+    margin-bottom: 5px !important;
+  }
+}
+@media (max-width: 480px) {
+  .flexslider.flexFade .descArea * {
+    color: #584A41 !important;
+    text-shadow: 2px 3px 0px rgba(59,127,139,0.14) !important;
+  }
+}
+.navbar-header .navbar-brand {
+  padding-top: 0;
+}
+.navbar-default .navbar-nav {
+  float: none;
+}
+.navbar-default .navbar-nav > li:first-child {
+  background: none;
+}
+.navbar-default .navbar-nav > li {
+  /*background: transparent url("../../../flavours/ribsndogs/images/menu-divider.png") no-repeat left 15px;*/
+  padding: 0 8px;
+  margin: 0;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #584a41;
+  font-family: 'Kaushan Script', cursive;
+  padding: 10px 7px 13px 7px;
+  text-transform: none;
+  font-size: 27px;
+  line-height: 27px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.navbar-default .navbar-nav > li > a:hover {
+  color: #584a41;
+}
+.navbar-default .navbar-nav > li.active + li {
+  background: none;
+}
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  -webkit-box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.25);
+  box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.25);
+  background-image: -webkit-gradient(linear,left 0%,left 100%,from(#b32900),to(#da4f0b));
+  background-image: -webkit-linear-gradient(top,#b32900,0%,#da4f0b,100%);
+  background-image: -moz-linear-gradient(top,#b32900 0%,#da4f0b 100%);
+  background-image: linear-gradient(to bottom,#b32900 0%,#da4f0b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb32900', endColorstr='#ffda4f0b', GradientType=0);
+  color: #fff;
+}
+.navbar-default .inner {
+  background: transparent url("../../../flavours/ribsndogs/images/menu-bg.png") repeat-x center top;
+  height: 247px;
+  border: 0;
+}
+.navbar-default .inner:before {
+  content: " ";
+  height: 51px;
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+  background: transparent url("../../../flavours/ribsndogs/images/menu-bg-top.png") repeat-x center top;
+}
+.navbar-default .inner .btm {
+  width: 100%;
+  height: 25px;
+  display: block;
+  background: transparent url("../../../flavours/ribsndogs/images/menu-bg.png") repeat-x center -246px;
+  pointer-events: none;
+  position: absolute;
+  bottom: -24px;
+}
+.address {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 17px;
+  line-height: 19px;
+  color: #584a41;
+  text-shadow: none;
+}
+.blackboard {
+  background: transparent url("../../../flavours/ribsndogs/images/blackboard-bg.jpg") no-repeat top center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-right: 20px;
+}
+.tweet_list li {
+  background: transparent url("../../../flavours/ribsndogs/images/twitter-ico2.png") no-repeat left 6px;
+  padding-left: 30px;
+  font-family: 'Bree Serif', serif;
+  font-size: 17px;
+  line-height: 24px;
+  color: #584a41;
+}
+.tweet_list li a {
+  color: #d74700;
+}
+.tweet_list li .tweet_time a {
+  color: #efe3ca;
+}
+.customMarker i {
+  background: transparent url("../../../flavours/ribsndogs/images/marker-icon.png") no-repeat center bottom;
+}
+.customMarker span {
+  background-image: -webkit-gradient(linear,left 0%,left 100%,from(#b32900),to(#da4f0b));
+  background-image: -webkit-linear-gradient(top,#b32900,0%,#da4f0b,100%);
+  background-image: -moz-linear-gradient(top,#b32900 0%,#da4f0b 100%);
+  background-image: linear-gradient(to bottom,#b32900 0%,#da4f0b 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffb32900', endColorstr='#ffda4f0b', GradientType=0);
+  font-family: 'Bree Serif', serif;
+  font-size: 15px;
+  line-height: 21px;
+  -webkit-box-shadow: 0px 2px 0px 0px rgba(255,255,255,0.3) inset;
+  box-shadow: 0px 2px 0px 0px rgba(255,255,255,0.3) inset;
+}
+.customMarker span:before {
+  border-color: #da4f0b transparent transparent transparent;
+}
+.smallSocials li {
+  background: transparent url("../../../flavours/ribsndogs/images/smallsocial-bg.png") no-repeat 0 0;
+}
+.smallSocials li:hover {
+  background-position: 0 -30px;
+}
+.bigSocials li {
+  background: transparent url("../../../flavours/ribsndogs/images/social-bg.png") no-repeat 0 0;
+}
+.bigSocials li:hover {
+  background-position: 0 -40px;
+}
+.phoneIcon,
+.locationIcon {
+  background: transparent url("../../../flavours/ribsndogs/images/mobile-flag.png") no-repeat 0 0;
+}
+.phoneIcon {
+  background-position: -287px 0;
+}
+.section > .inner {
+  padding-bottom: 85px;
+}
+.bg-1 {
+  background: transparent url("../../../flavours/ribsndogs/images/bg-1.jpg") repeat-y top center;
+}
+.bg-2 {
+  background: transparent url("../../../flavours/ribsndogs/images/bg-2.jpg") repeat-y top center;
+}
+.bg-1.topOrnament,
+.bg-2.topOrnament {
+  padding-top: 30px;
+}
+.bg-1.topOrnament > .inner,
+.bg-2.topOrnament > .inner {
+  padding-top: 0;
+}
+.bg-1.topOrnament:before,
+.bg-2.topOrnament:before {
+  content: " ";
+  display: block;
+  height: 85px;
+  width: 100%;
+  position: absolute;
+  top: -85px;
+  background: transparent url("../../../flavours/ribsndogs/images/bg-1-top.png") no-repeat top center;
+}
+.bg-2.topOrnament:before {
+  background: transparent url("../../../flavours/ribsndogs/images/bg-2-top.png") no-repeat top center;
+}
+.flexslider.flexFull.type2 .flex-direction-nav a {
+  background: transparent url("../../../flavours/ribsndogs/images/slider2-controls.png") no-repeat left top;
+}
+.flexslider.flexFull.type2 .flex-direction-nav a:hover {
+  background-position: left -145px;
+}
+.flexslider.flexFull.type2 .flex-direction-nav a:before {
+  display: none;
+  height: 0;
+}
+.flexslider.flexFull.type2 .flex-direction-nav .flex-next {
+  background-position: -167px 0;
+}
+.flexslider.flexFull.type2 .flex-direction-nav .flex-next:hover {
+  background-position: -167px -145px;
+}
+.flexslider.flexFade .descArea {
+  background: transparent url("../../../flavours/ribsndogs/images/circle-flex.png") no-repeat top center;
+}
+.flexslider.flexFade .descArea h4 {
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  font-size: 42px;
+  line-height: 42px;
+  text-shadow: none;
+}
+.flexslider.flexFade .descArea h5 {
+  color: #fff;
+  font-family: 'Bree Serif', serif;
+  font-size: 26px;
+  line-height: 26px;
+  text-transform: uppercase;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+}
+.flexslider.flexFade .descArea p {
+  color: #fff;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+}
+.flexslider.flexFade .price {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 60px;
+  line-height: 60px;
+  text-shadow: 0px -1px 1px rgba(255,255,255,0.25);
+}
+.flexslider.flexFade .price em {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 34px;
+  line-height: 34px;
+  top: -0.7em;
+}
+.flexslider.flexFade .price span {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 34px;
+  line-height: 34px;
+  top: -0.7em;
+  padding-left: 4px;
+}
+.hdr7 {
+  font-family: 'Kaushan Script', cursive;
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 38px;
+  color: #d74700;
+  text-transform: none;
+}
+.prodBox {
+  font-family: 'Bree Serif', serif;
+  color: #877e7e;
+  font-size: 14px;
+  line-height: 18px;
+}
+.prodBox p {
+  font-family: 'Bree Serif', serif;
+  color: #877e7e;
+  text-shadow: none;
+  font-size: 14px;
+  line-height: 18px;
+}
+.prodBox .info {
+  display: block;
+  padding: 15px 0;
+  color: #676464;
+  font-size: 11px;
+  line-height: 18px;
+}
+.prodBox h4 {
+  color: #584a41;
+  font-family: 'Bree Serif', serif;
+}
+.prodBox .price {
+  color: #fff;
+  font-family: 'Kaushan Script', cursive;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+  font-size: 39px;
+  line-height: 44px;
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  margin-left: -55px;
+  background: transparent url("../../../flavours/ribsndogs/images/prodbox-price.png") no-repeat top center;
+  border: none;
+  -webkit-border-radius: none;
+  -moz-border-radius: none;
+  border-radius: none;
+  width: 110px;
+  height: 110px;
+}
+.prodBox .price small {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 18px;
+}
+.prodBox .price em {
+  font-style: normal;
+  font-family: 'Kaushan Script', cursive;
+  padding: 0;
+  font-size: 20px;
+}
+.prodBox .price span {
+  font-family: 'Kaushan Script', cursive;
+  padding-left: 3px;
+  font-size: 22px;
+}
+.menuBox .top {
+  background: transparent url("../../../flavours/ribsndogs/images/menubox-top.png") no-repeat center 1px;
+  padding: 28px 0 0 0;
+  text-transform: none;
+  color: #fff;
+  font-family: 'Bree Serif', serif;
+  font-size: 28px;
+  line-height: 28px;
+}
+.menuBox .top span {
+  padding-top: 10px;
+}
+.menuBox .inner p {
+  color: #584a41;
+  font-family: 'Bree Serif', serif;
+}
+.menuBox .inner .title {
+  color: #584a41;
+  font-family: 'Bree Serif', serif;
+}
+.menuBox .inner .price {
+  font-family: 'Kaushan Script', cursive;
+  color: #d74700;
+  font-size: 30px;
+  line-height: 30px;
+}
+.menuBox .inner .price em {
+  font-style: normal;
+  font-family: 'Kaushan Script', cursive;
+  font-size: 17px;
+}
+.menuBox .inner .price span {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 17px;
+}
+.menuBox hr {
+  background: transparent url("../../../flavours/ribsndogs/images/line-hr2.png") repeat-x center 10px;
+  height: 1px;
+  padding: 10px 0;
+}
+.eventBox {
+  background: #f4f2ea;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.eventBox .hdr2 {
+  font-size: 45px;
+  line-height: 45px;
+  color: #d74700;
+  text-shadow: none;
+}
+.eventBox hr {
+  height: 1px;
+  background: #90867c;
+  -webkit-box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.1);
+}
+.eventBox .date {
+  padding-top: 19px;
+  background: #d43a00;
+  font-family: 'Bree Serif', serif;
+  color: #fff;
+  font-size: 34px;
+  line-height: 34px;
+}
+.eventBox .date span {
+  font-family: 'Bree Serif', serif;
+}
+.eventBox .place {
+  font-family: 'Bree Serif', serif;
+  color: #d74700;
+  font-size: 25px;
+  line-height: 25px;
+  text-shadow: none;
+}
+.eventBox .time {
+  font-family: 'Bree Serif', serif;
+  color: #d74700;
+  font-size: 30px;
+  line-height: 30px;
+  text-shadow: none;
+}
+.mapit,
+.shareit {
+  font-family: 'Bree Serif', serif;
+  font-size: 25px;
+  line-height: 25px;
+  text-transform: none;
+  color: #584a41;
+}
+.mapit:hover,
+.shareit:hover {
+  color: #584a41;
+}
+.mapit i,
+.shareit i {
+  background: transparent url("../../../flavours/ribsndogs/images/marker-share.png") no-repeat 0 0;
+}
+.shareit i {
+  background-position: 0 -124px;
+}
+.mapit {
+  color: #d74700;
+}
+.mapit:hover {
+  color: #d74700;
+}
+.easyBox {
+  background: #f4f2ea;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.bx-wrapper .bx-prev {
+  background: transparent url("../../../flavours/ribsndogs/images/controls-bxslider.png") no-repeat 0 0;
+  left: 85px;
+}
+.bx-wrapper .bx-prev:hover {
+  background-position: 0 -54px;
+}
+.bx-wrapper .bx-next {
+  background: transparent url("../../../flavours/ribsndogs/images/controls-bxslider.png") no-repeat -94px 0;
+  right: 85px;
+}
+.bx-wrapper .bx-next:hover {
+  background-position: -94px -54px;
+}
+.galleryBox .top {
+  font-size: 30px;
+  line-height: 30px;
+  background: transparent url("../../../flavours/ribsndogs/images/gallerybox-top.png") no-repeat center 1px;
+  text-transform: none;
+  font-family: 'Bree Serif', serif;
+  padding-top: 63px;
+}
+.galleryContainer li a div {
+  background: #d74700;
+  background: rgba(215,71,0,0.75);
+}
+.galleryContainer li a div span {
+  text-transform: none;
+  font-family: 'Bree Serif', serif;
+  text-shadow: none;
+  color: #fff;
+  font-size: 25px;
+}
+.form-control {
+  font-size: 16px;
+  line-height: 19px;
+  color: #8d7e74;
+  background-color: #eae7dd;
+  border: 1px solid transparent;
+  font-family: 'Bree Serif', serif;
+}
+.form-control:-moz-placeholder {
+  color: #8d7e74;
+}
+.form-control::-moz-placeholder {
+  color: #8d7e74;
+}
+.form-control:-ms-input-placeholder {
+  color: #8d7e74;
+}
+.form-control::-webkit-input-placeholder {
+  color: #8d7e74;
+}
+.form-control:focus {
+  border-color: #ccc;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(204,204,204,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(204,204,204,0.6);
+}
+form label {
+  color: #584a41;
+  font-size: 25px;
+  line-height: 25px;
+  font-family: 'Bree Serif', serif;
+  font-weight: 400;
+  text-transform: none;
+  margin-bottom: 15px;
+}
+
+ng-form label {
+    color: #584a41;
+    font-size: 25px;
+    line-height: 25px;
+    font-family: 'Bree Serif', serif;
+    font-weight: 400;
+    text-transform: none;
+    margin-bottom: 15px;
+}
+footer {
+  background: transparent url("../../../flavours/ribsndogs/images/footer-bg-repeat.jpg") repeat top center;
+}
+footer .googleMap {
+  margin-top: 0;
+}
+footer .row > div:last-child h4 {
+  text-align: center;
+}
+footer .row > div h4:first-child {
+  margin-top: 70px;
+}
+footer h4 {
+  color: #d74700;
+  font-size: 41px;
+  line-height: 41px;
+  font-family: 'Kaushan Script', cursive;
+}
+footer p {
+  font-family: 'Bree Serif', serif;
+  font-size: 16px;
+  line-height: 16px;
+}
+footer hr {
+  background: transparent url("../../../flavours/ribsndogs/images/hr-contact.png") repeat-x left 20px;
+}
+footer .copyright {
+  color: #584a41;
+  font-family: 'Bree Serif', serif;
+}
+footer .copyright a {
+  color: #d74700;
+}
+footer .tweet_list li {
+  background: transparent url("../../../flavours/ribsndogs/images/hr-contact.png") repeat-x left top;
+}
+footer .tweet_list li:before {
+  background: transparent url("../../../flavours/ribsndogs/images/twitter-ico.png") no-repeat top center;
+}
+footer .tweet_list li a {
+  color: #d74700;
+}
+footer .tweet_list li .tweet_time a {
+  color: #b3a790;
+}
+footer .tweet_list li:first-child {
+  background: none;
+  padding-top: 0;
+}
+footer .tweet_list li:first-child:before {
+  top: 4px;
+}
+footer:before {
+  height: 85px;
+  background: transparent url("../../../flavours/ribsndogs/images/footer-bg.jpg") repeat-x center top;
+}
+footer #toTop {
+  width: 114px;
+  height: 59px;
+  background: transparent url("../../../flavours/ribsndogs/images/totop-btn.png") no-repeat center top;
+  margin-left: -57px;
+}
+.navbar-default .navbar-nav.text-center > li {
+  background-position: left 11px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.navbar-default .navbar-nav.text-center > li > a {
+  font-size: 24px;
+  line-height: 24px;
+}
+.personBox .ptitle {
+  font-family: 'Kaushan Script', cursive;
+  background: #D43A00;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+  font-size: 21px;
+  line-height: 21px;
+}
+.personBox .pname {
+  color: #584A41;
+  font-family: 'Bree Serif', serif;
+  font-size: 20px;
+  line-height: 21px;
+}
+hr.line-separator {
+  border: 0;
+}
+.buttonBox {
+  background: transparent url("../../../flavours/ribsndogs/images/buttonbox-bg.png") no-repeat center top;
+  width: 821px;
+  min-height: 79px;
+  padding-top: 11px;
+  font-family: 'Bree Serif', serif;
+  color: #fff;
+}
+.buttonBox p {
+  margin-top: 3px;
+  color: #fff;
+  text-shadow: 0px 1px 1px rgba(0,0,0,0.25);
+  font-size: 26px;
+  line-height: 30px;
+}
+.nav-tabs.type2 + .tab-content * {
+  color: #584A41;
+}
+.nav-tabs.type2 > li.active > a,
+.nav-tabs.type2 > li.active > a:hover,
+.nav-tabs.type2 > li.active > a:focus {
+  color: #584A41;
+}
+.nav-tabs.type2 > li > a {
+  font-family: 'Bree Serif', serif;
+  color: #584A41;
+}
+.nav-tabs.type2 > li > a:hover {
+  color: #584A41;
+}
+.nav-tabs.type2.dark_ver + .tab-content {
+  background: #584A41;
+}
+.nav-tabs.type2.dark_ver > li > a {
+  background: #51463f;
+}
+.nav-tabs.type2.dark_ver > li + li + li > a {
+  background: #504138;
+}
+.nav-tabs.type2.dark_ver > li > a:hover {
+  background: #584A41;
+  color: #fff;
+}
+.nav-tabs.type2.dark_ver > li.active > a,
+.nav-tabs.type2.dark_ver > li.active > a:hover,
+.nav-tabs.type2.dark_ver > li.active > a:focus {
+  background: #584A41;
+}
+.panel-default > .panel-heading + .panel-collapse .panel-body {
+  color: #584A41;
+}
+.panel-default > .panel-heading a {
+  color: #584A41;
+  font-family: 'Bree Serif', serif;
+}
+.box_text .inner {
+  background: #dd5c1c;
+  color: #fff;
+}
+.box_text .inner p {
+  color: #fff;
+}
+.box_text .inner .author {
+  color: #fff;
+}
+.box_text .ribbon_icon {
+  color: #fff;
+}
+.highlight.type1,
+.highlight.type2 {
+  color: #fff;
+}
+.testimonial.dark_ver .inner {
+  background: #584A41;
+  color: #fff;
+}
+.testimonial.dark_ver .inner p {
+  color: #fff;
+}
+.testimonial.dark_ver .inner:after {
+  border-color: #584A41 transparent transparent transparent;
+}
+.blog-sidebar .widget_archive h3 + ul > li,
+.blog-sidebar .widget_categories h3 + ul > li,
+.blog-sidebar .widget_recent_entries h3 + ul > li,
+.blog-sidebar .widget_recent_comments h3 + ul > li,
+.blog-sidebar .widget_categories h3 + ul > li,
+.blog-sidebar .widget_meta h3 + ul > li,
+.blog-sidebar .widget_pages h3 + ul > li,
+.blog-sidebar .widget_rss h3 + ul > li,
+.blog-sidebar .widget_links h3 + ul > li {
+  color: #584A41;
+  font-family: 'Bree Serif', serif;
+}
+.blog-sidebar .widget_archive h3 + ul > li.active,
+.blog-sidebar .widget_categories h3 + ul > li.active,
+.blog-sidebar .widget_tags h3 + ul > li.active,
+.blog-sidebar .widget_recent_entries h3 + ul > li.active,
+.blog-sidebar .widget_recent_comments h3 + ul > li.active,
+.blog-sidebar .widget_categories h3 + ul > li.active,
+.blog-sidebar .widget_meta h3 + ul > li.active,
+.blog-sidebar .widget_pages h3 + ul > li.active,
+.blog-sidebar .widget_rss h3 + ul > li.active,
+.blog-sidebar .widget_links h3 + ul > li.active {
+  color: #D74700;
+}
+.blog-sidebar .widget .tab-content ul > li {
+  color: #584A41;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background: #D74700;
+  color: #fff;
+}
+.nav-tabs > li > a:hover {
+  background: #D74700;
+  color: #fff;
+}
+.nav-tabs > li > a {
+  background: #584A41;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  background: #584A41;
+  border: 1px solid #BCD2C5;
+}
+.pagination > li > a,
+.pagination > li > span {
+  background: #584A41;
+  border: 1px solid #BCD2C5;
+}
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border: 1px solid #BCD2C5;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background: #D43A00;
+  color: #fff;
+}
+.pagination > .disabled > span,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+  background: #D43A00;
+  color: #fff;
+}
+.flexslider.flexSimple .flex-direction-nav a {
+  background: #D43A00;
+}
+.blog-sidebar .tweet_list li .tweet_time a {
+  color: #888;
+}
+.highlight.type1 {
+  background: #584A41;
+}
+.flickr_badge > div {
+  color: #584A41;
+}
+.tooltip-inner {
+  background-color: #111;
+}
+#qLpercentage {
+  color: #584A41 !important;
+}
+#qLbar {
+  background-color: #584A41 !important;
+}
+.box_text .ribbon_icon {
+  background-image: url("../../../flavours/ribsndogs/images/blog-ribbon3.png");
+}
+.blog-main .blog_thumbnail .ribbon_details {
+  background-image: url("../../../flavours/ribsndogs/images/blog-ribbon1.png");
+}
+.blog-main .meta_box .meta_comments em {
+  background-image: url("../../../flavours/ribsndogs/images/blog-ribbon2.png");
+}
+.progress:before {
+  background-image: url("../../../flavours/ribsndogs/images/progress-bar-left.png");
+}
+.progress-bar {
+  background-image: url("../../../flavours/ribsndogs/images/progress-bar-md.png");
+}
+.progress-bar:before {
+  background-image: url("../../../flavours/ribsndogs/images/progress-bar-right.png");
+}
+.soc_list > li > a {
+  background-image: url("../../../flavours/ribsndogs/images/soc-small.png");
+}
+.soc_list.soc-medium > li > a {
+  background-image: url("../../../flavours/ribsndogs/images/soc-medium.png");
+}
+.soc_list.soc-big > li > a {
+  background-image: url("../../../flavours/ribsndogs/images/soc-big.png");
+}
+.box_text .inner p {
+  color: #fff;
+}
+.box_text .inner .author {
+  color: #584a41;
+  text-shadow: none;
+}
+.blog-main .meta_box {
+  color: #584a41;
+}
+.blog-main .meta_box > span:before {
+  background: #584a41;
+}
+.blog-main .blog_title {
+  font-family: 'Bree Serif', serif;
+  font-size: 30px;
+  line-height: 31px;
+  color: #584a41;
+}
+.blog-main .meta_box .meta_comments em {
+  color: #fff;
+}
+.tooltip-inner {
+  background-color: #584a41;
+  color: #fff;
+  text-shadow: 0px -1px 0px #000;
+}
+.tooltip.top .tooltip-arrow {
+  border-top-color: #584a41;
+}
+.tooltip.top-left .tooltip-arrow {
+  border-top-color: #584a41;
+}
+.tooltip.top-right .tooltip-arrow {
+  border-top-color: #584a41;
+}
+.tooltip.right .tooltip-arrow {
+  border-right-color: #584a41;
+}
+.tooltip.left .tooltip-arrow {
+  border-left-color: #584a41;
+}
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #584a41;
+}
+.tooltip.bottom-left .tooltip-arrow {
+  border-bottom-color: #584a41;
+}
+.tooltip.bottom-right .tooltip-arrow {
+  border-bottom-color: #584a41;
+}
+.pie-chart {
+  color: #fff;
+  text-shadow: 0px -1px 1px rgba(0,0,0,0.25);
+}
+.navbar-default .navbar-nav.text-center > li {
+  padding-bottom: 10px;
+}
+.navbar-nav > li > .dropdown-menu {
+  border: 1px solid #c9bb9f;
+  background: #ede2cc;
+}
+.navbar-nav > li > .dropdown-menu > li > a {
+  font-family: 'Kaushan Script', cursive;
+  color: #584a41;
+  font-size: 22px;
+  line-height: 23px;
+}
+.navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-nav > li > .dropdown-menu > li > a:focus {
+  background: rgba(0,0,0,0.1);
+}

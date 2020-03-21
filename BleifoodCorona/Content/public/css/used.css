@@ -1,0 +1,61 @@
+body {
+    font-family: 'Bree Serif', serif;
+    font-weight: 400;
+    color: #584a41;
+    font-size: 14px;
+    line-height: 24px;
+    background: #EEE2CB url("../../../flavours/ribsndogs/images/bg-2.jpg") repeat-y top center;
+    margin: 0;
+}
+
+#messageBox {
+    display: none;
+}
+
+.navbar-toggle {
+    display: none;
+}
+
+.navbar-default .inner {
+    height:237px;
+    border:0px;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navbar-header {
+    width:100%;
+    position:relative;
+    display: block;
+    float: none;
+    text-align: center;
+}
+
+.address  {
+    font-family: "Kaushan Script", cursive;
+    font-size: 17px;
+    font-height: 19px;
+}
+
+.navbar-header .smallSocials {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    z-index: 3;
+    display: inline-block;
+    margin: 0 0 0 -2px;
+    padding: 0;
+}
+
+.smallSocials li {
+    display: block;
+    float: left;
+    margin-left: 22px;
+    background: transparent url("../../html/assets/flavours/ribsndogs/images/smallsocial-bg.png");
+
+}

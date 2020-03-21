@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head ng-controller="HeadController">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="shortcut icon" type="image/x-icon"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/favicon.ico">
+
+    <link rel="apple-touch-icon" sizes="57x57"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="Content/assets/flavours/ribsndogs/images/content/favicon/favicon-16x16.png">
+    <link rel="manifest" href="Content/assets/flavours/ribsndogs/images/content/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="Content/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="Content/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="Content/assets/flavours/ribsndogs/css/ribsndogs.css">
+    <link rel="stylesheet" type="text/css" href="Content/public/css/foodtrucks.css">
+
+    <script src="Content/assets/js/jquery.min.js"></script>
+
+    <title>@ViewBag.Title</title>
+
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="inner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle btn btn-primary" data-toggle="collapse"
+                            data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="text-center">
+                        <p class="address">
+                            Bleifood.de - Social Distancing in Lecker
+                        </p>
+                    </div>
+
+                    
+                        <img src="Content/assets/flavours/ribsndogs/images/content/logo-small.png" alt=" ">
+                        <h1>@ViewBag.Title</h1>
+
+         
+                </div>
+
+        
+            </div>
+       
+
+            <div class="btm"></div>
+        </div>
+    </nav>
+
+
+    <div class="bg-1 section" id="events">
+
+        <div class="inner maincontent" data-topspace="50"
+             data-image="./Content/assets/flavours/ribsndogs/images/content/background-3.jpg">
+            <div class="container" id="mainContent">@RenderBody()</div>
+        </div>
+    </div>
+
+
+
+    <div id="noscript">
+        Diese Seite benötigt Javascript.<br />
+        <a href="./includes/publicsite/impressum.html">Impressum</a>
+    </div>
+    <footer>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <img src="Content/assets/flavours/ribsndogs/images/content/logo.png" alt=" ">
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </div>
+
+        <a href="#" id="toTop"></a>
+    </footer>
+
+
+    <script>
+        document.getElementById('noscript').style.display = "none";
+                //$('#noscript').hide();
+    </script>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
