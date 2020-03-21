@@ -12,7 +12,9 @@ namespace CoronaEntities
         [StoreInCookie]
         public string Name { get; set; }
         [StoreInCookie]
-        public string Road { get; set; }
+        public string Street { get; set; }
+        [StoreInCookie]
+        public string Zip { get; set; }
         [StoreInCookie]
         public string City { get; set; }
         [StoreInCookie]

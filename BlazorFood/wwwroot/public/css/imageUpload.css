@@ -1,0 +1,41 @@
+/* Image Crop Upload */
+.cropArea {
+    background: #E4E4E4;
+    margin: auto;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.cropArea.big {
+    width:800px;
+    height:600px;
+}
+.cropArea.medium {
+    width:500px;
+    height:350px;
+}
+.cropArea.small {
+    width:300px;
+    height:200px;
+}
+
+.imageUploadWin {
+    padding: 5px;
+}
+
+.imageUploadContainer {
+    margin: 15px 15px 15px 15px;
+}
+
+.imageUploadWin .modal-content
+{
+    min-height: 500px;
+    overflow: auto;
+}
+
+.imageResultView
+{
+    float: right;
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
