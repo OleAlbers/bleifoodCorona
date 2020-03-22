@@ -1,0 +1,69 @@
+﻿@page "/admin/register"
+<h3>Registrieren</h3>
+
+@code {
+
+
+}
+<EditForm Model="@_registerUser" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="easyBox">
+        <div class="simpleForm">
+            <p>
+                Um Deinen Foodtruck anzumelden gib hier bitte Deine E-Mail-Adresse und ein Passwort ein.<br />
+                <strong>Wichtig:</strong> Bisher sind nur die elementarsten Funktionen vorhanden. So fehlt z.B. auch noch eine Möglichkeit das Passwort zurückzusetzen. <br />
+                <strong>VERGISS DEIN PASSWORT ALSO NICHT</strong>
+            </p>
+            <p>
+                Im Anschluss wirst Du eine E-Mail erhalten um deinen Zugriff zu aktivieren. Das ist Notwendig um diese Seite vor Spammern zu schützen.
+            </p>
+
+
+
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="text" class="form-control" name="email" @bind-value="_registerUser.Mail" placeholder="E-Mail Adresse hier eingeben">
+                <ValidationMessage For="() => _registerUser.Mail" />
+            </div>
+            <div class="form-group">
+                <label>Passwort</label>
+                <input type="password" class="form-control" name="pass1" @bind-value="_registerUser.Password" placeholder="Dein gewünschtes Passwort">
+                <ValidationMessage For="() => _registerUser.Password" />
+            </div>
+            <div class="form-group">
+                <label>Passwort (wiederholen)</label>
+                <input type="password" class="form-control" name="pass2" @bind-value="_registerUser.PasswordRepeat" placeholder="Wiederhole Dein passwort">
+                <div><ValidationMessage For="() => _registerUser.PasswordRepeat" /></div>
+            </div>
+            <input disabled="@_formInValid" class="btn btn-default" type="submit" value="Abschicken" />
+            <div><ValidationSummary></ValidationSummary></div>
+        </div>
+
+    </div>
+</EditForm>
+@code {
+    private Models.RegisterUser _registerUser = new Models.RegisterUser();
+    private EditContext _editContext;
+    private bool _formInValid = false;
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(_registerUser);
+        _editContext.OnFieldChanged += (_, __) =>
+        {
+            _formInValid = !_editContext.Validate();
+            StateHasChanged();
+        };
+
+        base.OnInitialized();
+    }
+
+    private void HandleValidSubmit()
+    {
+        _formInValid = !_editContext.Validate();
+        if (_formInValid) return;
+        var logic = new UserApi();
+        logic.Register(_registerUser);
+        Console.WriteLine("Registierung abgeschickt");
+    }
+}
