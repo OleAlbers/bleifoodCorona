@@ -8,7 +8,7 @@ namespace CoronaBL.Interfaces
 {
     public interface ICustomer
     {
-        CoronaEntities.Customer GetFromCookie();
-        void StoreInCookie(CoronaEntities.Customer customer);
+        CoronaEntities.Customer GetFromLocalStorage();
+        void StoreInLocalStorage(CoronaEntities.Customer customer);
     }
 }

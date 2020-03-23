@@ -1,5 +1,7 @@
-﻿using CoronaBL.Interfaces;
+﻿using Blazored.LocalStorage;
+using CoronaBL.Interfaces;
 using log4net;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +15,22 @@ namespace CoronaBL
 {
     public class User : IUser
     {
-        private ICookies _cookies;
+        private ILocalStorage _localStorage;
         private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private TimeSpan UserCookieDuration = new TimeSpan(1, 0, 0);
+        private TimeSpan LocalStoregeDuration = new TimeSpan(1, 0, 0);
 
         private IMail _mail = new Mail();
         private CoronaDL.Interfaces.IUser _dbUser = new CoronaDL.User();
+  
 
-        public User(ICookies cookies)
+       
+      
+
+        public User (ILocalStorageService localstorageService)
         {
-            _cookies = cookies;
+            _localStorage = new LocalStorage(localstorageService);
+
         }
 
         public void Activate(string mail, string validation)
@@ -50,18 +57,19 @@ namespace CoronaBL
             var existingUser = _dbUser.SelectByMail(mail);
             if (existingUser == null || Hash.CreateHash(password) != existingUser.Password) throw new CoronaDL.Exceptions.WrongCredentialsException();
             if (existingUser.Validated == null) throw new CoronaDL.Exceptions.NotValidatedException();
-            existingUser.Hash = CreateRandomHash();
-            existingUser.HashValidUntil = _cookies.SetCookie(existingUser, UserCookieDuration);
+            existingUser.Credentials.Hash = CreateRandomHash();
+            _localStorage.StoreData(existingUser.Credentials);
+            existingUser.HashValidUntil = DateTime.Now.Add(LocalStoregeDuration);
             _dbUser.Update(existingUser);
             return existingUser.TruckId;
         }
 
         public CoronaEntities.User GetFromCookie()
         {
-            var cookieUser = _cookies.GetCookie<CoronaEntities.User>();
+            var cookieUser = _localStorage.ReadData<CoronaEntities.User>();
             if (cookieUser == null) throw new CoronaDL.Exceptions.NotLoggedInException();
-            var match = _dbUser.SelectByMail(cookieUser.LoginMail);
-            if (match == null || match.Hash != cookieUser.Hash) throw new CoronaDL.Exceptions.InvalidHashException();
+            var match = _dbUser.SelectByMail(cookieUser.Credentials.LoginMail);
+            if (match == null || match.Credentials.Hash != cookieUser.Credentials.Hash) throw new CoronaDL.Exceptions.InvalidHashException();
             if (match.HashValidUntil < DateTime.Now) throw new CoronaDL.Exceptions.NotLoggedInException(); // Expired
             return match;
         }
@@ -81,7 +89,7 @@ namespace CoronaBL
             {
                 Created = DateTime.Now,
                 Id = Guid.NewGuid(),
-                LoginMail = mail,
+                Credentials=new CoronaEntities.Credentials { LoginMail=mail},
                 Password = Hash.CreateHash(password),
                 ValidationCode = CreateRandomHash()
                

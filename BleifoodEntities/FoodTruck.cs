@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace CoronaEntities
 {
-    public class FoodTruck:BaseEntity
+    public class FoodTruck : BaseEntity
     {
-       
+
         public string PaypalMail { get; set; }
+        public string PaypalMe {get;set;}
         public Address PostAddress { get; set; }
 
         [ShowToCustomer]
@@ -22,5 +23,6 @@ namespace CoronaEntities
         public DateTime StartDelivery { get; set; }
         public DateTime EndDelivery { get; set; }
         public DateTime StartOrder { get; set; }
+        public bool TakeAway { get; set; }
     }
 }

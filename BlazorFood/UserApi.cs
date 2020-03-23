@@ -1,6 +1,8 @@
-﻿using CoronaBL;
+﻿using Blazored.LocalStorage;
+using CoronaBL;
 using CoronaBL.Interfaces;
 using log4net;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
@@ -10,28 +12,27 @@ using System.Threading.Tasks;
 
 namespace BlazorFood
 {
-    public class UserApi:IUserApi
+    public class UserApi : IUserApi
     {
         private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        IUser _user;
+        
 
-        public UserApi(IUser user)
-        {
-            _user = user;
-        }
+        
         public void Register(Models.RegisterUser registerdata)
         {
-            _user.Register(registerdata.Mail, registerdata.Password);
+            IUser user = new User(null);
+            user.Register(registerdata.Mail, registerdata.Password);
             _log.Debug("User registered");
         }
 
-        public bool Login(string mail, string password, out string error, out Guid? guid)
+        public bool Login(ILocalStorageService localStorageService,  string mail, string password, out string error, out Guid? guid)
         {
             error = null;
             guid= null;
             try
             {
-                guid = _user.Login(mail, password);
+                IUser user = new User(localStorageService);
+                guid = user.Login(mail, password);
                 
                 return true;
             }
@@ -48,7 +49,8 @@ namespace BlazorFood
             error = null;
             try
             {
-                _user.Activate(mail, hash);
+                IUser user = new User(null);
+                user.Activate(mail, hash);
                 return true;
             }
             catch (Exception ex)

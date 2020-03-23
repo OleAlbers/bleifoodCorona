@@ -7,23 +7,23 @@ namespace CoronaBL
     public class Customer : ICustomer
     {
 
-        private ICookies _cookies;
+        private ILocalStorage _localStorage;
 
-        public Customer(ICookies cookies)
+        public Customer(ILocalStorage localStorage)
         {
-            _cookies = cookies;
+            _localStorage= localStorage;
         }
 
-        public CoronaEntities.Customer GetFromCookie()
+        public CoronaEntities.Customer GetFromLocalStorage()
         {
-            var customer = _cookies.GetCookie<CoronaEntities.Customer>();
-            if (customer != null) StoreInCookie(customer);  // Refresh
-            return customer;
+            var address= _localStorage.ReadData<CoronaEntities.Address>();
+            if (address == null) return null;
+            return new CoronaEntities.Customer { PostAddress = address };
         }
 
-        public void StoreInCookie(CoronaEntities.Customer customer)
+        public void StoreInLocalStorage(CoronaEntities.Customer customer)
         {
-            _cookies.SetCookie(customer, new TimeSpan(100, 0, 0, 0));
+            _localStorage.StoreData(customer.PostAddress);
         }
     }
 }

@@ -13,6 +13,7 @@ using BlazorFood.Data;
 using CoronaBL;
 using CoronaBL.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Blazored.LocalStorage;
 
 namespace BlazorFood
 {
@@ -32,9 +33,10 @@ namespace BlazorFood
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<ICookies, Cookies>();
-            services.AddSingleton<IUser, User>();
+            services.AddBlazoredLocalStorage();
+
+            //services.AddSingleton<ILocalStorage, LocalStorage>();
+            //services.AddSingleton<IUser, User>();
             services.AddSingleton<IUserApi, UserApi>();
 
         }

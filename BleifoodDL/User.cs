@@ -30,7 +30,7 @@ namespace CoronaDL
 
         public CoronaEntities.User SelectByMail(string mail)
         {
-            return GetAll().FirstOrDefault(q => q.LoginMail == mail);
+            return GetAll().FirstOrDefault(q => q.Credentials.LoginMail == mail);
         }
 
         private CoronaEntities.User SelectById(Guid id)

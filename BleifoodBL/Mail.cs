@@ -99,7 +99,7 @@ namespace CoronaBL
 
         public void SendMail(CoronaEntities.User user, string subject, string body)
         {
-            SendMail(user.LoginMail, subject, body, null);
+            SendMail(user.Credentials.LoginMail, subject, body, null);
         }
 
         private string GetHostName()
@@ -111,7 +111,7 @@ namespace CoronaBL
         {
             string subject = "Bitte bestätige Deine Anmeldung";
             string body = "Du hast Dich bei bleifood.de angemeldet. Bitte klicke auf den folgenden Link um die Registrierung abzuschließen:\n\n";
-            body += $"https://{GetHostName()}/admin/validate/{user.ValidationCode}?mail={user.LoginMail} \n";
+            body += $"https://{GetHostName()}/admin/validate/{user.ValidationCode}?mail={user.Credentials.LoginMail} \n";
             SendMail(user, subject, body);
         }
 

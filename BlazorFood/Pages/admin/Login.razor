@@ -1,6 +1,7 @@
 ﻿@page "/admin/login"
 @inject NavigationManager NaviationManager
 @inject IUserApi UserApi
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 <h3>Anmelden</h3>
 
 @code {
@@ -45,7 +46,7 @@
 
     private void HandleValidSubmit()
     {
-        if (UserApi.Login(_loginUser.Mail, _loginUser.Password, out string error, out Guid? guid))
+        if (UserApi.Login(LocalStorageService,  _loginUser.Mail, _loginUser.Password, out string error, out Guid? guid))
         {
             NaviationManager.NavigateTo($"/manage/{guid}");
         }
