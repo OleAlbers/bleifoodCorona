@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazorFood.Data;
+using CoronaBL;
+using CoronaBL.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace BlazorFood
 {
@@ -18,6 +21,7 @@ namespace BlazorFood
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Helpers.Configuration = configuration.AsEnumerable().ToList();
         }
 
         public IConfiguration Configuration { get; }
@@ -28,7 +32,11 @@ namespace BlazorFood
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ICookies, Cookies>();
+            services.AddSingleton<IUser, User>();
+            services.AddSingleton<IUserApi, UserApi>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

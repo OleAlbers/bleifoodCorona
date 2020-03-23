@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
     <Compile Include="Attributes\ShowToCustomerAttribute.cs" />
     <Compile Include="Attributes\StoreInCookieAttribute.cs" />
     <Compile Include="BaseEntity.cs" />

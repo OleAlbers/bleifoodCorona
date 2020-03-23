@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoronaBL\CoronaBL.csproj" />
-    <ProjectReference Include="..\CoronaEntities\CoronaEntities.csproj" />
+    <ProjectReference Include="..\BleifoodBL\BleifoodBL.csproj" />
+    <ProjectReference Include="..\BleifoodEntities\BleifoodEntities.csproj" />
   </ItemGroup>
 
 </Project>

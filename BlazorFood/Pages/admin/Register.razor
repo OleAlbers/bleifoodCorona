@@ -1,5 +1,6 @@
 ﻿@page "/admin/register"
 <h3>Registrieren</h3>
+@inject IUserApi UserApi
 
 @code {
 
@@ -62,8 +63,7 @@
     {
         _formInValid = !_editContext.Validate();
         if (_formInValid) return;
-        var logic = new UserApi();
-        logic.Register(_registerUser);
+        UserApi.Register(_registerUser);
         Console.WriteLine("Registierung abgeschickt");
     }
 }

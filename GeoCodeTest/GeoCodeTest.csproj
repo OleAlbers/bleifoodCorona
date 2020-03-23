@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoronaBL\CoronaBL.csproj">
-      <Project>{09531a3f-2589-48b7-8ab8-35b6ec1d1008}</Project>
-      <Name>CoronaBL</Name>
+    <ProjectReference Include="..\BleifoodBL\BleifoodBL.csproj">
+      <Project>{2b7e34f5-74c1-429a-a089-edbba448e5b3}</Project>
+      <Name>BleifoodBL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

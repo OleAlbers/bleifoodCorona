@@ -1,0 +1,52 @@
+﻿@page "/admin/validate/{hash}"
+@inject NavigationManager navigationManager
+@inject IUserApi UserApi
+@using Microsoft.AspNetCore.WebUtilities 
+
+<h3>Validierung</h3>
+
+@{
+    @functions {
+        [Parameter]
+        public string Hash { get; set; }
+
+        public bool Invalid { get; set; } = true;
+        public string LastError { get; set; } = null;
+        public bool HasNoError
+        {
+            get
+            {
+                return LastError==null;
+            }
+        }
+    }
+}
+
+<div hidden="@Invalid">
+    <h1>Validierung erfolgreich. </h1>
+    Du kannst Dich jetzt <a href="/admin/login">hier einloggen</a>
+</div>
+<div hidden="@HasNoError">
+    <strong>@LastError</strong>
+</div>
+
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("mail", out var mails))
+        {
+            Invalid=!UserApi.Validate(mails.First(), Hash, out string error);
+            if (Invalid) LastError = error;
+        } else
+        {
+            Invalid = true;
+            LastError = "Parameter fehlt";
+        }
+    }
+}
+
+

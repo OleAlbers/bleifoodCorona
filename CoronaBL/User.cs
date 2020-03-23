@@ -17,14 +17,15 @@ namespace CoronaBL
 
         private TimeSpan UserCookieDuration = new TimeSpan(1, 0, 0);
 
-        private IMail _mail;
+        private IMail _mail = new Mail();
         private CoronaDL.Interfaces.IUser _dbUser = new CoronaDL.User();
 
         public void Activate(string mail, string validation)
         {
             var existingUser = _dbUser.SelectByMail(mail);
+            if (existingUser.Validated != null) return; // already validated
             if (existingUser == null || existingUser.ValidationCode != validation || string.IsNullOrWhiteSpace(validation)) throw new CoronaDL.Exceptions.InvalidHashException();
-            if (existingUser.Validated != null) throw new CoronaDL.Exceptions.AlreadyValidatedException();
+            
             existingUser.ValidationCode = null;
             existingUser.Validated = DateTime.Now;
             _dbUser.Update(existingUser);
@@ -38,7 +39,7 @@ namespace CoronaBL
             _dbUser.Update(existingUser);
         }
 
-        public void Login(string mail, string password)
+        public Guid? Login(string mail, string password)
         {
             var existingUser = _dbUser.SelectByMail(mail);
             if (existingUser == null || Hash.CreateHash(password) != existingUser.Password) throw new CoronaDL.Exceptions.WrongCredentialsException();
@@ -46,6 +47,7 @@ namespace CoronaBL
             existingUser.Hash = CreateRandomHash();
             existingUser.HashValidUntil = Cookies.SetCookie(existingUser, UserCookieDuration);
             _dbUser.Update(existingUser);
+            return existingUser.TruckId;
         }
 
         public CoronaEntities.User GetFromCookie()
@@ -75,7 +77,8 @@ namespace CoronaBL
                 Id = Guid.NewGuid(),
                 LoginMail = mail,
                 Password = Hash.CreateHash(password),
-                ValidationCode = Guid.NewGuid().ToString()
+                ValidationCode = CreateRandomHash()
+               
             };
             _dbUser.Insert(newUser);
             _mail.Validate(newUser);
