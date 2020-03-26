@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorFood.Data
+namespace BleifoodWeb.Data
 {
     public class WeatherForecastService
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace BlazorFood.Data
+namespace BleifoodWeb.Data
 {
     public class WeatherForecast
     {

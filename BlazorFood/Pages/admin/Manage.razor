@@ -1,14 +1,58 @@
-﻿@page "/admin/manage/{truckId}"
+﻿@page "/admin/manage/{truckId}/"
 @inject NavigationManager NaviationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStore
 @inject IUserApi UserApi;
-<h3>Anmelden</h3>
 
 
 @{
     @functions {
         [Parameter]
-        public Guid? TruckId { get; set; }
+        public string TruckId { get; set; }
+        public Guid TruckGuid { get; set; }
+        public string Header { get; set; }
+        public bool MayEdit { get; set; } = false;
+        public string ErrorMessage { get; set; } = null;
 
     }
+
+    if (TruckId == null)
+    {
+        Header = "Dein Angebot erstellen";
+    }
+    else
+    {
+        Header = "Dein Angebot bearbeiten";
+    }
+}
+
+
+
+<h3>@Header</h3>
+@if (!MayEdit)
+{
+    <div class="easyBox">
+
+        <h1>@ErrorMessage</h1>
+        <a href="/admin/login">Hier anmelden</a>
+    </div>
+    return;
+}
+
+<AuthorizeView><div><h1>moin cheffe</h1></div></AuthorizeView>
+<div> Nur wenn alles gut</div>
+
+
+
+@code {
+    protected override void OnInitialized()
+    {
+
+        // TODO
+        
+    }
+}
+
+@code{
+    // Replace after implementing better auth algorithm:
 }
 

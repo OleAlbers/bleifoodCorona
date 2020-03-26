@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoronaBL
 {
@@ -25,10 +26,7 @@ namespace CoronaBL
 
         private bool CheckPermission(Guid? truckId)
         {
-            var currentUser = _user.GetFromCookie();
-            if (currentUser == null) return false;
-            if (truckId == null) return true;
-            return currentUser.TruckId == truckId;
+            return false;
         }
 
         public void CreateTruck(FoodTruck foodtruck)

@@ -1,14 +1,11 @@
-﻿@page "/admin/login"
-@inject NavigationManager NaviationManager
+﻿@using Microsoft.AspNetCore.WebUtilities
+@page "/admin/login"
+@inject NavigationManager NavigationManager
 @inject IUserApi UserApi
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 <h3>Anmelden</h3>
 
-@code {
 
-
-}
-<EditForm Model="@_loginUser" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@_loginUser"  OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <div class="easyBox">
         <div class="simpleForm">
@@ -20,8 +17,6 @@
             <p>
                 Im Anschluss wirst Du eine E-Mail erhalten um deinen Zugriff zu aktivieren. Das ist Notwendig um diese Seite vor Spammern zu schützen.
             </p>
-
-
 
             <div class="form-group">
                 <label>E-mail</label>
@@ -37,20 +32,22 @@
             <input class="btn btn-default" type="submit" value="Anmelden" />
             <div><ValidationSummary></ValidationSummary></div>
         </div>
-
     </div>
 </EditForm>
+
 @code {
     private Models.LoginUser _loginUser = new Models.LoginUser();
     private EditContext _editContext;
+    private Guid? _guid;
 
-    private void HandleValidSubmit()
+    private void  HandleValidSubmit()
     {
-        if (UserApi.Login(LocalStorageService,  _loginUser.Mail, _loginUser.Password, out string error, out Guid? guid))
-        {
-            NaviationManager.NavigateTo($"/manage/{guid}");
-        }
-        Console.WriteLine("Anmeldung erfolgt");
-
+        bool success= UserApi.Login(_loginUser.Mail, _loginUser.Password).Result;
+        //if (hash!=null && error==null)
+        //{
+        //    truckId = truckId ?? Guid.Empty;
+        //    var query = new Dictionary<string, string> { { "hash", hash } };
+        //    NavigationManager.NavigateTo(QueryHelpers.AddQueryString($"/admin/manage/{truckId}", query));
+        //}
     }
 }

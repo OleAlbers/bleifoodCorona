@@ -9,11 +9,16 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BlazorFood.Data;
 using CoronaBL;
 using CoronaBL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Identity;
+using AspNetCore.Identity.LiteDB;
+using AspNetCore.Identity.LiteDB.Models;
+using LiteDB;
+using AspNetCore.Identity.LiteDB.Data;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorFood
 {
@@ -31,13 +36,33 @@ namespace BlazorFood
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase("Filename=Database.db")));
+
+            //services.AddSingleton<ILiteDbContext, LiteDbContext>();
+            services.AddIdentity<ApplicationUser, AspNetCore.Identity.LiteDB.IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
+            })
+           .AddUserStore<LiteDbUserStore<ApplicationUser>>()
+           .AddRoleStore<LiteDbRoleStore<AspNetCore.Identity.LiteDB.IdentityRole>>()
+           .AddDefaultTokenProviders();
+
+        //    services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
 
             //services.AddSingleton<ILocalStorage, LocalStorage>();
-            //services.AddSingleton<IUser, User>();
-            services.AddSingleton<IUserApi, UserApi>();
+            
+            services.AddScoped<IUser, User>();
+            services.AddScoped<IUserApi, UserApi>();
+            services.AddScoped<IBrowserStorage, BrowserStorage>();
+            services.AddScoped<ICustomer, Customer>();
 
         }
 

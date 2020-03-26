@@ -1,0 +1,20 @@
+﻿@page  "/manage/login"
+<h3>Login</h3>
+@inject Identity identity
+@code {
+
+}
+
+
+<AuthorizeView>
+    <h1>Moin</h1>
+</AuthorizeView>
+
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        identity.Login();
+    }
+}

@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace CoronaBL
 {
+    
     public static class Helpers
     {
+        
+
         public static List<KeyValuePair<string,string>> Configuration { get; set; }
 
         public static GeoCoordinate ToDeviceLocation(this GeocodeSharp.Google.GeoCoordinate googleCoordinate)

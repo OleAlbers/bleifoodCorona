@@ -12,6 +12,7 @@ namespace CoronaDL.Interfaces
         void Insert(CoronaEntities.User user);
         void Update(CoronaEntities.User user);
         CoronaEntities.User SelectByMail(string mail);
+        CoronaEntities.User SelectByHash(string hash);
         IEnumerable<CoronaEntities.User> GetAll();
     }
 }

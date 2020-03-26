@@ -19,7 +19,7 @@
                 return LastError==null;
             }
         }
-    }
+}
 }
 
 <div hidden="@Invalid">
@@ -32,20 +32,9 @@
 
 
 
-@code {
-
-    protected override void OnInitialized()
+@code {    protected override void OnInitialized()
     {
-        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("mail", out var mails))
-        {
-            Invalid=!UserApi.Validate(mails.First(), Hash, out string error);
-            if (Invalid) LastError = error;
-        } else
-        {
-            Invalid = true;
-            LastError = "Parameter fehlt";
-        }
+    
     }
 }
 

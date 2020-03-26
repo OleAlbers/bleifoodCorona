@@ -1,9 +1,12 @@
-﻿using Blazored.LocalStorage;
+﻿using AspNetCore.Identity.LiteDB.Models;
 using CoronaBL;
 using CoronaBL.Interfaces;
+using CoronaDL.Exceptions;
 using log4net;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,50 +17,33 @@ namespace BlazorFood
 {
     public class UserApi : IUserApi
     {
+
+
+
         private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
 
-        
-        public void Register(Models.RegisterUser registerdata)
+        private readonly IUser _user;
+
+        public UserApi(IUser user)
         {
-            IUser user = new User(null);
-            user.Register(registerdata.Mail, registerdata.Password);
-            _log.Debug("User registered");
+            _user = user;
         }
 
-        public bool Login(ILocalStorageService localStorageService,  string mail, string password, out string error, out Guid? guid)
+        public async Task<bool> Login(string mail, string password)
         {
-            error = null;
-            guid= null;
-            try
-            {
-                IUser user = new User(localStorageService);
-                guid = user.Login(mail, password);
-                
-                return true;
-            }
-            catch (Exception ex)
-            {
-                error = ex.ToString();
-                return false;
-            }
+            return await _user.Login(mail, password);
         }
 
-        public bool Validate(string mail, string hash, out string error)
+        public void Register(string mail, string password)
         {
-            // TODO: Catch specific errors and show useful errors
-            error = null;
-            try
-            {
-                IUser user = new User(null);
-                user.Activate(mail, hash);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                error = ex.ToString();
-                return false;
-            }
+            _user.Register(mail, password);
+        }
+
+    
+
+        public void Validate(string mail, string hash)
+        {
+                _user.ConfirmAccount(mail, hash);
         }
     }
 }

@@ -1,0 +1,18 @@
+﻿@page  "/manage/register"
+<h3>Register</h3>
+@inject Identity identity
+
+@code {
+
+}
+
+<AuthorizeView>
+    <h1>Du bist doch schon eingeloggt, dummerchen</h1>
+</AuthorizeView>
+
+@code {
+    protected override void OnInitialized()
+    {
+        identity.Register();
+    }
+}

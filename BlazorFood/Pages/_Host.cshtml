@@ -13,7 +13,7 @@
     <title>Bleifood - Social Distancing kann auch lecker sein</title>
     <base href="~/" />
     @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />*@
+        <link href="css/site.css" rel="stylesheet" />*@
 
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,11 +59,13 @@
 
     @*<script src="assets/js/jquery.min.js"></script>*@
 
+    
+
 
 </head>
 <body>
     <app>
-        <component type="typeof(App)" render-mode="ServerPrerendered" />
+        <component type="typeof(App)" render-mode="Server" />
     </app>
 
     <div id="blazor-error-ui">
@@ -78,5 +80,6 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    
 </body>
 </html>

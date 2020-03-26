@@ -1,7 +1,9 @@
-﻿using Blazored.LocalStorage;
+﻿using AspNetCore.Identity.LiteDB.Models;
 using CoronaBL.Interfaces;
 using log4net;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,87 +17,54 @@ namespace CoronaBL
 {
     public class User : IUser
     {
-        private ILocalStorage _localStorage;
+        private SignInManager<ApplicationUser> _signinManager;
+        private UserManager<ApplicationUser> _userManager;
+
+        private IBrowserStorage _browserStorage;
         private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private TimeSpan LocalStoregeDuration = new TimeSpan(1, 0, 0);
+        private TimeSpan LocalStoregeDuration = new TimeSpan(1, 0, 0);  // TODO: From Config
 
         private IMail _mail = new Mail();
         private CoronaDL.Interfaces.IUser _dbUser = new CoronaDL.User();
-  
+        private NavigationManager _navigationManager;
 
-       
-      
-
-        public User (ILocalStorageService localstorageService)
+        public User(IBrowserStorage browserStorage, NavigationManager navigationManager, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
-            _localStorage = new LocalStorage(localstorageService);
-
-        }
-
-        public void Activate(string mail, string validation)
-        {
-            var existingUser = _dbUser.SelectByMail(mail);
-            if (existingUser.Validated != null) return; // already validated
-            if (existingUser == null || existingUser.ValidationCode != validation || string.IsNullOrWhiteSpace(validation)) throw new CoronaDL.Exceptions.InvalidHashException();
-            
-            existingUser.ValidationCode = null;
-            existingUser.Validated = DateTime.Now;
-            _dbUser.Update(existingUser);
-        }
-
-        public void ChangePassword(string mail, string passwordOld, string passwordnew)
-        {
-            var existingUser = _dbUser.SelectByMail(mail);
-            if (existingUser == null || Hash.CreateHash(passwordOld) != existingUser.Password) throw new CoronaDL.Exceptions.WrongCredentialsException();
-            existingUser.Password = Hash.CreateHash(passwordnew);
-            _dbUser.Update(existingUser);
-        }
-
-        public Guid? Login(string mail, string password)
-        {
-            var existingUser = _dbUser.SelectByMail(mail);
-            if (existingUser == null || Hash.CreateHash(password) != existingUser.Password) throw new CoronaDL.Exceptions.WrongCredentialsException();
-            if (existingUser.Validated == null) throw new CoronaDL.Exceptions.NotValidatedException();
-            existingUser.Credentials.Hash = CreateRandomHash();
-            _localStorage.StoreData(existingUser.Credentials);
-            existingUser.HashValidUntil = DateTime.Now.Add(LocalStoregeDuration);
-            _dbUser.Update(existingUser);
-            return existingUser.TruckId;
-        }
-
-        public CoronaEntities.User GetFromCookie()
-        {
-            var cookieUser = _localStorage.ReadData<CoronaEntities.User>();
-            if (cookieUser == null) throw new CoronaDL.Exceptions.NotLoggedInException();
-            var match = _dbUser.SelectByMail(cookieUser.Credentials.LoginMail);
-            if (match == null || match.Credentials.Hash != cookieUser.Credentials.Hash) throw new CoronaDL.Exceptions.InvalidHashException();
-            if (match.HashValidUntil < DateTime.Now) throw new CoronaDL.Exceptions.NotLoggedInException(); // Expired
-            return match;
+            _browserStorage = browserStorage;
+            _navigationManager = navigationManager;
+            _signinManager = signInManager;
+            _userManager = userManager;
         }
 
 
-        private string CreateRandomHash()
+        public async Task<bool> Login(string mail, string password)
         {
-            return Hash.CreateHash(Guid.NewGuid().ToString()); // TODO: Could be more fancy
+            var result = await _signinManager.PasswordSignInAsync(mail, password, false, false);
+            return result.Succeeded;
         }
 
-        public void Register(string mail, string password)
-        {
-            var existingUser = _dbUser.SelectByMail(mail);
-            if (existingUser != null) throw new CoronaDL.Exceptions.UserAlreadyExistsException();
 
-            var newUser = new CoronaEntities.User
-            {
-                Created = DateTime.Now,
-                Id = Guid.NewGuid(),
-                Credentials=new CoronaEntities.Credentials { LoginMail=mail},
-                Password = Hash.CreateHash(password),
-                ValidationCode = CreateRandomHash()
-               
-            };
-            _dbUser.Insert(newUser);
-            _mail.Validate(newUser);
+    
+
+        public async void Register(string mail, string password)
+        {
+            var user = new ApplicationUser { Email = mail, UserName = mail };
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded) return;
+            if (result.Errors.Any()) throw new Exception(result.Errors.First().Description);
+        }
+
+        public void LogOut()
+        {
+            _signinManager.SignOutAsync();
+        }
+
+        public async void ConfirmAccount(string mail, string code)
+        {
+            var user = await _userManager.FindByEmailAsync(mail);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (!result.Succeeded) throw new Exception(result.Errors.First().Description);
         }
     }
 }

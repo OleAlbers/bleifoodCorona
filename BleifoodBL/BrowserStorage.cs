@@ -8,36 +8,39 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Blazored.LocalStorage;
 
 namespace CoronaBL
 {
-    public class LocalStorage: ILocalStorage
+    public class BrowserStorage: IBrowserStorage
     {
         private const string Prefix = "Bleifood";
         private ILocalStorageService _localStorageService;
     
-        public LocalStorage(ILocalStorageService localStorageService)
+        public BrowserStorage(ILocalStorageService localStorageService)
         {
             _localStorageService = localStorageService;
         }
 
 
 
-        public async void StoreData<T>(T data)
+        public void StoreData<T>(T data)
         {
             if (data == null) return;
             Type dataType = typeof(T);
-            await _localStorageService.SetItemAsync(dataType.Name, data);
+            Task.Run(() =>
+           {
+                _localStorageService.RemoveItemAsync(dataType.Name);
+                _localStorageService.SetItemAsync(dataType.Name, data);
+           });
         }
 
-        public T ReadData<T>() where T : new()
+        public Task<T> ReadData<T>() where T : new()
         {
             // TODO: Async
             Type dataType = typeof(T);
-            return _localStorageService.GetItemAsync<T>(dataType.Name).Result;
-          
+            return _localStorageService.GetItemAsync<T>(dataType.Name);
         }
     }
 }

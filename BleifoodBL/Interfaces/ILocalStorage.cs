@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CoronaBL.Interfaces
 {
-    public interface ILocalStorage
+    public interface IBrowserStorage
     {
         void StoreData<T>(T data);
-        T ReadData<T>() where T : new();
+         Task<T> ReadData<T>() where T : new();
     }
 }

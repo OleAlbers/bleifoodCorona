@@ -1,5 +1,6 @@
 ﻿@page "/admin/register"
 <h3>Registrieren</h3>
+@inject NavigationManager NaviationManager
 @inject IUserApi UserApi
 
 @code {
@@ -63,7 +64,10 @@
     {
         _formInValid = !_editContext.Validate();
         if (_formInValid) return;
-        UserApi.Register(_registerUser);
+        UserApi.Register(_registerUser.Mail, _registerUser.Password);
+        // TODO: CAtch errors
+        NaviationManager.NavigateTo($"/admin/registersent");
+
         Console.WriteLine("Registierung abgeschickt");
     }
 }
