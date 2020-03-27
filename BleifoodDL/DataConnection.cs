@@ -23,7 +23,7 @@ namespace Bleifood.DL
 
    
 
-        private LiteDB.ILiteCollection<T> GetCollection<T>()
+        private LiteDB.LiteCollection<T> GetCollection<T>()
         {
             return _database.GetCollection<T>();
         }

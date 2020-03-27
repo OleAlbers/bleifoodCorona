@@ -1,65 +1,65 @@
-﻿@page  "/manage/validate/{UserId}/{Hash}"
-@inject Identity identity
+﻿@using Bleifood.Web.Models
+@using Microsoft.AspNetCore.WebUtilities
+
+@page  "/manage/validate/{UserId}/{Hash}"
 @inject NavigationManager navigationManager
-@using Bleifood.Web.Models
+@inject Identity identity
 
 <h3>Validierung</h3>
 
-@code{
+@{
     @functions {
-        [Parameter]
-        public string UserId { get; set; }
-        [Parameter]
-        public string Hash { get; set; }
-    }
+        Models.ValidateUser _validateUser = new ValidateUser();
 }
+}
+
+
 
 <AuthorizeView>
     <h1>Du bist bereits registert und eingeloggt.</h1>
     <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
 </AuthorizeView>
-
+@if (navigationManager == null)
+{
+    // hoppla
+}
 @if (_validateUser.IsValid)
 {
-<div>
-    <div class="easyBox">
-        Du hast Deinen Account erfolgreich aktiviert. Du kannst Dich nun <a href="/manage/edit/">einloggen und Dein Angebot erstellen</a>.
+    <div>
+        <div class="easyBox">
+            Du hast Deinen Account erfolgreich aktiviert. Du kannst Dich nun <a href="/manage/edit/">einloggen und Dein Angebot erstellen</a>.
+        </div>
     </div>
-</div>
 }
 else if (_validateUser.LastError != null)
 {
-<div>
-    <div class="easyBox">
-        <div>
-            <br />
-            <div class="alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <i class="fa fa-ban"></i>@_validateUser.LastError
+    <div>
+        <div class="easyBox">
+            <div>
+                <br />
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="fa fa-ban"></i>@_validateUser.LastError
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 
-@code{
-        private ValidateUser _validateUser = new ValidateUser();
-    }
-    
+@code {
 
-@*@code {
-
-            void CheckData() {
-                var uri = NavigationManager.ToAbsoluteUri(navigationManager.Uri);
-
-  
-
-        protected override async Task OnInitializedAsync()
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            _validateUser.UserId = Id;
-            _validateUser.Hash = Hash;
-            identity.Validate(_validateUser);
+            _validateUser.IsValid = false;
+            var url = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+            var queryValues=QueryHelpers.ParseQuery(url.Query);
+
+            _validateUser.Hash = queryValues["auth"];
+            _validateUser.UserId = queryValues["userId"];
+
+            var success = await identity.Validate(_validateUser);
         }
     }
-
-}*@
+}

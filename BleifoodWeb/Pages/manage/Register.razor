@@ -26,7 +26,7 @@
 </div>
 
 
-<EditForm Model="@_registerUser" OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext="@_editContext" Model="@_registerUser" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <div class="easyBox">
         <div class="simpleForm">
@@ -65,7 +65,7 @@
 
 
 @code {
-    
+
 
     private RegisterUser _registerUser = new RegisterUser();
     private EditContext _editContext;
@@ -73,8 +73,8 @@
 
     private async void HandleValidSubmit()
     {
-        _formInValid = !_editContext.Validate();
-        if (_formInValid) return;
+        //_formInValid = !_editContext.Validate();
+        //if (_formInValid) return;
 
 
         var success = await (identity.Register(_registerUser));

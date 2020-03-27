@@ -29,6 +29,7 @@ namespace BleifoodWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Helpers.Configuration = configuration.AsEnumerable().ToList();
         }
 
         public IConfiguration Configuration { get; }
@@ -37,7 +38,7 @@ namespace BleifoodWeb
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase("d:\\home\\test.liteDb")));
+            services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase("d:\\home\\bleifood.liteDb")));
 
             //services.AddSingleton<ILiteDbContext, LiteDbContext>();
             services.AddIdentity<ApplicationUser, AspNetCore.Identity.LiteDB.IdentityRole>(options =>

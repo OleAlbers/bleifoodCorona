@@ -60,6 +60,7 @@ namespace BleifoodWeb
                 return false;
             }
             storedUser.EmailConfirmed = true;
+            await _userManager.UpdateAsync(storedUser);
             user.IsValid = true;
             return true;
         }

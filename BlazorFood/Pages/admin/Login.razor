@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.WebUtilities
 @page "/admin/login"
-@inject NavigationManager NavigationManager
+@inject NavigationManager nav
 @inject IUserApi UserApi
 <h3>Anmelden</h3>
 
@@ -39,7 +39,7 @@
     private Models.LoginUser _loginUser = new Models.LoginUser();
     private EditContext _editContext;
     private Guid? _guid;
-
+   
     private void  HandleValidSubmit()
     {
         bool success= UserApi.Login(_loginUser.Mail, _loginUser.Password).Result;

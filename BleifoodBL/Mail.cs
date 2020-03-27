@@ -101,7 +101,7 @@ namespace Bleifood.BL
 
         private string GetHostName()
         {
-            return "Hostname".FromConfig();
+            return "AppSettings:BaseUrl".FromConfig();
         }
 
         private void SendMail(string recipient, string subject, string body, string replyTo)
@@ -119,6 +119,7 @@ namespace Bleifood.BL
                 Body = body,
                 IsBodyHtml = false,
                 Subject = subject,
+
             };
             if (replyTo != null) message.ReplyToList.Add(replyTo);
             if (SmtpBCC != null) message.Bcc.Add(SmtpBCC);
@@ -136,7 +137,7 @@ namespace Bleifood.BL
         {
             string subject = "Bitte bestätige Deine Anmeldung";
             string body = "Du hast Dich bei bleifood.de angemeldet. Bitte klicke auf den folgenden Link um die Registrierung abzuschließen:\n\n";
-            body += $"https://{GetHostName()}/manage/validate/?userId={user.Id}&auth={token} \n";
+            body += $"{GetHostName()}/manage/validate/?userId={user.Id}&auth={token} \n";
             SendMail(user, subject, body);
         }
     }

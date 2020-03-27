@@ -20,6 +20,8 @@ namespace Bleifood.BL
             return new GeoCoordinate(googleCoordinate.Latitude, googleCoordinate.Longitude);
         }
 
+       
+
         public static string FromConfig(this string settingname)
         {
             return Configuration.FirstOrDefault(q=>q.Key==settingname).Value;
