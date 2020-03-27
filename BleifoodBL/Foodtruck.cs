@@ -12,13 +12,11 @@ namespace Bleifood.BL
 {
     public class Foodtruck : IFoodtruck
     {
-        private Bleifood.DL.Interfaces.IFoodTruck _dbFoodTruck = new Bleifood.DL.FoodTruck();
-        private Bleifood.DL.Interfaces.IPlace _dbPlace = new Bleifood.DL.Place();
-        private Bleifood.DL.Interfaces.IPosition _dbPosition = new Bleifood.DL.Position();
-        private Bleifood.DL.Interfaces.ISchedule _dbSchedule = new Bleifood.DL.Schedule();
-        private Bleifood.DL.Interfaces.ISlot _dbSlot = new Bleifood.DL.Slot();
-
-      
+        private readonly DL.Interfaces.IFoodTruck _dbFoodTruck = new DL.FoodTruck();
+        private readonly DL.Interfaces.IPlace _dbPlace = new DL.Place();
+        private readonly DL.Interfaces.IPosition _dbPosition = new DL.Position();
+        private readonly DL.Interfaces.ISchedule _dbSchedule = new Bleifood.DL.Schedule();
+        private readonly DL.Interfaces.ISlot _dbSlot = new DL.Slot();
 
         private bool CheckPermission(Guid? truckId)
         {
@@ -169,7 +167,5 @@ namespace Bleifood.BL
         {
             _dbFoodTruck.Update(foodtruck);
         }
-
-     
     }
 }

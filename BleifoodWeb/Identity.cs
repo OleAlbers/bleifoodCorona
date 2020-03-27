@@ -34,7 +34,9 @@ namespace BleifoodWeb
                 if (sd.Errors != null && sd.Errors.Count() > 0) regUser.LastError = sd.Errors.FirstOrDefault().Description;
                 return false;
             }
-            _mail.Validate(newUser);
+
+            var token=await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+            _mail.Validate(newUser,token);
             return true;
         }
 

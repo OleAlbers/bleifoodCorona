@@ -10,7 +10,7 @@ namespace Bleifood.BL.Interfaces
     public interface IMail
     {
         void SendMail(ApplicationUser user, string subject, string body);
-        void Validate(ApplicationUser user);
+        void Validate(ApplicationUser user, string token);
         void OrderCustomer(CoronaEntities.Order order);
         void OrderFoodTruck(CoronaEntities.Order order);
     }
