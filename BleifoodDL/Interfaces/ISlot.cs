@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoronaDL.Interfaces
+namespace Bleifood.DL.Interfaces
 {
     public interface ISlot
     {

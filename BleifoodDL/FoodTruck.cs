@@ -1,8 +1,8 @@
-﻿using CoronaDL.Interfaces;
+﻿using Bleifood.DL.Interfaces;
 
 using System.Collections.Generic;
 
-namespace CoronaDL
+namespace Bleifood.DL
 {
     public class FoodTruck : IFoodTruck
     {

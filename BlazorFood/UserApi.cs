@@ -1,7 +1,7 @@
 ﻿using AspNetCore.Identity.LiteDB.Models;
-using CoronaBL;
-using CoronaBL.Interfaces;
-using CoronaDL.Exceptions;
+using Bleifood.BL;
+using Bleifood.BL.Interfaces;
+using Bleifood.DL.Exceptions;
 using log4net;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;

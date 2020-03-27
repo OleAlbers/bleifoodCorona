@@ -1,18 +1,86 @@
 ﻿@page  "/manage/register"
-<h3>Register</h3>
+<h3>Registerieren</h3>
 @inject Identity identity
+@inject NavigationManager NaviationManager
+@using Bleifood.Web.Models
 
 @code {
 
 }
 
 <AuthorizeView>
-    <h1>Du bist doch schon eingeloggt, dummerchen</h1>
+    <h1>Du bist bereits registert und eingeloggt.</h1>
+    <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
 </AuthorizeView>
 
+<div>
+    <p>
+        Um Deinen Foodtruck anzumelden gib hier bitte Deine E-Mail-Adresse und ein Passwort ein.<br />
+        <strong>Wichtig:</strong> Bisher sind nur die elementarsten Funktionen vorhanden. So fehlt z.B. auch noch eine Möglichkeit das Passwort zurückzusetzen. <br />
+        <strong>VERGISS DEIN PASSWORT ALSO NICHT</strong>
+    </p>
+    <p>
+        Im Anschluss wirst Du eine E-Mail erhalten um deinen Zugriff zu aktivieren. Das ist Notwendig um diese Seite vor Spammern zu schützen.
+    </p>
+    <!-- TODO: AGB -->
+</div>
+
+
+<EditForm Model="@_registerUser" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="easyBox">
+        <div class="simpleForm">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="text" class="form-control" name="email" @bind-value="_registerUser.Mail" placeholder="E-Mail Adresse hier eingeben">
+                <ValidationMessage For="() => _registerUser.Mail" />
+            </div>
+            <div class="form-group">
+                <label>Passwort</label>
+                <input type="password" class="form-control" name="pass1" @bind-value="_registerUser.Password" placeholder="Dein gewünschtes Passwort">
+                <ValidationMessage For="() => _registerUser.Password" />
+            </div>
+            <div class="form-group">
+                <label>Passwort (wiederholen)</label>
+                <input type="password" class="form-control" name="pass2" @bind-value="_registerUser.PasswordRepeat" placeholder="Wiederhole Dein passwort">
+                <div><ValidationMessage For="() => _registerUser.PasswordRepeat" /></div>
+            </div>
+            <input disabled="@_formInValid" class="btn btn-default" type="submit" value="Abschicken" />
+            <div><ValidationSummary></ValidationSummary></div>
+        </div>
+
+        @if (_registerUser.LastError != null)
+        {
+            <div>
+                <br />
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="fa fa-ban"></i>@_registerUser.LastError
+                </div>
+            </div>
+        }
+    </div>
+
+</EditForm>
+
+
 @code {
-    protected override void OnInitialized()
+    
+
+    private RegisterUser _registerUser = new RegisterUser();
+    private EditContext _editContext;
+    private bool _formInValid = false;
+
+    private async void HandleValidSubmit()
     {
-        identity.Register();
+        _formInValid = !_editContext.Validate();
+        if (_formInValid) return;
+
+
+        var success = await (identity.Register(_registerUser));
+        if (success)
+        {
+            NaviationManager.NavigateTo($"/manage/registersent");
+        }
     }
 }

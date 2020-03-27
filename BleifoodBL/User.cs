@@ -1,5 +1,5 @@
 ﻿using AspNetCore.Identity.LiteDB.Models;
-using CoronaBL.Interfaces;
+using Bleifood.BL.Interfaces;
 using log4net;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
     public class User : IUser
     {
@@ -26,7 +26,7 @@ namespace CoronaBL
         private TimeSpan LocalStoregeDuration = new TimeSpan(1, 0, 0);  // TODO: From Config
 
         private IMail _mail = new Mail();
-        private CoronaDL.Interfaces.IUser _dbUser = new CoronaDL.User();
+        private Bleifood.DL.Interfaces.IUser _dbUser = new Bleifood.DL.User();
         private NavigationManager _navigationManager;
 
         public User(IBrowserStorage browserStorage, NavigationManager navigationManager, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)

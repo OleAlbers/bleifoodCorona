@@ -1,0 +1,20 @@
+﻿@page  "/manage/registersent"
+<h3>Registrierung erfolgt</h3>
+@inject Identity identity
+@inject NavigationManager NaviationManager
+
+@code {
+
+}
+
+<AuthorizeView>
+    <h1>Du bist bereits registert und eingeloggt.</h1>
+    <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
+</AuthorizeView>
+
+<div>
+    Deine Registerung wurde abgeschickt. Bitte folge den Anweisungen in der E-Mail, die Du in Kürze erhalten solltest.
+</div>
+
+
+

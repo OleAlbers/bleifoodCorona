@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
     public static class Hash
     {

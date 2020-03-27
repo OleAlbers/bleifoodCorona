@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaDL.Exceptions
+namespace Bleifood.DL.Exceptions
 {
     public class NotLoggedInException:Exception
     {

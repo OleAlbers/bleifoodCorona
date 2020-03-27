@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace CoronaDL.Interfaces
+namespace Bleifood.DL.Interfaces
 {
     public interface IUser
     {

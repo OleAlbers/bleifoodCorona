@@ -2,8 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>CoronaBL</RootNamespace>
+    <RootNamespace>Bleifood.BL</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interfaces\IUser.cs" />
+    <Compile Remove="User.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.LiteDB" Version="2.7.0" />

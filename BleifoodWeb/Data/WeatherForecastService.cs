@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BleifoodWeb.Data
+namespace Bleifood.Web.Data
 {
     public class WeatherForecastService
     {

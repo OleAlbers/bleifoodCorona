@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoronaBL.Interfaces
+namespace Bleifood.BL.Interfaces
 {
     public interface IFoodtruck
     {

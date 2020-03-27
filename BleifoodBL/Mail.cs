@@ -1,4 +1,5 @@
-﻿using CoronaBL.Interfaces;
+﻿using AspNetCore.Identity.LiteDB.Models;
+using Bleifood.BL.Interfaces;
 
 using CoronaEntities;
 
@@ -8,7 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Web;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
     public class Mail : IMail
     {
@@ -97,22 +98,10 @@ namespace CoronaBL
             return footer;
         }
 
-        public void SendMail(CoronaEntities.User user, string subject, string body)
-        {
-            SendMail(user.Credentials.LoginMail, subject, body, null);
-        }
 
         private string GetHostName()
         {
             return "Hostname".FromConfig();
-        }
-
-        public void Validate(CoronaEntities.User user)
-        {
-            string subject = "Bitte bestätige Deine Anmeldung";
-            string body = "Du hast Dich bei bleifood.de angemeldet. Bitte klicke auf den folgenden Link um die Registrierung abzuschließen:\n\n";
-            body += $"https://{GetHostName()}/admin/validate/{user.ValidationCode}?mail={user.Credentials.LoginMail} \n";
-            SendMail(user, subject, body);
         }
 
         private void SendMail(string recipient, string subject, string body, string replyTo)
@@ -136,6 +125,19 @@ namespace CoronaBL
             if (SmtpCC != null) message.Bcc.Add(SmtpCC);
 
             client.Send(message);
+        }
+
+        public void SendMail(ApplicationUser user, string subject, string body)
+        {
+            SendMail(user.Email.Address, subject, body, null);
+        }
+
+        public void Validate(ApplicationUser user)
+        {
+            string subject = "Bitte bestätige Deine Anmeldung";
+            string body = "Du hast Dich bei bleifood.de angemeldet. Bitte klicke auf den folgenden Link um die Registrierung abzuschließen:\n\n";
+            body += $"https://{GetHostName()}/manage/validate/?userId={user.Id}&auth={user.AuthenticationKey} \n";
+            SendMail(user, subject, body);
         }
     }
 }

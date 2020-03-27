@@ -1,4 +1,4 @@
-﻿using CoronaBL.Interfaces;
+﻿using Bleifood.BL.Interfaces;
 
 using CoronaEntities;
 
@@ -8,21 +8,17 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
     public class Foodtruck : IFoodtruck
     {
-        private CoronaDL.Interfaces.IFoodTruck _dbFoodTruck = new CoronaDL.FoodTruck();
-        private IUser _user;
-        private CoronaDL.Interfaces.IPlace _dbPlace = new CoronaDL.Place();
-        private CoronaDL.Interfaces.IPosition _dbPosition = new CoronaDL.Position();
-        private CoronaDL.Interfaces.ISchedule _dbSchedule = new CoronaDL.Schedule();
-        private CoronaDL.Interfaces.ISlot _dbSlot = new CoronaDL.Slot();
+        private Bleifood.DL.Interfaces.IFoodTruck _dbFoodTruck = new Bleifood.DL.FoodTruck();
+        private Bleifood.DL.Interfaces.IPlace _dbPlace = new Bleifood.DL.Place();
+        private Bleifood.DL.Interfaces.IPosition _dbPosition = new Bleifood.DL.Position();
+        private Bleifood.DL.Interfaces.ISchedule _dbSchedule = new Bleifood.DL.Schedule();
+        private Bleifood.DL.Interfaces.ISlot _dbSlot = new Bleifood.DL.Slot();
 
-        public Foodtruck(IUser user)
-        {
-            _user = user;
-        }
+      
 
         private bool CheckPermission(Guid? truckId)
         {
@@ -33,7 +29,7 @@ namespace CoronaBL
         {
             CheckPermission(null);
             var existingTruck = GetAllTrucks().FirstOrDefault(q => q.Url.Equals(foodtruck.Url, StringComparison.InvariantCultureIgnoreCase));
-            if (existingTruck != null) throw new CoronaDL.Exceptions.TruckAlreadyExistsException();
+            if (existingTruck != null) throw new Bleifood.DL.Exceptions.TruckAlreadyExistsException();
             foodtruck.EndDelivery = QuarterOnly(foodtruck.EndDelivery);
             foodtruck.StartDelivery = QuarterOnly(foodtruck.StartDelivery);
             foodtruck.StartOrder = QuarterOnly(foodtruck.StartOrder);

@@ -1,8 +1,8 @@
-﻿using CoronaBL.Interfaces;
+﻿using Bleifood.BL.Interfaces;
 
 using System;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
     public class Customer : ICustomer
     {

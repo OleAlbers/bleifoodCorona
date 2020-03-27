@@ -1,11 +1,11 @@
-﻿using CoronaDL.Interfaces;
+﻿using Bleifood.DL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaDL
+namespace Bleifood.DL
 {
     public class Position : IPosition
     {

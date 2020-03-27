@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Device.Location;
 using Google=GeocodeSharp.Google;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
 
     // TODO: Check allowed Referers!

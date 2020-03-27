@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaDL
+namespace Bleifood.DL
 {
     public class DataConnection
     {

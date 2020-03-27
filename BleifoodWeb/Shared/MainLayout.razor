@@ -1,16 +1,33 @@
 ﻿@inherits LayoutComponentBase
 
+
 <div class="sidebar">
     <NavMenu />
 </div>
+<div class="bg-1 section" id="events">
 
-<div class="main">
-    <div class="top-row px-4 auth">
-        <LoginDisplay />
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
-    <div class="content px-4">
-        @Body
+    <div class="inner maincontent" data-topspace="50"
+         data-image="./Content/assets/flavours/ribsndogs/images/content/background-2.jpg">
+        <div class="container" id="mainContent">@Body<br />sdasd</div>
     </div>
 </div>
+
+
+<footer>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <img src="assets/flavours/ribsndogs/images/content/logo.png" alt=" ">
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="toTop"></a>
+</footer>
+
+

@@ -13,12 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BleifoodWeb.Areas.Identity;
-using BleifoodWeb.Data;
+using Bleifood.Web.Areas.Identity;
+using Bleifood.Web.Data;
 using AspNetCore.Identity.LiteDB.Data;
 using LiteDB;
 using AspNetCore.Identity.LiteDB.Models;
 using AspNetCore.Identity.LiteDB;
+using Bleifood.BL;
+using Bleifood.BL.Interfaces;
 
 namespace BleifoodWeb
 {
@@ -59,6 +61,7 @@ namespace BleifoodWeb
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<IMail, Mail>();
             services.AddScoped<Identity>();
         }
 

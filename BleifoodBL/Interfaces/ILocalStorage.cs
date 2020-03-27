@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace CoronaBL.Interfaces
+namespace Bleifood.BL.Interfaces
 {
     public interface IBrowserStorage
     {

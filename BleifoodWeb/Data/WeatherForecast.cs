@@ -1,6 +1,6 @@
 using System;
 
-namespace BleifoodWeb.Data
+namespace Bleifood.Web.Data
 {
     public class WeatherForecast
     {

@@ -1,4 +1,4 @@
-﻿using CoronaBL.Interfaces;
+﻿using Bleifood.BL.Interfaces;
 using CoronaEntities.Attributes;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -11,7 +11,7 @@ using System.Web;
 using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 
-namespace CoronaBL
+namespace Bleifood.BL
 {
     public class BrowserStorage: IBrowserStorage
     {
