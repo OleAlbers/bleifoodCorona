@@ -1,7 +1,7 @@
 ﻿using AspNetCore.Identity.LiteDB.Models;
 using Bleifood.BL.Interfaces;
 
-using CoronaEntities;
+using Bleifood.Entities;
 
 using System.Linq;
 using System.Net;

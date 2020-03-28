@@ -16,18 +16,18 @@ namespace Bleifood.DL
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                connection.Delete<CoronaEntities.Place>(id);
+                connection.Delete<Bleifood.Entities.Place>(id);
 
             }
         }
 
-        public IEnumerable<CoronaEntities.Place> GetForFoodtruck(Guid id)
+        public IEnumerable<Bleifood.Entities.Place> GetForFoodtruck(Guid id)
         {
             var allPlaces = SelectAll();
             return allPlaces.Where(q => q.TruckId == id);
         }
 
-        public void Insert(CoronaEntities.Place place)
+        public void Insert(Bleifood.Entities.Place place)
         {
             using (var database = DataConnection.GetDatabase())
             {
@@ -36,17 +36,17 @@ namespace Bleifood.DL
             }
         }
 
-        public IEnumerable<CoronaEntities.Place> SelectAll()
+        public IEnumerable<Bleifood.Entities.Place> SelectAll()
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                return connection.SelectAll<CoronaEntities.Place>();
+                return connection.SelectAll<Bleifood.Entities.Place>();
 
             }
         }
 
-        public void Update(CoronaEntities.Place place)
+        public void Update(Bleifood.Entities.Place place)
         {
             using (var database = DataConnection.GetDatabase())
             {

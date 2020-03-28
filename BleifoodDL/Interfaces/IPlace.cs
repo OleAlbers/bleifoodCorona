@@ -8,10 +8,10 @@ namespace Bleifood.DL.Interfaces
 {
     public interface IPlace
     {
-        void Insert(CoronaEntities.Place place);
-        void Update(CoronaEntities.Place place);
-        IEnumerable<CoronaEntities.Place> GetForFoodtruck(Guid id);
-        IEnumerable<CoronaEntities.Place> SelectAll();
+        void Insert(Bleifood.Entities.Place place);
+        void Update(Bleifood.Entities.Place place);
+        IEnumerable<Bleifood.Entities.Place> GetForFoodtruck(Guid id);
+        IEnumerable<Bleifood.Entities.Place> SelectAll();
         void Delete(Guid id);
     }
 }

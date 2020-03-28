@@ -27,8 +27,8 @@ namespace Bleifood.Web
             {
                 bool canLogin = await _identity.CanLogin(user.Mail, user.Password);
                 if (!canLogin) return StatusCode(401);
-                    var identityUser = await _identity.GetByMail(user.Mail);
-                    if (!identityUser.EmailConfirmed) return StatusCode(420);
+                var identityUser = await _identity.GetByMail(user.Mail);
+                if (!identityUser.EmailConfirmed) return StatusCode(420);
                 var signinResult = await _identity.Login(user.Mail, user.Password);
                 if (signinResult.IsLockedOut) return StatusCode(449);
                 if (signinResult.IsNotAllowed) return StatusCode(403);

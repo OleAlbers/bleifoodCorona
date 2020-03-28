@@ -8,7 +8,7 @@ namespace Bleifood.BL.Interfaces
 {
     public interface ICustomer
     {
-        CoronaEntities.Customer GetFromLocalStorage();
-        void StoreInLocalStorage(CoronaEntities.Customer customer);
+        Bleifood.Entities.Customer GetFromLocalStorage();
+        void StoreInLocalStorage(Bleifood.Entities.Customer customer);
     }
 }

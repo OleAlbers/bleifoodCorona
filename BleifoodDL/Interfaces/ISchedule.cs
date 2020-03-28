@@ -8,10 +8,10 @@ namespace Bleifood.DL.Interfaces
 {
     public interface ISchedule
     {
-        IEnumerable<CoronaEntities.Schedule> GetForFoodtruck(Guid id);
-        void UpdateForFoodtruck(IEnumerable<CoronaEntities.Schedule> schedule);
+        IEnumerable<Bleifood.Entities.Schedule> GetForFoodtruck(Guid id);
+        void UpdateForFoodtruck(IEnumerable<Bleifood.Entities.Schedule> schedule);
         void DeleteOldSchedule(Guid truckId);
-        void InsertSchedule(CoronaEntities.Schedule schedule);
-        CoronaEntities.Schedule GetById(Guid id);
+        void InsertSchedule(Bleifood.Entities.Schedule schedule);
+        Bleifood.Entities.Schedule GetById(Guid id);
     }
 }

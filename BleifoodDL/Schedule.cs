@@ -11,17 +11,17 @@ namespace Bleifood.DL
     {
         
 
-        public IEnumerable<CoronaEntities.Schedule> GetForFoodtruck(Guid id)
+        public IEnumerable<Bleifood.Entities.Schedule> GetForFoodtruck(Guid id)
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                var allSchedules = connection.SelectAll<CoronaEntities.Schedule>();
+                var allSchedules = connection.SelectAll<Bleifood.Entities.Schedule>();
                 return allSchedules.Where(q => q.TruckId == id);
             }
         }
 
-        public void UpdateForFoodtruck(IEnumerable<CoronaEntities.Schedule> schedule)
+        public void UpdateForFoodtruck(IEnumerable<Bleifood.Entities.Schedule> schedule)
         {
             using (var database = DataConnection.GetDatabase())
             {
@@ -40,12 +40,12 @@ namespace Bleifood.DL
                 var oldSchedule = GetForFoodtruck(truckId);
                 foreach (var oldScheduleItem in oldSchedule)
                 {
-                    connection.Delete<CoronaEntities.Schedule>(oldScheduleItem.Id);
+                    connection.Delete<Bleifood.Entities.Schedule>(oldScheduleItem.Id);
                 }
             }
         }
 
-        public void InsertSchedule(CoronaEntities.Schedule schedule)
+        public void InsertSchedule(Bleifood.Entities.Schedule schedule)
         {
             using (var database = DataConnection.GetDatabase())
             {
@@ -55,12 +55,12 @@ namespace Bleifood.DL
             }
         }
 
-        public CoronaEntities.Schedule GetById(Guid id)
+        public Bleifood.Entities.Schedule GetById(Guid id)
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                return connection.SelectById<CoronaEntities.Schedule>(id);
+                return connection.SelectById<Bleifood.Entities.Schedule>(id);
             }
         }
     }

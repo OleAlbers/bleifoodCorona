@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaEntities.Attributes
+namespace Bleifood.Entities.Attributes
 {
     public class StoreInCookieAttribute:Attribute
     {

@@ -10,7 +10,7 @@
 <AuthorizeView>
     <Authorized>
         <h1>Du bist bereits eingeloggt.</h1><br />
-        <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
+        <a href="/manage/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
     </Authorized>
     <NotAuthorized>
         <EditForm Model="@_loginUser" OnValidSubmit="HandleValidSubmit" Context="auth">

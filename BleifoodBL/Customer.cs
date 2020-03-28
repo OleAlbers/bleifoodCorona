@@ -9,15 +9,15 @@ namespace Bleifood.BL
 
         private IBrowserStorage _localStorage;
 
-        public CoronaEntities.Customer GetFromLocalStorage()
+        public Bleifood.Entities.Customer GetFromLocalStorage()
         {
             return null;
-            //var address = _localStorage.ReadData<CoronaEntities.Address>().Result;
+            //var address = _localStorage.ReadData<Bleifood.Entities.Address>().Result;
             //if (address == null) return null;
-            //return new CoronaEntities.Customer { PostAddress = address };
+            //return new Bleifood.Entities.Customer { PostAddress = address };
         }
 
-        public void StoreInLocalStorage(CoronaEntities.Customer customer)
+        public void StoreInLocalStorage(Bleifood.Entities.Customer customer)
         {
             _localStorage.StoreData(customer.PostAddress);
         }

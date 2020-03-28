@@ -5,10 +5,10 @@ namespace Bleifood.DL.Interfaces
 {
     public interface ISlot
     {
-        IEnumerable<CoronaEntities.Slot> GetForSchedule(Guid id);
+        IEnumerable<Bleifood.Entities.Slot> GetForSchedule(Guid id);
 
-        void UpdateForSchedule(IEnumerable<CoronaEntities.Slot> slots);
+        void UpdateForSchedule(IEnumerable<Bleifood.Entities.Slot> slots);
         void DeleteForSchedule(Guid id);
-        void Insert(CoronaEntities.Slot slot);
+        void Insert(Bleifood.Entities.Slot slot);
     }
 }

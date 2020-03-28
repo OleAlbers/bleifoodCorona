@@ -5,32 +5,34 @@ namespace Bleifood.BL.Interfaces
 {
     public interface IFoodtruck
     {
-        void CreateTruck(CoronaEntities.FoodTruck foodtruck);
+        void CreateTruck(Entities.FoodTruck foodtruck);
 
-        CoronaEntities.FoodTruck GetTruck(Guid truckId);
+        Entities.FoodTruck GetTruck(Guid truckId);
 
-        IEnumerable<CoronaEntities.FoodTruck> GetAllTrucks(bool onlyActive = true);
+        IEnumerable<Entities.FoodTruck> GetAllTrucks(bool onlyActive = true);
 
-        void UpdateTruck(CoronaEntities.FoodTruck foodtruck);
+        void UpdateTruck(Entities.FoodTruck foodtruck);
 
-        IEnumerable<CoronaEntities.Place> GetPlacesForTruck(Guid truckId);
+        IEnumerable<Entities.Place> GetPlacesForTruck(Guid truckId);
 
-        void InsertPlace(CoronaEntities.Place place);
+        void InsertPlace(Entities.Place place);
 
-        void UpdatePlace(CoronaEntities.Place place);
+        void UpdatePlace(Entities.Place place);
 
-        IEnumerable<CoronaEntities.Position> GetCard(Guid truckId);
+        IEnumerable<Entities.Position> GetCard(Guid truckId);
 
-        void UpdateCard(Guid truckId, IEnumerable<CoronaEntities.Position> positions);
+        void UpdateCard(Guid truckId, IEnumerable<Entities.Position> positions);
 
-        IEnumerable<CoronaEntities.Schedule> GetSchedule(Guid truckId);
+        IEnumerable<Entities.Schedule> GetSchedule(Guid truckId);
 
-        void UpdateSchedule(Guid truckId, IEnumerable<CoronaEntities.Schedule> schedule);
+        void UpdateSchedule(Guid truckId, IEnumerable<Entities.Schedule> schedule);
 
-        IEnumerable<CoronaEntities.Slot> GetSlots( Guid scheduleId);
+        IEnumerable<Entities.Slot> GetSlots( Guid scheduleId);
 
-        void UpdateSlots( Guid scheduleId, IEnumerable<CoronaEntities.Slot> slots);
+        void UpdateSlots( Guid scheduleId, IEnumerable<Entities.Slot> slots);
 
         void StartDay(Guid truckId);    // Reset slots etc.
+
+        Guid? GetTruckFromUser(string userId);
     }
 }

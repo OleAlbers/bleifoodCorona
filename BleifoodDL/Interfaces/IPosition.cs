@@ -8,10 +8,10 @@ namespace Bleifood.DL.Interfaces
 {
     public interface IPosition
     {
-        void Insert(CoronaEntities.Position position);
-        void Update(CoronaEntities.Position position);
-        IEnumerable<CoronaEntities.Position> SelectAll();
-        IEnumerable<CoronaEntities.Position> GetForTruck(Guid truckId);
+        void Insert(Bleifood.Entities.Position position);
+        void Update(Bleifood.Entities.Position position);
+        IEnumerable<Bleifood.Entities.Position> SelectAll();
+        IEnumerable<Bleifood.Entities.Position> GetForTruck(Guid truckId);
         void DeleteForTruck(Guid id);
     }
 }

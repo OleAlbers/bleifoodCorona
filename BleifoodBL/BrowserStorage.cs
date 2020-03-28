@@ -1,5 +1,5 @@
 ﻿using Bleifood.BL.Interfaces;
-using CoronaEntities.Attributes;
+using Bleifood.Entities.Attributes;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

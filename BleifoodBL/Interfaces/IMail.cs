@@ -11,7 +11,7 @@ namespace Bleifood.BL.Interfaces
     {
         void SendMail(ApplicationUser user, string subject, string body);
         void Validate(ApplicationUser user, string token);
-        void OrderCustomer(CoronaEntities.Order order);
-        void OrderFoodTruck(CoronaEntities.Order order);
+        void OrderCustomer(Bleifood.Entities.Order order);
+        void OrderFoodTruck(Bleifood.Entities.Order order);
     }
 }

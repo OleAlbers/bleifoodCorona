@@ -1,6 +1,6 @@
 ﻿using Bleifood.BL.Interfaces;
 
-using CoronaEntities;
+using Bleifood.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace Bleifood.BL
         {
             var minute = dateTime.Minute;
             if (minute % 15 != 0) minute = 0;
-            return new DateTime(0, 0, 0, dateTime.Hour, minute, 0);
+            return new DateTime(1973, 12, 14, dateTime.Hour, minute, 0);
         }
 
         public void InsertPlace(Place place)
@@ -87,7 +87,7 @@ namespace Bleifood.BL
             _dbSchedule.DeleteOldSchedule(truck.Id);
             for (DayOfWeek weekday = DayOfWeek.Sunday; weekday <= DayOfWeek.Saturday; weekday++)
             {
-                var weekdaySchedule = new CoronaEntities.Schedule
+                var weekdaySchedule = new Bleifood.Entities.Schedule
                 {
                     IsEven = evenWeek,
                     PlaceId = null,
@@ -106,6 +106,7 @@ namespace Bleifood.BL
                         SlotTime = currentTime,
                         TruckId = truck.Id
                     };
+                    currentTime = currentTime.AddMinutes(15);
                     _dbSlot.Insert(slot);
                 }
             }
@@ -166,6 +167,14 @@ namespace Bleifood.BL
         public void UpdateTruck(FoodTruck foodtruck)
         {
             _dbFoodTruck.Update(foodtruck);
+        }
+
+        public Guid? GetTruckFromUser(string userId)
+        {
+            if (userId == null) throw new Exception("Unknown user");
+            var myTruck = GetAllTrucks().FirstOrDefault(q => q.UserId == userId);
+            if (myTruck == null) return null;
+            return myTruck.Id;
         }
     }
 }

@@ -17,27 +17,31 @@ namespace Bleifood.DL
                 var connection = new DataConnection(database);
                 foreach (var slot in GetForSchedule(id))
                 {
-                    connection.Delete<CoronaEntities.Slot>(slot.Id);
+                    connection.Delete<Entities.Slot>(slot.Id);
                 }
             }
         }
 
-        public IEnumerable<CoronaEntities.Slot> GetForSchedule(Guid id)
+        public IEnumerable<Entities.Slot> GetForSchedule(Guid id)
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                var allSlots = connection.SelectAll<CoronaEntities.Slot>();
+                var allSlots = connection.SelectAll<Bleifood.Entities.Slot>();
                 return allSlots.Where(q => q.ScheduleId == id);
             }
         }
 
-        public void Insert(CoronaEntities.Slot slot)
+        public void Insert(Entities.Slot slot)
         {
-            throw new NotImplementedException();
+            using (var database = DataConnection.GetDatabase())
+            {
+                var connection = new DataConnection(database);
+                connection.Insert(slot);
+            }
         }
 
-        public void UpdateForSchedule(IEnumerable<CoronaEntities.Slot> slots)
+        public void UpdateForSchedule(IEnumerable<Entities.Slot> slots)
         {
             using (var database = DataConnection.GetDatabase())
             {

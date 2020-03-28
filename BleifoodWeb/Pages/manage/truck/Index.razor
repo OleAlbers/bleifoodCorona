@@ -1,6 +1,106 @@
 ﻿@page  "/manage/edit/mine"
 <h3>Mein Angebot bearbeiten</h3>
+@inject Identity identity
+@inject BL.Interfaces.IFoodtruck foodTruckLogic
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h1>Du bist nicht eingeloggt.</h1><br />
+        <a href="/manage/login">Klicke hier um Dich einzuloggen</a>
+    </NotAuthorized>
+    <Authorized>
+        <EditForm Model="@_foodTruck" OnValidSubmit="HandleValidSubmit" Context="auth">
+            <DataAnnotationsValidator />
+            <div class="easyBox">
+                <div class="simpleForm">
+                    <p>
+                        Hier kannst Du Dein Angebot bearbeiten. <strong>alle</strong> Felder sind Pflichtfelder<br />
+                        Wenn Dir etwas unklar ist, schaue in der Hilfe nach
+                    </p>
+                    <div class="header"><br/><h4 class="hdr4">Grunddaten</h4></div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText class="form-control" name="name" @bind-Value="_foodTruck.Name" placeholder="Pauls phänomenale Pommes" />
+                        <ValidationMessage For="() => _foodTruck.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Url</label>
+                        <InputText class="form-control" name="url" @bind-Value="_foodTruck.Url" placeholder="paulspommes" />
+                        <ValidationMessage For="() => _foodTruck.Url" />
+                        <p>Deine URL lautet dann: https://bleifood.de/@_foodTruck.Url</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Paypal-Me-Adresse</label>
+                        <InputText @bind-Value="_foodTruck.PaypalMe" class="form-control" placeholder="http://paypal.me/paulspommes" />
+                        <ValidationMessage For="() => _foodTruck.PaypalMe" />
+                        <p>Noch keinen Paypal.me - Link? Dieser kann unter <a href="https://www.paypal.me" target="_blank">erstellt werden</a></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Bietest Du Selbstabholung an?</label>
+                        <InputCheckbox @bind-Value="_foodTruck.TakeAway" class="form-control" />
+                        <ValidationMessage For="() => _foodTruck.TakeAway" />
+                    </div>
+                    <div class="header"><br /><h4 class="hdr4">Adresse</h4></div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="_foodTruck.PostAddress.Name" class="form-control" placeholder="Paul Pfeiffer" />
+                        <ValidationMessage For="() => _foodTruck.PostAddress.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Strasse</label>
+                        <InputText @bind-Value="_foodTruck.PostAddress.Street" class="form-control" placeholder="Eisbärenweg 3" />
+                        <ValidationMessage For="() => _foodTruck.PostAddress.Street" />
+                    </div>
+                    <div class="form-group">
+                        <label>PLZ</label>
+                        <InputText @bind-Value="_foodTruck.PostAddress.Zip" class="form-control" placeholder="22459" />
+                        <ValidationMessage For="() => _foodTruck.PostAddress.Zip" />
+                    </div>
+                    <div class="form-group">
+                        <label>Ort</label>
+                        <InputText @bind-Value="_foodTruck.PostAddress.City" class="form-control" placeholder="Hamburg" />
+                        <ValidationMessage For="() => _foodTruck.PostAddress.City" />
+                    </div>
+                    <div class="header"><br /><h4 class="hdr4">Lieferzeiten</h4></div>
+                    <div class="form-group">
+                        <label>Früheste Lieferzeit</label>
+                        <input type="time" @bind-value="_foodTruck.StartDelivery" class="form-control" placeholder="10:00">
+                        <ValidationMessage For="() => _foodTruck.StartDelivery" />
+                    </div>
+                    <div class="form-group">
+                        <label>Späteste Lieferzeit</label>
+                        <input type="time" @bind-value="_foodTruck.StartDelivery" class="form-control" placeholder="22:00">
+                        <ValidationMessage For="() => _foodTruck.EndDelivery" />
+                    </div>
+                    <div class="form-group">
+                        <label>Früheste Bestellzeit</label>
+                        <input type="time" @bind-value="_foodTruck.StartOrder" class="form-control" placeholder="05:00">
+                        <ValidationMessage For="() => _foodTruck.StartOrder" />
+                    </div>
+                    <input class="btn btn-default" type="submit" value="Anmelden" />
+                </div>
+            </div>
+        </EditForm>
+    </Authorized>
+</AuthorizeView>
 
 @code {
+    private Entities.FoodTruck _foodTruck;
+    private Guid _myTruckId;
 
+
+    protected async override Task OnInitializedAsync()
+    {
+        var loggedIn = await identity.IsLoggedIn();
+        if (!loggedIn) return;
+        _myTruckId = await identity.GetMyTruckId();
+        var dummy=foodTruckLogic.GetTruck(_myTruckId);
+        _foodTruck = dummy;
+    }
+
+    private async void HandleValidSubmit()
+    {
+
+    }
 }
+

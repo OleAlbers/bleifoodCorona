@@ -40,7 +40,7 @@ namespace Bleifood.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase("d:\\home\\bleifood.liteDb")));
+            services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase("d:\\home\\bleifood.identity.liteDb"))); // TODO: Encrypt
 
             //services.AddSingleton<ILiteDbContext, LiteDbContext>();
             services.AddIdentity<ApplicationUser, AspNetCore.Identity.LiteDB.IdentityRole>(options =>
@@ -51,7 +51,7 @@ namespace Bleifood.Web
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
                 options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedAccount = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             })
            .AddUserStore<LiteDbUserStore<ApplicationUser>>()
@@ -68,6 +68,7 @@ namespace Bleifood.Web
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IMail, Mail>();
+            services.AddScoped<IFoodtruck, Foodtruck>();
             services.AddScoped<Identity>();
             //services.AddHttpContextAccessor();
             //services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();

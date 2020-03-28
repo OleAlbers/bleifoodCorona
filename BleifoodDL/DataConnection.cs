@@ -9,7 +9,7 @@ namespace Bleifood.DL
     public class DataConnection
     {
         private LiteDB.LiteDatabase _database;
-        private const string _connectionString = "test.liteDB";  // TODO: From COnfig; Encrypted
+        private const string _connectionString = "d:\\home\\bleifood.content.liteDB";  // TODO: From COnfig; Encrypted
 
         public static LiteDB.LiteDatabase GetDatabase()
         {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoronaEntities
+namespace Bleifood.Entities
 {
     // Geocode is EXPENSIVE
     public class GeocodeCache:BaseEntity

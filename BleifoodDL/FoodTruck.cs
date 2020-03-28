@@ -6,26 +6,25 @@ namespace Bleifood.DL
 {
     public class FoodTruck : IFoodTruck
     {
-        public void Insert(CoronaEntities.FoodTruck truck)
+        public void Insert(Bleifood.Entities.FoodTruck truck)
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
                 connection.Insert(truck);
             }
-                
         }
 
-        public IEnumerable<CoronaEntities.FoodTruck> SelectAll()
+        public IEnumerable<Bleifood.Entities.FoodTruck> SelectAll()
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                return connection.SelectAll<CoronaEntities.FoodTruck>();
+                return connection.SelectAll<Bleifood.Entities.FoodTruck>();
             }
         }
 
-        public void Update(CoronaEntities.FoodTruck truck)
+        public void Update(Bleifood.Entities.FoodTruck truck)
         {
             using (var database = DataConnection.GetDatabase())
             {
