@@ -21,8 +21,10 @@ using AspNetCore.Identity.LiteDB.Models;
 using AspNetCore.Identity.LiteDB;
 using Bleifood.BL;
 using Bleifood.BL.Interfaces;
+using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Server;
 
-namespace BleifoodWeb
+namespace Bleifood.Web
 {
     public class Startup
     {
@@ -48,6 +50,9 @@ namespace BleifoodWeb
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
             })
            .AddUserStore<LiteDbUserStore<ApplicationUser>>()
            .AddRoleStore<LiteDbRoleStore<AspNetCore.Identity.LiteDB.IdentityRole>>()
@@ -64,6 +69,10 @@ namespace BleifoodWeb
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IMail, Mail>();
             services.AddScoped<Identity>();
+            //services.AddHttpContextAccessor();
+            //services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+            services.AddMvc();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

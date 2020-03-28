@@ -1,31 +1,39 @@
 ﻿using AspNetCore.Identity.LiteDB.Models;
 using Bleifood.BL.Interfaces;
 using Bleifood.Web.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BleifoodWeb
+namespace Bleifood.Web
 {
     public class Identity
     {
         private SignInManager<ApplicationUser> _signinManager;
         private UserManager<ApplicationUser> _userManager;
+        private NavigationManager _navigationManager;
+        private AuthenticationStateProvider _authenticationStateProvider;
         private IMail _mail;
 
-        public Identity(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IMail mail)
+        public Identity(AuthenticationStateProvider authenticationStateProvider, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IMail mail, NavigationManager navigationManager)
         {
             _signinManager = signInManager;
             _userManager = userManager;
+            _navigationManager = navigationManager;
+            _authenticationStateProvider = authenticationStateProvider;
             _mail = mail;
         }
 
         public async Task<bool> Register(RegisterUser regUser)
         {
             if (!regUser.Password.Equals(regUser.PasswordRepeat)) throw new Exception("Passwörter sind unterschiedlich");
-            var newUser = new ApplicationUser { Email = regUser.Mail, UserName = regUser.Mail };
+            var newUser = new ApplicationUser { Email = regUser.Mail, UserName = regUser.Mail};
 
             var sd = await _userManager.CreateAsync(newUser, "password");
             if (!sd.Succeeded)
@@ -39,6 +47,7 @@ namespace BleifoodWeb
             _mail.Validate(newUser, token);
             return true;
         }
+
 
         public async Task<bool> Validate(ValidateUser user)
         {
@@ -64,9 +73,43 @@ namespace BleifoodWeb
             return false;
         }
 
-        public void Login()
+        public async Task<SignInResult> Login (string user, string pass)
         {
-            var loginResult = _signinManager.PasswordSignInAsync("test@whatever.com", "password", false, false).Result;
+            return await _signinManager.PasswordSignInAsync(user, pass, false, false);
         }
+
+        public async Task<bool> CanLogin(string user, string pass)
+        {
+            var checkResult = await _signinManager.CheckPasswordSignInAsync(new ApplicationUser { UserName = user }, pass, false);
+            return checkResult.Succeeded;
+        }
+
+        public async Task<ApplicationUser> GetById(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<ApplicationUser> GetByMail(string mail)
+        {
+            return await _userManager.FindByEmailAsync(mail);
+        }
+
+        public async Task<ApplicationUser> GetCurrentUser()
+        {
+            var state=await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var claimsPrinciple = state.User;
+            if (claimsPrinciple.Identity.IsAuthenticated)
+            {
+                var currentUser = await _userManager.GetUserAsync(claimsPrinciple);
+                return currentUser;
+            }
+            return null;
+        }
+        
+        public async void LogOut()
+        {
+            await _signinManager.SignOutAsync();
+        }
+    
     }
 }

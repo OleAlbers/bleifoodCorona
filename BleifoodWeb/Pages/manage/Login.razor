@@ -1,22 +1,99 @@
 ﻿@page  "/manage/login"
+@using Microsoft.AspNetCore.WebUtilities
 <h3>Login</h3>
 @inject Identity identity
-@inject NavigationManager nav
-@code {
-    
-}
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsR;
+
 
 
 <AuthorizeView>
-    <h1>Du bist bereits eingeloggt.</h1>
-    <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
+    <Authorized>
+        <h1>Du bist bereits eingeloggt.</h1><br />
+        <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
+    </Authorized>
+    <NotAuthorized>
+        <EditForm Model="@_loginUser" OnValidSubmit="HandleValidSubmit" Context="auth">
+            <DataAnnotationsValidator />
+            <div class="easyBox">
+                <div class="simpleForm">
+                    <p>
+                        Um Deinen Foodtruck anzumelden gib hier bitte Deine E-Mail-Adresse und ein Passwort ein.<br />
+                        <strong>Wichtig:</strong> Bisher sind nur die elementarsten Funktionen vorhanden. So fehlt z.B. auch noch eine Möglichkeit das Passwort zurückzusetzen. <br />
+                        <strong>VERGISS DEIN PASSWORT ALSO NICHT</strong>
+                    </p>
+                    <p>
+                        Im Anschluss wirst Du eine E-Mail erhalten um deinen Zugriff zu aktivieren. Das ist Notwendig um diese Seite vor Spammern zu schützen.
+                    </p>
+
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="text" class="form-control" name="email" @bind-value="_loginUser.Mail" placeholder="E-Mail Adresse hier eingeben">
+                        <ValidationMessage For="() => _loginUser.Mail" />
+                    </div>
+                    <div class="form-group">
+                        <label>Passwort</label>
+                        <input type="password" class="form-control" name="pass1" @bind-value="_loginUser.Password" placeholder="Dein gewünschtes Passwort">
+                        <ValidationMessage For="() => _loginUser.Password" />
+                    </div>
+
+                    <input class="btn btn-default" type="submit" value="Anmelden" />
+                </div>
+            </div>
+        </EditForm>
+    </NotAuthorized>
 </AuthorizeView>
+
+@if (_loginUser.LastError != null)
+{
+    <div>
+        <br />
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <i class="fa fa-ban"></i>@_loginUser.LastError
+        </div>
+    </div>
+}
 
 
 
 @code {
+    private Models.LoginUser _loginUser = new Models.LoginUser();
+
     protected override void OnInitialized()
     {
-        identity.Login();
+        var url = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var queryValues = QueryHelpers.ParseQuery(url.Query);
+        if (queryValues.ContainsKey("error"))
+        {
+            int error = int.Parse(queryValues["error"]);
+            switch (error)
+            {
+                case 401:
+                    _loginUser.LastError = "Anmeldung fehlgeschlagen. Benutzername oder Passwort falsch";
+                    break;
+                case 403:
+                    _loginUser.LastError = "Du wurdest gesperrt";
+                    break;
+                case 420:
+                    _loginUser.LastError = "Deine E-Mail wurde noch nicht bestätigt.";
+                    break;
+                case 500:
+                    _loginUser.LastError = "Serverfehler. Du kannst da nix für.";
+                    break;
+                case 449:
+                    _loginUser.LastError = "Zu viele ungültige Versuche. Probiere es in 10 Minuten noch einmal";
+                    break;
+                default:
+                    _loginUser.LastError = "Es ist ein unbekannter Fehler aufgetreten";
+                    break;
+            }
+
+        }
+    }
+
+    private async void HandleValidSubmit()
+    {
+        await jsR.InvokeAsync<object>("Login", _loginUser.Mail, _loginUser.Password);
     }
 }

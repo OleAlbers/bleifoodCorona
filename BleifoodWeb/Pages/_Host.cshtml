@@ -52,6 +52,7 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    <link rel="stylesheet" type="text/css" href="~/fontawesome-free-5.13.0-web/css/all.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/flavours/ribsndogs/css/ribsndogs.css">
@@ -59,7 +60,27 @@
 
     @*<script src="assets/js/jquery.min.js"></script>*@
 
-
+    <script language="JavaScript">
+        function Login(user, pass) {
+            var xhr = new XMLHttpRequest();
+            var errorUrl = window.location.origin + "/manage/login?error=";
+            var successUrl = window.location.origin + "/manage/edit/mine";
+            var loginUrl = window.location.origin + "/api/login";
+            xhr.open("POST", loginUrl, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location = successUrl;
+                    } else {
+                        window.location = errorUrl + xhr.status;
+                    }
+                }
+            };
+            var data = JSON.stringify({ "Mail": user, "Password":pass });
+            xhr.send(data);
+        }
+    </script>
 
 
 </head>
