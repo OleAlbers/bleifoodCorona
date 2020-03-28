@@ -1,7 +1,7 @@
 ﻿@using Bleifood.Web.Models
 @using Microsoft.AspNetCore.WebUtilities
 
-@page  "/manage/validate/{UserId}/{Hash}"
+@page  "/manage/validate/"
 @inject NavigationManager navigationManager
 @inject Identity identity
 
@@ -10,28 +10,19 @@
 @{
     @functions {
         Models.ValidateUser _validateUser = new ValidateUser();
-}
+}   
 }
 
 
-
-<AuthorizeView>
-    <h1>Du bist bereits registert und eingeloggt.</h1>
-    <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
-</AuthorizeView>
-@if (navigationManager == null)
-{
-    // hoppla
-}
 @if (_validateUser.IsValid)
 {
     <div>
         <div class="easyBox">
-            Du hast Deinen Account erfolgreich aktiviert. Du kannst Dich nun <a href="/manage/edit/">einloggen und Dein Angebot erstellen</a>.
+            Du hast Deinen Account erfolgreich aktiviert. <br/><a href="/manage/edit/">Du kannst Dich nun einloggen und Dein Angebot erstellen</a>.
         </div>
     </div>
 }
-else if (_validateUser.LastError != null)
+@if (_validateUser.LastError != null)
 {
     <div>
         <div class="easyBox">
@@ -46,20 +37,20 @@ else if (_validateUser.LastError != null)
     </div>
 }
 
+
+
 @code {
 
-    protected async override Task OnAfterRenderAsync(bool firstRender)
+    protected async override Task OnInitializedAsync()
     {
-        if (firstRender)
-        {
-            _validateUser.IsValid = false;
-            var url = navigationManager.ToAbsoluteUri(navigationManager.Uri);
-            var queryValues=QueryHelpers.ParseQuery(url.Query);
+        _validateUser.IsValid = false;
+        var url = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var queryValues = QueryHelpers.ParseQuery(url.Query);
 
-            _validateUser.Hash = queryValues["auth"];
-            _validateUser.UserId = queryValues["userId"];
+        _validateUser.Hash = queryValues["auth"];
+        _validateUser.UserId = queryValues["userId"];
 
-            var success = await identity.Validate(_validateUser);
-        }
+        _validateUser.IsValid = await identity.Validate(_validateUser);
     }
+
 }

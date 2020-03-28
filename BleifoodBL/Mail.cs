@@ -133,11 +133,16 @@ namespace Bleifood.BL
             SendMail(user.Email.Address, subject, body, null);
         }
 
+        private string Encode(string urlParam)
+        {
+            return HttpUtility.UrlEncode(urlParam);
+        }
+
         public void Validate(ApplicationUser user, string token)
         {
             string subject = "Bitte bestätige Deine Anmeldung";
             string body = "Du hast Dich bei bleifood.de angemeldet. Bitte klicke auf den folgenden Link um die Registrierung abzuschließen:\n\n";
-            body += $"{GetHostName()}/manage/validate/?userId={user.Id}&auth={token} \n";
+            body += $"{GetHostName()}/manage/validate/?userId={Encode(user.Id)}&auth={Encode(token)} \n";
             SendMail(user, subject, body);
         }
     }

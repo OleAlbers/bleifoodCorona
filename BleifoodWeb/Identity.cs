@@ -25,9 +25,9 @@ namespace BleifoodWeb
         public async Task<bool> Register(RegisterUser regUser)
         {
             if (!regUser.Password.Equals(regUser.PasswordRepeat)) throw new Exception("Passwörter sind unterschiedlich");
-            var newUser = new ApplicationUser { Email = regUser.Mail, UserName = regUser.Mail};
-            
-            var sd= await _userManager.CreateAsync(newUser, "password");
+            var newUser = new ApplicationUser { Email = regUser.Mail, UserName = regUser.Mail };
+
+            var sd = await _userManager.CreateAsync(newUser, "password");
             if (!sd.Succeeded)
             {
                 regUser.LastError = "Unbekannter Fehler";
@@ -35,39 +35,38 @@ namespace BleifoodWeb
                 return false;
             }
 
-            var token=await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-            _mail.Validate(newUser,token);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+            _mail.Validate(newUser, token);
             return true;
         }
 
         public async Task<bool> Validate(ValidateUser user)
         {
-            user.IsValid = false;
             var storedUser = await _userManager.FindByIdAsync(user.UserId);
-            if (storedUser==null)
+            if (storedUser == null || storedUser.Id != user.UserId)
             {
                 user.LastError = "Unbekannter User";
                 return false;
             }
             if (storedUser.EmailConfirmed)
             {
-                user.LastError = "Bereits validiert";
-                return false;
+                // Already Confirmed. Second Call most likely
+                return true;
             }
-            if (storedUser.AuthenticationKey!=user.Hash)
+            var confirmResult = await _userManager.ConfirmEmailAsync(storedUser, user.Hash);
+            if (confirmResult.Succeeded)
             {
-                user.LastError = "Ungültige Daten";
-                return false;
+                storedUser.EmailConfirmed = true;
+                await _userManager.UpdateAsync(storedUser);
+                return true;
             }
-            storedUser.EmailConfirmed = true;
-            await _userManager.UpdateAsync(storedUser);
-            user.IsValid = true;
-            return true;
+            user.LastError = confirmResult.Errors.FirstOrDefault().Description;
+            return false;
         }
 
         public void Login()
         {
-            var loginResult=_signinManager.PasswordSignInAsync("test@whatever.com", "password", false, false).Result;
+            var loginResult = _signinManager.PasswordSignInAsync("test@whatever.com", "password", false, false).Result;
         }
     }
 }

@@ -3,12 +3,13 @@
 @inject Identity identity
 @inject NavigationManager nav
 @code {
-    nav
+    
 }
 
 
 <AuthorizeView>
-    <h1>Moin</h1>
+    <h1>Du bist bereits eingeloggt.</h1>
+    <a href="/manager/edit/mine">Klicke hier um Dein Angebot zu bearbeiten</a>
 </AuthorizeView>
 
 
