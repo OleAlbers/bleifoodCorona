@@ -87,7 +87,7 @@ namespace Bleifood.BL
             _dbSchedule.DeleteOldSchedule(truck.Id);
             for (DayOfWeek weekday = DayOfWeek.Sunday; weekday <= DayOfWeek.Saturday; weekday++)
             {
-                var weekdaySchedule = new Bleifood.Entities.Schedule
+                var weekdaySchedule = new Schedule
                 {
                     IsEven = evenWeek,
                     PlaceId = null,
@@ -96,19 +96,6 @@ namespace Bleifood.BL
                 };
                 _dbSchedule.InsertSchedule(weekdaySchedule);
                 _dbSlot.DeleteForSchedule(weekdaySchedule.Id);
-                var currentTime = truck.StartDelivery;
-                while (currentTime <= truck.EndDelivery)
-                {
-                    var slot = new Slot
-                    {
-                        IsOpen = true,
-                        ScheduleId = weekdaySchedule.Id,
-                        SlotTime = currentTime,
-                        TruckId = truck.Id
-                    };
-                    currentTime = currentTime.AddMinutes(15);
-                    _dbSlot.Insert(slot);
-                }
             }
         }
 
