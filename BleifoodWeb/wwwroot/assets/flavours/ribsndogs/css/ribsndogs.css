@@ -422,9 +422,9 @@ hr.line1 {
   color: #fff;
 }
 .navbar-default .inner {
-  background: transparent url("../../../flavours/ribsndogs/images/menu-bg.png") repeat-x center top;
-  height: 127px;
-  border: 0;
+    background: transparent url("../../../flavours/ribsndogs/images/menu-bg.png") repeat-x center top;
+    height: 147px;
+    border: 0;
 }
 .navbar-default .inner:before {
   content: " ";

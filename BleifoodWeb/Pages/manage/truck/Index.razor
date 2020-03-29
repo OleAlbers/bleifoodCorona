@@ -17,7 +17,7 @@
                         Hier kannst Du Dein Angebot bearbeiten. <strong>alle</strong> Felder sind Pflichtfelder<br />
                         Wenn Dir etwas unklar ist, schaue in der Hilfe nach
                     </p>
-                    <div class="header"><br/><h4 class="hdr4">Grunddaten</h4></div>
+                    <div class="header"><br /><h4 class="hdr4">Grunddaten</h4></div>
                     <div class="form-group">
                         <label>Name</label>
                         <InputText class="form-control" name="name" @bind-Value="_foodTruck.Name" placeholder="Pauls phänomenale Pommes" />
@@ -77,7 +77,15 @@
                         <input type="time" @bind-value="_foodTruck.StartOrder" class="form-control" placeholder="05:00">
                         <ValidationMessage For="() => _foodTruck.StartOrder" />
                     </div>
-                    <input class="btn btn-default" type="submit" value="Anmelden" />
+                    @if (_foodTruck.InDataBase)
+                    {
+                        <input class="btn btn-default" type="submit" value="Speichern" />
+                    }
+                    else
+                    {
+                        <input class="btn btn-default" type="submit" value="Erstellen" />
+                    }
+
                 </div>
             </div>
         </EditForm>
@@ -86,7 +94,7 @@
 
 @code {
     private Entities.FoodTruck _foodTruck;
-    private Guid _myTruckId;
+    private Guid? _myTruckId;
 
 
     protected async override Task OnInitializedAsync()
@@ -94,13 +102,36 @@
         var loggedIn = await identity.IsLoggedIn();
         if (!loggedIn) return;
         _myTruckId = await identity.GetMyTruckId();
-        var dummy=foodTruckLogic.GetTruck(_myTruckId);
-        _foodTruck = dummy;
+        if (_myTruckId == null)
+        {
+            var currentUser = await identity.GetCurrentUser();
+            _foodTruck = new Entities.FoodTruck
+            {
+                Active = false,
+                EndDelivery = new DateTime(1973, 12, 14, 20, 0, 0),
+                StartDelivery = new DateTime(1973, 12, 14, 8, 0, 0),
+                StartOrder = new DateTime(1973, 12, 14, 6, 0, 0),
+                TakeAway = false,
+                PostAddress = new Entities.Address(),
+                InDataBase=false,
+                UserId=currentUser.Id
+            };
+        }
+        else
+        {
+            _foodTruck= foodTruckLogic.GetTruck(_myTruckId.Value);
+        }
     }
 
     private async void HandleValidSubmit()
     {
-
+        if (!_foodTruck.InDataBase)
+        {
+            foodTruckLogic.CreateTruck(_foodTruck);
+        } else
+        {
+            foodTruckLogic.UpdateTruck(_foodTruck);
+        }
     }
 }
 

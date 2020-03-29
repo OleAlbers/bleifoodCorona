@@ -111,24 +111,11 @@ namespace Bleifood.Web
             }
         }
 
-        public async Task<Guid> GetMyTruckId()
+        public async Task<Guid?> GetMyTruckId()
         {
             var currentUser = await GetCurrentUser();
             IFoodtruck truckLogic = new BL.Foodtruck();
-            Guid? truckId = truckLogic.GetTruckFromUser(currentUser.Id);
-            if (truckId != null) return truckId.Value;
-            var truck = new Entities.FoodTruck
-            {
-                UserId = currentUser.Id,
-                Active = false,
-                EndDelivery = new DateTime(1973, 12, 14, 20, 0, 0),
-                StartDelivery = new DateTime(1973, 12, 14, 8, 0, 0),
-                StartOrder = new DateTime(1973, 12, 14, 6,0,0),
-                TakeAway = false,
-                 PostAddress=new Entities.Address ()
-            };
-            truckLogic.CreateTruck(truck);
-            return truck.Id;
+            return truckLogic.GetTruckFromUser(currentUser.Id);            
         }
 
         public async Task<ApplicationUser> GetCurrentUser()

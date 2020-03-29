@@ -1,32 +1,65 @@
 ﻿<nav class="navbar navbar-default" role="navigation">
     <div class="inner">
         <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle btn btn-primary" data-toggle="collapse"
-                        data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Navigation</span>
+                <button type="button" class="navbar-toggle btn btn-primary" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
 
                 <div class="text-center">
-                    <p class="address">
-                        Bleifood.de - Social Distancing in Lecker
-                    </p>
+                    <p class="address">Bleifood.de - Social Distancing in lecker                    </p>
                 </div>
 
+                <a class="small-brand" href="/" data-width="252" data-top="58" style="position: absolute; left: 0; margin-left: -126px; top: 58px;"><img src="./assets/flavours/ribsndogs/images/content/logo-small.png" alt=" "></a>
 
-                <img src="assets/flavours/ribsndogs/images/content/logo-small.png" alt=" ">
+                <a href="tel:66-87-65-43-21" class="phoneIcon" style="display:none">+66 87 65 43 21</a>
+                <a href="http://goo.gl/maps/IUzKJ" class="locationIcon" target="_blank" style="display:none;">http://goo.gl/maps/IUzKJ</a>
+                @*<ul class="smallSocials">
+                    <li class="fb"><a href="#"><img src="./assets/images/smallsocial-fb.png" alt="Facebook"></a></li>
+                    <li class="tw"><a href="#"><img src="./assets/images/smallsocial-tw.png" alt="Twitter"></a></li>
+                    <li class="gg"><a href="#"><img src="./assets/images/smallsocial-gg.png" alt="Google+"></a></li>
+                    <li class="rss"><a href="#"><img src="./assets/images/smallsocial-rss.png" alt="RSS"></a></li>
+                </ul>*@
             </div>
 
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav text-center" data-type="margin-top" data-pos="140" style="margin-top: 30px;">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="8_menucard.html">Menu card</a></li>
+                    <li><a href="9_events.html">Events</a></li>
+                    <li><a href="10_story.html">Story</a></li>
+                    <li><a href="11_gallery.html">Gallery</a></li>
+                    <li class="dropdown active">
+                        <a href="1_shortcodes_boxes.html" class="dropdown-toggle">Shortcodes</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="1_shortcodes_boxes.html">Boxes</a></li>
+                            <li><a href="2_shortcodes_toggleable.html">Toggleable</a></li>
+                            <li><a href="3_shortcodes_contact.html">Contact</a></li>
+                            <li><a href="4_buttons_typography.html">Typography</a></li>
+                            <li><a href="5_shortcodes_elements.html">Elements</a></li>
+                            <li><a href="6_images_sliders.html">Sliders</a></li>
+                        </ul>
+                    </li>
 
+                    <li><a href="7_blog.html">Blog</a></li>
+                    <li><a href="12_contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- / container -->
 
-
-        @*<div class="btm"></div>*@
+        <div class="btm"></div>
     </div>
+
 </nav>
+
+
 
 @*@code {
     private bool collapseNavMenu = true;

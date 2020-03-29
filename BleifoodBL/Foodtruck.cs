@@ -32,7 +32,7 @@ namespace Bleifood.BL
             foodtruck.StartDelivery = QuarterOnly(foodtruck.StartDelivery);
             foodtruck.StartOrder = QuarterOnly(foodtruck.StartOrder);
             if (foodtruck.EndDelivery <= foodtruck.StartDelivery) throw new Exception("Das End-Uhrzeit muss später sein als die Start-Uhrzeit");
-
+            foodtruck.InDataBase = true;
             _dbFoodTruck.Insert(foodtruck);
             CreateDefaultSchedule(foodtruck);
         }
@@ -153,6 +153,7 @@ namespace Bleifood.BL
 
         public void UpdateTruck(FoodTruck foodtruck)
         {
+            foodtruck.InDataBase = true;
             _dbFoodTruck.Update(foodtruck);
         }
 

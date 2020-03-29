@@ -30,5 +30,6 @@ namespace Bleifood.Entities
         public DateTime StartOrder { get; set; }
         public bool TakeAway { get; set; }
         public string UserId { get; set; }
+        public bool InDataBase { get; set; } = false;
     }
 }
