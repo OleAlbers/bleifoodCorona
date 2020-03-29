@@ -3411,3 +3411,6 @@ body.preloader #ct_preloader {
     font-size: 15px;
 }
 
+.validation-message {
+    color: red;
+}

@@ -1,5 +1,13 @@
 ﻿@inherits LayoutComponentBase
+@inject AppState appstate
 
+@code { 
+
+    protected override void OnInitialized()
+    {
+        appstate.IsInEditMode = true;
+    }
+}
 
 <div class="sidebar">
     <NavMenu />

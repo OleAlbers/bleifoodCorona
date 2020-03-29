@@ -70,6 +70,7 @@ namespace Bleifood.Web
             services.AddScoped<IMail, Mail>();
             services.AddScoped<IFoodtruck, Foodtruck>();
             services.AddScoped<Identity>();
+            services.AddSingleton<AppState>();
             //services.AddHttpContextAccessor();
             //services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
             services.AddMvc();

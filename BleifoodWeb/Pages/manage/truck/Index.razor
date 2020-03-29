@@ -2,6 +2,8 @@
 <h3>Mein Angebot bearbeiten</h3>
 @inject Identity identity
 @inject BL.Interfaces.IFoodtruck foodTruckLogic
+@inject AppState appState
+@inject NavigationManager navigationManager
 
 <AuthorizeView>
     <NotAuthorized>
@@ -61,6 +63,16 @@
                         <InputText @bind-Value="_foodTruck.PostAddress.City" class="form-control" placeholder="Hamburg" />
                         <ValidationMessage For="() => _foodTruck.PostAddress.City" />
                     </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <InputText @bind-Value="_foodTruck.PostAddress.Phone" class="form-control" placeholder="040 123456" />
+                        <ValidationMessage For="() => _foodTruck.PostAddress.Phone" />
+                    </div>
+                    <div class="form-group">
+                        <label>E-Mail</label>
+                        <InputText @bind-Value="_foodTruck.PostAddress.Mail" class="form-control" placeholder="kontakt@olestollepommes.de" />
+                        <ValidationMessage For="() => _foodTruck.PostAddress.Mail" />
+                    </div>
                     <div class="header"><br /><h4 class="hdr4">Lieferzeiten</h4></div>
                     <div class="form-group">
                         <label>Früheste Lieferzeit</label>
@@ -87,6 +99,7 @@
                     }
 
                 </div>
+                <div style="color:red"><ValidationSummary></ValidationSummary></div>
             </div>
         </EditForm>
     </Authorized>
@@ -96,6 +109,10 @@
     private Entities.FoodTruck _foodTruck;
     private Guid? _myTruckId;
 
+    protected override void OnInitialized()
+    {
+        appState.IsInEditMode = true;
+    }
 
     protected async override Task OnInitializedAsync()
     {
@@ -127,11 +144,13 @@
     {
         if (!_foodTruck.InDataBase)
         {
-            foodTruckLogic.CreateTruck(_foodTruck);
+             foodTruckLogic.CreateTruck(_foodTruck);
+            navigationManager.NavigateTo("/manage/edit/mine");
         } else
         {
-            foodTruckLogic.UpdateTruck(_foodTruck);
+             foodTruckLogic.UpdateTruck(_foodTruck);
         }
+        
     }
 }
 

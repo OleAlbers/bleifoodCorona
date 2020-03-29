@@ -19,7 +19,7 @@ namespace Bleifood.Entities
         public Address PostAddress { get; set; }
 
         [ShowToCustomer]
-        [Required,RegularExpression("[a..z][0..9]", ErrorMessage = "Es sind nur Buchstaben und Zahlen erlaubt")]
+        [Required,RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Es sind nur Buchstaben und Zahlen erlaubt")]
         public string Url { get; set; }
 
 

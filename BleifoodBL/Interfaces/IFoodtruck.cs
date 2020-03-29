@@ -15,6 +15,8 @@ namespace Bleifood.BL.Interfaces
 
         IEnumerable<Entities.Place> GetPlacesForTruck(Guid truckId);
 
+        void UpdatePlacesForTruck(Guid truckId, IEnumerable<Entities.Place> places);
+
         void InsertPlace(Entities.Place place);
 
         void UpdatePlace(Entities.Place place);

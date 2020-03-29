@@ -1,0 +1,102 @@
+﻿@page  "/manage/edit/mine/places"
+<h3>Orte bearbeiten</h3>
+@inject Identity identity
+@inject BL.Interfaces.IFoodtruck foodTruckLogic
+@inject AppState appState
+@inject NavigationManager navigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h1>Du bist nicht eingeloggt.</h1><br />
+        <a href="/manage/login">Klicke hier um Dich einzuloggen</a>
+    </NotAuthorized>
+    <Authorized>
+        <div class="buttonBox hdr1">
+            <p class="pull-left">
+                Orte bearbeiten
+            </p>
+            <a @onclick="AddPlace" class="btn btn-default btn-sm pull-right">Ort hinzufügen</a>
+            <div class="clearfix"></div>
+        </div>
+        <EditForm Model="@_places" OnValidSubmit="HandleValidSubmit" Context="placesEdit">
+            <DataAnnotationsValidator />
+            @foreach (var place in _places)
+            {
+                <div class="easyBox">
+                    <div class="simpleForm">
+                        <a @onclick="@(q=>Delete(place.Id))" class="btn btn-primary btn-xs"><i class="fa fa-trash"></i><span>Ort löschen</span></a>
+                        <div class="form-group">
+                            <label>Straße</label>
+                            <InputText class="form-control" name="road" @bind-Value="place.Road" placeholder="Millerntorplatz 2" />
+                            <ValidationMessage For="() => place.Road" />
+                        </div>
+                        <div class="form-group">
+                            <label>PLZ Ort</label>
+                            <InputText class="form-control" name="city" @bind-Value="place.City" placeholder="22044 Hamburg" />
+                            <ValidationMessage For="() => place.City" />
+                        </div>
+                        <div class="form-group">
+                            <label>Lieferradius in Kilometern</label>
+                            <InputSelectNumber @bind-Value="place.Distance">
+                                <option value="0">Nur Selbstabholung</option>
+                                @for (int i = 1; i <= 25; i++)
+                                    {
+                                    <option value="@i">@i km</option>
+                                    }
+                            </InputSelectNumber>
+                            <ValidationMessage For="() => place.Distance" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            <input class="btn btn-default" type="submit" value="Änderungen speichern" />
+            <div style="color:red"><ValidationSummary></ValidationSummary></div>
+        </EditForm>
+    </Authorized>
+</AuthorizeView>
+@*TODO: Show "unsaved values"*@
+
+@code {
+    private List<Entities.Place> _places;
+    private Guid? _myTruckId;
+    private Entities.Place _place;
+
+    protected override void OnInitialized()
+    {
+        appState.IsInEditMode = true;
+        _place = new Entities.Place();
+    }
+
+    private void AddPlace()
+    {
+        _places.Add(new Entities.Place
+        {
+            TruckId = _myTruckId.Value
+        });
+    }
+
+    private void Delete(Guid id)
+    {
+        _places.RemoveAll(q => q.Id == id);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var loggedIn = await identity.IsLoggedIn();
+        if (!loggedIn) return;
+        _myTruckId = await identity.GetMyTruckId();
+        if (_myTruckId == null) navigationManager.NavigateTo("/manage/edit/mine");
+
+        _places = foodTruckLogic.GetPlacesForTruck(_myTruckId.Value).ToList();
+    }
+
+
+    private async void HandleValidSubmit()
+    {
+        foodTruckLogic.UpdatePlacesForTruck(_myTruckId.Value, _places);
+        // TODO: Show "saved"
+    }
+}
+

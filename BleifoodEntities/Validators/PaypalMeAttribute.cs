@@ -8,7 +8,7 @@ namespace Bleifood.Entities.Validators
     {
         public PaypalMeAttribute() : base("https:\\/\\/(www\\.)?(paypal.me\\/).*")
         {
-
+            ErrorMessage = "Bitte eine gültige Paypal.me-Adresse eingeben";
         }
     }
 }

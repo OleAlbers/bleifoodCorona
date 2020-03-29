@@ -164,5 +164,33 @@ namespace Bleifood.BL
             if (myTruck == null) return null;
             return myTruck.Id;
         }
+
+        public void UpdatePlacesForTruck(Guid truckId, IEnumerable<Place> places)
+        {
+            if (places.Any(q => q.TruckId != truckId)) throw new Exception("you are at the wrong place, stranger");
+            var oldPlaces = GetPlacesForTruck(truckId);
+            var addedPlaces = new List<Guid>();
+            var deletedPlaces = new List<Guid>();
+            foreach (var oldPlace in oldPlaces) {
+                if (!places.Any(q => q.Id == oldPlace.Id)) deletedPlaces.Add(oldPlace.Id);
+            }
+            foreach (var newPlace in places)
+            {
+                if (!oldPlaces.Any(q => q.Id == newPlace.Id)) addedPlaces.Add(newPlace.Id);
+            }
+
+            foreach (var deletedPlace in deletedPlaces)
+            {
+                _dbPlace.Delete(deletedPlace);
+            }
+            foreach (var addedPlace in places.Where(q=>addedPlaces.Contains(q.Id)))
+            {
+                _dbPlace.Insert(addedPlace);
+            }
+            foreach (var modifiedPlace in places.Where(q=>!addedPlaces.Contains(q.Id)))
+            {
+                _dbPlace.Update(modifiedPlace);
+            }
+        }
     }
 }
