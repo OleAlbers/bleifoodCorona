@@ -31,7 +31,6 @@ namespace Bleifood.BL
             foodtruck.EndDelivery = QuarterOnly(foodtruck.EndDelivery);
             foodtruck.StartDelivery = QuarterOnly(foodtruck.StartDelivery);
             foodtruck.StartOrder = QuarterOnly(foodtruck.StartOrder);
-            if (foodtruck.EndDelivery <= foodtruck.StartDelivery) throw new Exception("Das End-Uhrzeit muss später sein als die Start-Uhrzeit");
             foodtruck.InDataBase = true;
             _dbFoodTruck.Insert(foodtruck);
             CreateDefaultSchedule(foodtruck);
@@ -84,7 +83,7 @@ namespace Bleifood.BL
 
         private void CreateWeekSchedule(bool evenWeek, FoodTruck truck)
         {
-            _dbSchedule.DeleteOldSchedule(truck.Id);
+            
             for (DayOfWeek weekday = DayOfWeek.Sunday; weekday <= DayOfWeek.Saturday; weekday++)
             {
                 var weekdaySchedule = new Schedule
@@ -95,7 +94,6 @@ namespace Bleifood.BL
                     Weekday = weekday
                 };
                 _dbSchedule.InsertSchedule(weekdaySchedule);
-                _dbSlot.DeleteForSchedule(weekdaySchedule.Id);
             }
         }
 
@@ -165,12 +163,30 @@ namespace Bleifood.BL
             return myTruck.Id;
         }
 
-        public void UpdatePlacesForTruck(Guid truckId, IEnumerable<Place> places)
+        private string BuildAddress(Place place)
+        {
+            return $"{place.Road}, {place.City}";
+        }
+
+        private async Task<GeoCoordinate> UpdateLocationForPlace(Place place)
+        {
+            Geocode geocode = new Geocode();
+            var coords= await geocode.GetCoordinates(BuildAddress(place));
+            return coords;
+        }
+
+        public async void UpdatePlacesForTruck(Guid truckId, IEnumerable<Place> places)
         {
             if (places.Any(q => q.TruckId != truckId)) throw new Exception("you are at the wrong place, stranger");
             var oldPlaces = GetPlacesForTruck(truckId);
             var addedPlaces = new List<Guid>();
             var deletedPlaces = new List<Guid>();
+            foreach (var place in places)
+            {
+                var coords=await  UpdateLocationForPlace(place);
+                place.Coordinates = coords;
+
+            }
             foreach (var oldPlace in oldPlaces) {
                 if (!places.Any(q => q.Id == oldPlace.Id)) deletedPlaces.Add(oldPlace.Id);
             }

@@ -1,4 +1,5 @@
-﻿@page  "/manage/edit/mine"
+﻿@using BL
+@page  "/manage/edit/mine"
 <h3>Mein Angebot bearbeiten</h3>
 @inject Identity identity
 @inject BL.Interfaces.IFoodtruck foodTruckLogic
@@ -11,7 +12,8 @@
         <a href="/manage/login">Klicke hier um Dich einzuloggen</a>
     </NotAuthorized>
     <Authorized>
-        <EditForm Model="@_foodTruck" OnValidSubmit="HandleValidSubmit" Context="auth">
+        <EditForm OnValidSubmit="HandleValidSubmit" EditContext="_editContext" Context="auth">
+            @*Model="@_foodTruck"*@
             <DataAnnotationsValidator />
             <div class="easyBox">
                 <div class="simpleForm">
@@ -81,12 +83,12 @@
                     </div>
                     <div class="form-group">
                         <label>Späteste Lieferzeit</label>
-                        <input type="time" @bind-value="_foodTruck.StartDelivery" class="form-control" placeholder="22:00">
+                        <input type="time" @bind-value="_foodTruck.EndDelivery" @onfocusout="@(q => { ResetValidation("EndDelivery"); })" class="form-control" placeholder="22:00">
                         <ValidationMessage For="() => _foodTruck.EndDelivery" />
                     </div>
                     <div class="form-group">
                         <label>Früheste Bestellzeit</label>
-                        <input type="time" @bind-value="_foodTruck.StartOrder" class="form-control" placeholder="05:00">
+                        <input type="time" @bind-value="_foodTruck.StartOrder" @onfocusout="@(q=> { ResetValidation("StartOrder"); })" class="form-control" placeholder="05:00">
                         <ValidationMessage For="() => _foodTruck.StartOrder" />
                     </div>
                     @if (_foodTruck.InDataBase)
@@ -108,10 +110,19 @@
 @code {
     private Entities.FoodTruck _foodTruck;
     private Guid? _myTruckId;
+    private EditContext _editContext;
 
     protected override void OnInitialized()
     {
         appState.IsInEditMode = true;
+
+    }
+
+    protected void ResetValidation(string field)
+    {
+        _editContext = new EditContext(_foodTruck);
+        ValidateStartDelivery();
+        ValidateStartOrder();
     }
 
     protected async override Task OnInitializedAsync()
@@ -122,35 +133,66 @@
         if (_myTruckId == null)
         {
             var currentUser = await identity.GetCurrentUser();
+            var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             _foodTruck = new Entities.FoodTruck
             {
                 Active = false,
-                EndDelivery = new DateTime(1973, 12, 14, 20, 0, 0),
-                StartDelivery = new DateTime(1973, 12, 14, 8, 0, 0),
-                StartOrder = new DateTime(1973, 12, 14, 6, 0, 0),
+                EndDelivery = now.AddHours(20),
+                StartDelivery = now.AddHours(10),
+                StartOrder = now.AddHours(6),
                 TakeAway = false,
                 PostAddress = new Entities.Address(),
-                InDataBase=false,
-                UserId=currentUser.Id
+                InDataBase = false,
+                UserId = currentUser.Id
             };
         }
         else
         {
-            _foodTruck= foodTruckLogic.GetTruck(_myTruckId.Value);
+            _foodTruck = foodTruckLogic.GetTruck(_myTruckId.Value);
+        }
+        _editContext = new EditContext(_foodTruck);
+    }
+
+    private void ValidateStartDelivery()
+    {
+
+        if (_foodTruck.StartDelivery >= _foodTruck.EndDelivery)
+        {
+            var messageStore = new ValidationMessageStore(_editContext);
+            messageStore.Add(_editContext.Field("EndDelivery"), "Die späteste Lieferzeit muss später sein als die früheste Lieferzeit");
+            _editContext.NotifyValidationStateChanged();
+            this.StateHasChanged();
+
+        }
+    }
+
+    private void ValidateStartOrder()
+    {
+        var messageStore = new ValidationMessageStore(_editContext);
+        if (_foodTruck.StartOrder >= _foodTruck.StartDelivery)
+        {
+            messageStore.Add(_editContext.Field("StartOrder"), "Das früheste Bestelldatum darf nicht später sein als die früheste Lieferzeit");
+            _editContext.NotifyValidationStateChanged();
+            this.StateHasChanged();
         }
     }
 
     private async void HandleValidSubmit()
     {
+        ValidateStartDelivery();
+        ValidateStartOrder();
+
+        if (!_editContext.Validate()) return;
         if (!_foodTruck.InDataBase)
         {
-             foodTruckLogic.CreateTruck(_foodTruck);
-            navigationManager.NavigateTo("/manage/edit/mine");
-        } else
-        {
-             foodTruckLogic.UpdateTruck(_foodTruck);
+            foodTruckLogic.CreateTruck(_foodTruck);
+            navigationManager.NavigateTo("/manage/edit/mine/done");
         }
-        
+        else
+        {
+            foodTruckLogic.UpdateTruck(_foodTruck);
+        }
+
     }
 }
 

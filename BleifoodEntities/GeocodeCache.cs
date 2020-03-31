@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Device.Location;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Bleifood.Entities
 {
-    // Geocode is EXPENSIVE
-    public class GeocodeCache:BaseEntity
+    // Geocode is EXPENSIVE so lets cache as max as possible
+    public class GeocodeCache : BaseEntity
     {
-        public string Address { get; set; } // Only store Hash 
-        public GeoCoordinate Coordinate {get;set;}
+        public string Address { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
