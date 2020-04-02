@@ -37,6 +37,10 @@ img {
    ***************
    START EDIT HERE
 */
+.right {
+    float: right;
+}
+
 html {
   overflow-y: -moz-scrollbars-vertical;
   overflow-y: scroll;

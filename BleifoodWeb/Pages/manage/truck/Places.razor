@@ -24,7 +24,7 @@
             {
                 <div class="easyBox">
                     <div class="simpleForm">
-                        <a @onclick="@(q=>Delete(place.Id))" class="btn btn-primary btn-xs"><i class="fa fa-trash"></i><span>Ort löschen</span></a>
+                        <a @onclick="@(q=>Delete(place.Id))" class="right btn btn-primary btn-xs"><i class="fa fa-trash"></i><span>Ort löschen</span></a>
                         <div class="form-group">
                             <label>Straße</label>
                             <InputText class="form-control" name="road" @bind-Value="place.Road" placeholder="Millerntorplatz 2" />
@@ -89,7 +89,7 @@
         _myTruckId = await identity.GetMyTruckId();
         if (_myTruckId == null) navigationManager.NavigateTo("/manage/edit/mine");
 
-        _places = foodTruckLogic.GetPlacesForTruck(_myTruckId.Value).ToList();
+        _places = foodTruckLogic.GetPlacesForTruck(_myTruckId.Value).OrderBy(q=>q.City).ThenBy(q=>q.Road).ToList();
     }
 
 

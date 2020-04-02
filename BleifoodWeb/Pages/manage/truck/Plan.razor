@@ -1,0 +1,340 @@
+﻿@using BL
+@page  "/manage/edit/mine/schedule"
+<h3>Meine Daten bearbeiten</h3>
+@inject Identity identity
+@inject BL.Interfaces.IFoodtruck foodTruckLogic
+@inject AppState appState
+@inject NavigationManager navigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h1>Du bist nicht eingeloggt.</h1><br />
+        <a href="/manage/login">Klicke hier um Dich einzuloggen</a>
+    </NotAuthorized>
+    <Authorized>
+        <EditForm OnValidSubmit="HandleValidSubmit" EditContext="_editContext" Context="auth">
+            <DataAnnotationsValidator />
+            <div class="easyBox full">
+                <div class="simpleForm">
+                    <p>
+                        Hier kannst Du hinterlegen, an welchem Tag Du wo stehen wirst. Du kannst pro Wochentag und pro KalenderWoche angeben.
+                    </p>
+                    <div class="header"><br /><h4 class="hdr4">Wochenplanung</h4></div>
+
+                    <div class="row nomargin">
+                        <div class="col-md-5">
+                            <h4 class="hdr3">
+                                Gerade KW
+                                @if (IsEvenWeek())
+                                {
+                                <span><strong style="color:darkred">(diese Woche)</strong></span>
+                                }
+                                else
+                                {
+                                    <span>(nächste Woche)</span>
+                                }
+                            </h4>
+
+
+                            <div class="form-group">
+                                <label>Montag</label>
+                                <InputSelectNumber class="form-control" name="mondayEven" @bind-Value="_even.Monday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Dienstag</label>
+                                <InputSelectNumber class="form-control" name="tuesdayEven" @bind-Value="_even.Tuesday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Mittwoch</label>
+                                <InputSelectNumber class="form-control" name="wednesdayEven" @bind-Value="_even.Wednesday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Donnerstag</label>
+                                <InputSelectNumber class="form-control" name="thursdayEven" @bind-Value="_even.Thursday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Freitag</label>
+                                <InputSelectNumber class="form-control" name="fridayEven" @bind-Value="_even.Friday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Samstag</label>
+                                <InputSelectNumber class="form-control" name="saturdayEven" @bind-Value="_even.Saturday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Sonntag</label>
+                                <InputSelectNumber class="form-control" name="sundayEven" @bind-Value="_even.Sunday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-5">
+                            <h4 class="hdr3">Ungerade KW
+                                    @if (!IsEvenWeek())
+                                    {
+                                <span><strong style="color:darkred">(diese Woche)</strong></span>
+                                    }
+                                    else
+                                    {
+                                        <span>(nächste Woche)</span>
+                                    }
+                                </h4>
+                            <div class="form-group">
+                                <label>Montag</label>
+                                <InputSelectNumber class="form-control" name="mondayOdd" @bind-Value="_odd.Monday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Dienstag</label>
+                                <InputSelectNumber class="form-control" name="tuesdayOdd" @bind-Value="_odd.Tuesday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Mittwoch</label>
+                                <InputSelectNumber class="form-control" name="wednesdayOdd" @bind-Value="_odd.Wednesday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Donnerstag</label>
+                                <InputSelectNumber class="form-control" name="thursdayOdd" @bind-Value="_odd.Thursday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Freitag</label>
+                                <InputSelectNumber class="form-control" name="fridayOdd" @bind-Value="_odd.Friday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Samstag</label>
+                                <InputSelectNumber class="form-control" name="saturdayOdd" @bind-Value="_odd.Saturday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                            <div class="form-group">
+                                <label>Sonntag</label>
+                                <InputSelectNumber class="form-control" name="sundayOdd" @bind-Value="_odd.Sunday">
+                                    <option selected value="null">Geschlossen</option>
+                                    @foreach (var place in _places)
+                                    {
+                                        <option value="@place.Id">@place.Road, @place.City</option>
+                                    }
+                                    /**/
+                                    /**/
+                                </InputSelectNumber>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <input class="btn btn-default" type="submit" value="Speichern" />
+
+                </div>
+                <div style="color:red"><ValidationSummary></ValidationSummary></div>
+            </div>
+        </EditForm>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private Entities.ScheduleWeek _even;
+    private Entities.ScheduleWeek _odd;
+
+
+    private List<Entities.Schedule> _schedule;
+    private IEnumerable<Entities.Place> _places;
+    private Guid? _myTruckId;
+    private EditContext _editContext;
+
+    private bool IsEvenWeek()
+    {
+        return DateTime.Now.GetWeekOfYear() % 2 == 0;
+    }
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private Guid? PlaceFor(IEnumerable<Entities.Schedule> schedule, DayOfWeek dayOfWeek)
+    {
+        return schedule.First(q => q.Weekday == dayOfWeek).PlaceId;
+    }
+
+    private void FillWeekObject(bool isEven, IEnumerable<Entities.Schedule> schedule, Entities.ScheduleWeek weekToFill)
+    {
+        var filteredSchedule = _schedule.Where(q => q.IsEven == isEven);
+
+        for (int i = 0; i < 7; i++)
+        {
+            var value = filteredSchedule.FirstOrDefault(q => (int)q.Weekday == i).PlaceId;
+            FillByPropertyName(weekToFill, i, value);
+        }
+    }
+
+    private void GetWeekObject(bool isEven, IEnumerable<Entities.Schedule> schedule, Entities.ScheduleWeek weekToRead)
+    {
+        var filteredSchedule = _schedule.Where(q => q.IsEven == isEven);
+        for (int i = 0; i < 7; i++)
+        {
+            var value=GetFromPropertyName(weekToRead, i);
+            filteredSchedule.FirstOrDefault(q => (int)q.Weekday == i).PlaceId = value;
+        }
+    }
+
+    private Guid? GetFromPropertyName(Entities.ScheduleWeek week, int dayOfWeek)
+    {
+        var weekDayString = ((DayOfWeek)dayOfWeek).ToString();
+
+        var property = typeof(Entities.ScheduleWeek).GetProperties().First(q => q.Name.Contains(weekDayString, StringComparison.InvariantCultureIgnoreCase));
+        return (Guid?)property.GetValue(week);
+    }
+
+    private void FillByPropertyName(Entities.ScheduleWeek week, int dayOfWeek, Guid? value)
+    {
+        var weekDayString = ((DayOfWeek)dayOfWeek).ToString();
+
+        var property = typeof(Entities.ScheduleWeek).GetProperties().First(q => q.Name.Contains(weekDayString, StringComparison.InvariantCultureIgnoreCase));
+        property.SetValue(week, value);
+    }
+
+
+    private void FillWeeks()
+    {
+        _schedule = foodTruckLogic.GetSchedule(_myTruckId.Value).ToList();
+        _places = foodTruckLogic.GetPlacesForTruck(_myTruckId.Value).OrderBy(q => q.City).ThenBy(q => q.Road);
+
+        _even = new Entities.ScheduleWeek();
+        _odd = new Entities.ScheduleWeek();
+
+        FillWeekObject(true, _schedule, _even);
+        FillWeekObject(false, _schedule, _odd);
+    }
+
+    private void ReadWeeks()
+    {
+        GetWeekObject(true, _schedule, _even);
+        GetWeekObject(false, _schedule, _odd);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var loggedIn = await identity.IsLoggedIn();
+        if (!loggedIn) return;
+        _myTruckId = await identity.GetMyTruckId();
+        if (_myTruckId == null) return;
+        FillWeeks();
+
+        _editContext = new EditContext(_schedule);
+    }
+
+
+
+    private async void HandleValidSubmit()
+    {
+        if (!_editContext.Validate()) return;
+        ReadWeeks();
+        foodTruckLogic.UpdateSchedule(_myTruckId.Value, _schedule);
+        // TODO: Show "saved"
+    }
+}
+

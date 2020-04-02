@@ -15,6 +15,8 @@ namespace Bleifood.Entities
             Longitude = longitude;
         }
 
+        public GeoCoordinate() { }
+
        
     }
 }

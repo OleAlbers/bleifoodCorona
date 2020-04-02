@@ -1,0 +1,124 @@
+﻿@page  "/manage/edit/mine/card"
+<h3>Speisen bearbeiten</h3>
+@inject Identity identity
+@inject BL.Interfaces.IFoodtruck foodTruckLogic
+@inject NavigationManager navigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h1>Du bist nicht eingeloggt.</h1><br />
+        <a href="/manage/login">Klicke hier um Dich einzuloggen</a>
+    </NotAuthorized>
+    <Authorized>
+        <div class="buttonBox hdr1">
+            <p class="pull-left">
+                Speisen bearbeiten
+            </p>
+            <a @onclick="AddPosition" class="btn btn-default btn-sm pull-right">Gericht hinzufügen</a>
+            <div class="clearfix"></div>
+        </div>
+        <EditForm Model="@_products" OnValidSubmit="HandleValidSubmit" Context="placesEdit">
+            <DataAnnotationsValidator />
+            @foreach (var product in _products)
+            {
+                <div class="easyBox">
+                    <div class="simpleForm">
+                        <a @onclick="@(q=>Delete(product.Id))" class="right btn btn-primary btn-xs"><i class="fa fa-trash"></i><span>Speise löschen</span></a>
+                        <div class="form-group">
+                            <label>Name der Speise</label>
+                            <InputText class="form-control" name="name" @bind-Value="product.Name" placeholder="Besorger Burger XXL" />
+                            <ValidationMessage For="() => product.Name" />
+                        </div>
+                        <div class="form-group">
+                            <label>Beschreibung</label>
+                            <InputText class="form-control" name="city" @bind-Value="product.Subtitle" placeholder="Der Klassiker unter den komischen Burgern" />
+                            <ValidationMessage For="() => product.Subtitle" />
+                        </div>
+                        <div class="form-group">
+                            <label>Kategorie</label>
+                            
+                            <InputSelect @bind-Value="product.Category">
+                                <option value="Soup">Vorspeisen, Suppen, etc.</option>
+                                <option selected value="Main">Hauptspeisen</option>
+                                <option value="SideOrder">Beilagen</option>
+                                <option value="Salad">Salate</option>
+                                <option value="Dessert">Desserts</option>
+                                <option value="Drink">Getränke</option>"
+                            </InputSelect>
+                            <ValidationMessage For="() => product.Category" />
+                        </div>
+                        <div class="form-group">
+                            <label>Vegetarisch/Vegan ?</label>
+                            <InputSelect @bind-Value="product.Vegan">
+                                <option value="Vegan">Vegan</option>
+                                <option value="Vegetarian">Vegetarisch</option>
+                                <option select value="NotVegan">NICHT Vegan/Vegetarisch</option>
+                            </InputSelect>
+                            <ValidationMessage For="() => product.Vegan" />
+                        </div>
+                        <div class="form-group">
+                            <label>Preis in €</label>
+                            <InputText class="form-control" name="price" @bind-Value="product.PriceAsText" placeholder="12,50" />
+                            <ValidationMessage For="() => product.Price" />
+                        </div>
+                        <div class="form-group">
+                            <label>Reihenfolge (optional) </label>Kleinere Zahl=Weiter oben in der Liste                          
+                            <InputNumber class="form-control" name="order" @bind-Value="product.SortOrder" placeholder="0" />
+                            <ValidationMessage For="() => product.SortOrder" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            <input class="btn btn-default" type="submit" value="Änderungen speichern" />
+            <div style="color:red"><ValidationSummary></ValidationSummary></div>
+        </EditForm>
+    </Authorized>
+</AuthorizeView>
+@*TODO: Show "unsaved values"*@
+
+@code {
+    private List<Entities.Position> _products;
+    private Guid? _myTruckId;
+    private Entities.Position _product;
+
+    protected override void OnInitialized()
+    {
+        _product = new Entities.Position();
+    }
+
+    private void AddPosition()
+    {
+        _products.Add(new Entities.Position
+        {
+            TruckId = _myTruckId.Value,
+            SortOrder=10,
+            Vegan= Entities.Position.VeganTypes.NotVegan,
+            Category=  Entities.Position.Categories.Main
+        });
+    }
+
+    private void Delete(Guid id)
+    {
+        _products.RemoveAll(q => q.Id == id);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var loggedIn = await identity.IsLoggedIn();
+        if (!loggedIn) return;
+        _myTruckId = await identity.GetMyTruckId();
+        if (_myTruckId == null) navigationManager.NavigateTo("/manage/edit/mine");
+
+        _products = foodTruckLogic.GetCard(_myTruckId.Value).ToList();
+    }
+
+
+    private async void HandleValidSubmit()
+    {
+        foodTruckLogic.UpdateCard(_myTruckId.Value, _products);
+        // TODO: Show "saved"
+    }
+}
+
