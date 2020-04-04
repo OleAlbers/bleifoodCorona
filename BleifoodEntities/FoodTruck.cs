@@ -25,11 +25,19 @@ namespace Bleifood.Entities
 
         public bool Active { get; set; }
 
-        public DateTime StartDelivery { get; set; }
-        public DateTime EndDelivery { get; set; }
-        public DateTime StartOrder { get; set; }
+        public Time StartDelivery { get; set; }
+        public Time EndDelivery { get; set; }
+        public Time StartOrder { get; set; }
         public bool TakeAway { get; set; }
         public string UserId { get; set; }
         public bool InDataBase { get; set; } = false;
+        public string InfoText { get; set; }
+        public string TestToken { get; set; }
+        public DateTime? TestFinished { get; set; }
+        public decimal MinimumOrderAmount { get; set; }
+        public decimal MinumumNoShippingAmount { get; set; }
+        public bool OfferNoShipping { get; set; }
+        public decimal ShippingCost { get; set; }
+
     }
 }

@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 
 namespace Bleifood.BL
 {
+    
 
     public static class Helpers
     {
-
+        private static Random _random = new Random();
+        const string AllowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
         public static List<KeyValuePair<string, string>> Configuration { get; set; }
 
@@ -21,12 +23,9 @@ namespace Bleifood.BL
             return new GeoCoordinate(googleCoordinate.Latitude, googleCoordinate.Longitude);
         }
 
-
-
         public static string FromConfig(this string settingname)
         {
             return Configuration.FirstOrDefault(q => q.Key == settingname).Value;
-            //return ConfigurationManager.AppSettings[settingname];
         }
 
         public static DateTime FromHtmlTime(this object time)
@@ -62,6 +61,12 @@ namespace Bleifood.BL
             if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday) time = time.AddDays(3);
 
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+
+        // NOT safe for security-critical operations!
+        public static string CreateRandomString(int length)
+        {
+            return new string(Enumerable.Repeat(AllowedCharacters, length).Select(q => q[_random.Next(q.Length)]).ToArray());
         }
     }
 }

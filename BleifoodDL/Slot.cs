@@ -1,5 +1,4 @@
 ﻿using Bleifood.DL.Interfaces;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +7,35 @@ namespace Bleifood.DL
 {
     public class Slot : ISlot
     {
-        
-
-        public void DeleteForSchedule(Guid id)
+        public void Delete(Guid id)
         {
             using (var database = DataConnection.GetDatabase())
             {
                 var connection = new DataConnection(database);
-                foreach (var slot in GetForSchedule(id))
-                {
-                    connection.Delete<Entities.Slot>(slot.Id);
-                }
+                connection.Delete<Entities.Slot>(id);
             }
         }
+
+
+
+        public Entities.Slot Get(Guid id)
+        {
+            using (var database = DataConnection.GetDatabase())
+            {
+                var connection = new DataConnection(database);
+                return connection.SelectById<Entities.Slot>(id);
+            }
+        }
+
+        public IEnumerable<Entities.Slot> GetAll()
+        {
+            using (var database = DataConnection.GetDatabase())
+            {
+                var connection = new DataConnection(database);
+                return connection.SelectAll<Entities.Slot>();
+            }
+        }
+
 
         public IEnumerable<Entities.Slot> GetForSchedule(Guid id)
         {
@@ -38,6 +53,15 @@ namespace Bleifood.DL
             {
                 var connection = new DataConnection(database);
                 connection.Insert(slot);
+            }
+        }
+
+        public void Update(Entities.Slot slot)
+        {
+            using (var database = DataConnection.GetDatabase())
+            {
+                var connection = new DataConnection(database);
+                connection.Update(slot);
             }
         }
 

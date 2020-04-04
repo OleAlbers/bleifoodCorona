@@ -3418,3 +3418,12 @@ body.preloader #ct_preloader {
 .validation-message {
     color: red;
 }
+
+
+.disabledMenu a {
+    color: darkgray !important;
+}
+
+.btn i {
+    padding-right: 6px;
+}

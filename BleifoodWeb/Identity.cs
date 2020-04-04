@@ -115,7 +115,7 @@ namespace Bleifood.Web
         public async Task<Guid?> GetMyTruckId()
         {
             var currentUser = await GetCurrentUser();
-            IFoodtruck truckLogic = new BL.Foodtruck();
+            IFoodTruck truckLogic = new BL.FoodTruck();
             return truckLogic.GetTruckFromUser(currentUser.Id);            
         }
 

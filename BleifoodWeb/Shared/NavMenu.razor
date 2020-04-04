@@ -36,16 +36,28 @@
                     {
                         <div class="collapse navbar-collapse navbar-ex1-collapse">
                             <ul class="nav navbar-nav text-center" data-type="margin-top" data-pos="140" style="margin-top: 30px;">
-                                <li><a href="/manage/edit/mine">Meine Daten</a></li>
-                                <li><a href="/manage/edit/mine/card">Speisen</a></li>
-                                <li><a href="/manage/edit/mine/places">Orte</a></li>
-                                <li><a href="/manage/edit/mine/schedule">Zeitplan</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle">Meine Daten</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/manage/edit/mine">Grunddaten</a></li>
+                                        <li><a href="/manage/edit/mine/card">Speisen</a></li>
+                                        <li><a href="/manage/edit/mine/places">Orte</a></li>
+                                        <li><a href="/manage/edit/mine/schedule">Zeitplan</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/manage/edit/mine/live">Aktuelle Bestellungen</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle">Überprüfen</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/manage/edit/mine/test">Eigenen Shop testen</a></li>
+                                        <li><a href="/manage/edit/mine/publish">Veröffentlichen</a></li>
+                                        <li class="disabledMenu"><a href="/manage/edit/mine/deactivate">Deaktivieren</a></li>
+                                    </ul>
+                                </li>
 
                                 <li class="dropdown">
                                     <a class="dropdown-toggle">Account</a>
                                     <ul class="dropdown-menu">
-
-                                        <li></li>
                                         <li><a href="/manage/logout">Abmelden</a></li>
                                     </ul>
                                 </li>

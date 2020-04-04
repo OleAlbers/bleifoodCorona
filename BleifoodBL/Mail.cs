@@ -25,35 +25,45 @@ namespace Bleifood.BL
         public string SmtpBCC { get { return "Smtp:BCC".FromConfig(); } }
         public string SmtpCC { get { return "Smtp:CC".FromConfig(); } }
 
-        public void OrderCustomer(Order order)
+        public void OrderCustomer(Entities.Order order, Entities.FoodTruck truck)
         {
             string subject = "Deine Bestellung wurde aufgegeben";
             string body = MailHeaderOrderCustomer;
             body += $"BestellId: {order.UniqueKey}\n\n ";
             body += CreateOrderPositions(order);
-            body += GetShopAddress(order);
+            body += GetShopAddress(truck);
             body += MailFooterCustomer;
-            SendMail(order.Customer.PostAddress.Mail, subject, body, order.Truck.PostAddress.Mail);
+            SendMail(order.CustomerAddress.Mail, subject, body, truck.PostAddress.Mail);
         }
 
-        public void OrderFoodTruck(Order order)
+        public void OrderFoodTruck(Entities.Order order, Entities.FoodTruck truck)
         {
             string subject = "Eine Bestellung wurde aufgegeben";
+            
             string body = MailHeaderOrderFoodtruck;
+
+            if (!truck.Active && truck.TestFinished == null)
+            {
+                body += "\n DU BEFINDEST DICH IM TESTMODUS!\n";
+                body+="Wenn Du mit der Bestellung zufrieden bist, klicke auf den folgenden Link um den Test abzuschließen:\n";
+                body += $"{GetHostName()}/manage/test/{truck.TestToken} \n";
+                body += $"====================================================================================================\n\n";
+
+            }
             body += $"BestellId (Paypal!): {order.UniqueKey}\n\n ";
             body += CreateOrderPositions(order);
             body += GetCustomerAddress(order);
-            SendMail(order.Truck.PostAddress.Mail, subject, body, order.Customer.PostAddress.Mail);
+            SendMail(truck.PostAddress.Mail, subject, body, order.CustomerAddress.Mail);
         }
 
-        private string GetShopAddress(Order order)
+        private string GetShopAddress(Entities.FoodTruck  truck)
         {
-            return $"Anbieter:\n{GetAddress(order.Truck.PostAddress)}";
+            return $"Anbieter:\n{GetAddress(truck.PostAddress)}";
         }
 
         private string GetCustomerAddress(Order order)
         {
-            return $"Besteller:\n{GetAddress(order.Customer.PostAddress)}";
+            return $"Besteller:\n{GetAddress(order.CustomerAddress)}";
         }
 
         private string GetAddress(Address address)

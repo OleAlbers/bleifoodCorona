@@ -10,7 +10,8 @@ namespace Bleifood.Entities
     {
         public Guid TruckId { get; set; }
         public Guid ScheduleId { get; set; }
-        public DateTime SlotTime { get; set; }
-        public bool IsOpen { get; set; }
+        public Time SlotTime { get; set; }
+        public bool IsOpen { get; set; } = true;
+        public int OrderCount { get; set; }
     }
 }

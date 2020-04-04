@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Bleifood.BL.Interfaces
 {
-    public interface IFoodtruck
+    public interface IFoodTruck
     {
         void CreateTruck(Entities.FoodTruck foodtruck);
 
@@ -31,9 +31,9 @@ namespace Bleifood.BL.Interfaces
 
         IEnumerable<Entities.Slot> GetSlots( Guid scheduleId);
 
-        void UpdateSlots( Guid scheduleId, IEnumerable<Entities.Slot> slots);
+   
 
-        void StartDay(Guid truckId);    // Reset slots etc.
+        //void StartDay(Guid truckId);    // Reset slots etc.
 
         Guid? GetTruckFromUser(string userId);
     }

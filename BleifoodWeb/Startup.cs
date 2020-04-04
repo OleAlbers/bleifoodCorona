@@ -68,7 +68,8 @@ namespace Bleifood.Web
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IMail, Mail>();
-            services.AddScoped<IFoodtruck, Foodtruck>();
+            services.AddScoped<IFoodTruck, FoodTruck>();
+            services.AddScoped<IToday, Today>();
             services.AddScoped<Identity>();
             services.AddSingleton<AppState>();
             //services.AddHttpContextAccessor();

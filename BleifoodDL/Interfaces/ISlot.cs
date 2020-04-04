@@ -8,7 +8,11 @@ namespace Bleifood.DL.Interfaces
         IEnumerable<Bleifood.Entities.Slot> GetForSchedule(Guid id);
 
         void UpdateForSchedule(IEnumerable<Bleifood.Entities.Slot> slots);
-        void DeleteForSchedule(Guid id);
+        void Update(Entities.Slot slot);
         void Insert(Bleifood.Entities.Slot slot);
+        Entities.Slot Get(Guid id);
+
+        IEnumerable<Entities.Slot> GetAll();
+        void Delete(Guid id);
     }
 }

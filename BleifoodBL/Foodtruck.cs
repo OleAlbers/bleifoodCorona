@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bleifood.BL
 {
-    public class Foodtruck : IFoodtruck
+    public class FoodTruck : IFoodTruck
     {
         private readonly DL.Interfaces.IFoodTruck _dbFoodTruck = new DL.FoodTruck();
         private readonly DL.Interfaces.IPlace _dbPlace = new DL.Place();
@@ -23,7 +23,12 @@ namespace Bleifood.BL
             return false;
         }
 
-        public void CreateTruck(FoodTruck foodtruck)
+        private string CreateRandomTestHash()
+        {
+            return Helpers.CreateRandomString(8);
+        }
+
+        public void CreateTruck(Entities.FoodTruck foodtruck)
         {
             CheckPermission(null);
             var existingTruck = GetAllTrucks().FirstOrDefault(q => q.Url.Equals(foodtruck.Url, StringComparison.InvariantCultureIgnoreCase));
@@ -32,11 +37,12 @@ namespace Bleifood.BL
             foodtruck.StartDelivery = QuarterOnly(foodtruck.StartDelivery);
             foodtruck.StartOrder = QuarterOnly(foodtruck.StartOrder);
             foodtruck.InDataBase = true;
+            foodtruck.TestToken = CreateRandomTestHash();
             _dbFoodTruck.Insert(foodtruck);
             CreateDefaultSchedule(foodtruck);
         }
 
-        public IEnumerable<FoodTruck> GetAllTrucks(bool onlyActive = true)
+        public IEnumerable<Entities.FoodTruck> GetAllTrucks(bool onlyActive = true)
         {
             return _dbFoodTruck.SelectAll().Where(q => q.Active == true || onlyActive);
         }
@@ -58,19 +64,20 @@ namespace Bleifood.BL
 
         public IEnumerable<Slot> GetSlots(Guid scheduleId)
         {
-            return _dbSlot.GetForSchedule(scheduleId);
+            return _dbSlot.GetForSchedule(scheduleId).OrderBy(q => q.SlotTime);
         }
 
-        public FoodTruck GetTruck(Guid truckId)
+ 
+        public Entities.FoodTruck GetTruck(Guid truckId)
         {
             return _dbFoodTruck.SelectAll().FirstOrDefault(q => q.Id == truckId);
         }
 
-        private DateTime QuarterOnly(DateTime dateTime)
+        private Time QuarterOnly(Time time)
         {
-            var minute = dateTime.Minute;
+            var minute = time.Minute;
             if (minute % 15 != 0) minute = 0;
-            return new DateTime(1973, 12, 14, dateTime.Hour, minute, 0);
+            return new Time(time.Hour, minute);
         }
 
         public void InsertPlace(Place place)
@@ -81,7 +88,7 @@ namespace Bleifood.BL
             _dbPlace.Insert(place);
         }
 
-        private void CreateWeekSchedule(bool evenWeek, FoodTruck truck)
+        private void CreateWeekSchedule(bool evenWeek, Entities.FoodTruck truck)
         {
             
             for (DayOfWeek weekday = DayOfWeek.Sunday; weekday <= DayOfWeek.Saturday; weekday++)
@@ -97,20 +104,20 @@ namespace Bleifood.BL
             }
         }
 
-        private void CreateDefaultSchedule(FoodTruck foodTruck)
+        private void CreateDefaultSchedule(Entities.FoodTruck foodTruck)
         {
             CreateWeekSchedule(true, foodTruck);
             CreateWeekSchedule(false, foodTruck);
         }
 
-        public void StartDay(Guid truckId)
-        {
-            var dayOfWeek = DateTime.Now.DayOfWeek;
-            bool isEven = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday) % 2 == 0;
+        //public void StartDay(Guid truckId)
+        //{
+        //    var dayOfWeek = DateTime.Now.DayOfWeek;
+        //    bool isEven = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday) % 2 == 0;
 
-            var schedules = _dbSchedule.GetForFoodtruck(truckId);
-            var todaySchedule = schedules.FirstOrDefault(q => q.IsEven == isEven && q.Weekday == dayOfWeek);
-        }
+        //    var schedules = _dbSchedule.GetForFoodtruck(truckId);
+        //    var todaySchedule = schedules.FirstOrDefault(q => q.IsEven == isEven && q.Weekday == dayOfWeek);
+        //}
 
         public void UpdateCard(Guid truckId, IEnumerable<Position> positions)
         {
@@ -149,7 +156,7 @@ namespace Bleifood.BL
             _dbSlot.UpdateForSchedule(slots);
         }
 
-        public void UpdateTruck(FoodTruck foodtruck)
+        public void UpdateTruck(Entities.FoodTruck foodtruck)
         {
             foodtruck.InDataBase = true;
             _dbFoodTruck.Update(foodtruck);

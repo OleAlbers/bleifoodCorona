@@ -1,0 +1,109 @@
+﻿@using BL
+@page  "/manage/edit/mine/live"
+<h3>Live-Bestellungen</h3>
+@inject Identity identity
+@inject BL.Interfaces.IFoodTruck foodTruckLogic
+@inject BL.Interfaces.IToday  todayLogic;
+@inject AppState appState
+@inject NavigationManager navigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h1>Du bist nicht eingeloggt.</h1><br />
+        <a href="/manage/login">Klicke hier um Dich einzuloggen</a>
+    </NotAuthorized>
+    <Authorized>
+        @*Model="@_foodTruck"*@
+        <div class="easyBox">
+            <p>
+                Hier kannst Du sehen, für welche Uhrzeit wie viele Bestellungen eingetragen wurden.<br />
+                Wenn Du zu einer bestimmten Uhrzeit keine Bestellungen mehr annehmen kannst, hast Du die Möglichkeit sie zu sperren.<br />
+                Uhrzeiten die in der Vergangenheit liegen brauchen nicht geschlossen zu werden.
+            </p>
+            <div class="pretty-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Uhrzeit</th>
+                            <th>Bestellungen</th>
+                            <th>Lieferung derzeit möglich?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var slot in _todaysSlots)
+                        {
+                            <tr>
+                                <td>@slot.SlotTime</td>
+                                <td>@slot.OrderCount</td>
+                                <td>
+
+                                    @if (slot.IsOpen)
+                                    {
+                                        <a class="btn btn-success btn-xs" @onclick="@(q=> SwitchOpen(slot))">
+                                            <span><i class="fa fa-lock-open"> </i>Ja, Uhrzeit ist auswählbar</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-warning btn-xs" @onclick="@(q=> SwitchOpen(slot))">
+                                            <span><i class="fa fa-lock"> </i>Nein, Uhrzeit für Lieferung ist gesperrt</span>
+                                        </a>
+                                    }
+
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private Entities.FoodTruck _foodTruck;
+    private Entities.Schedule _todaySchedule;
+    private IEnumerable<Entities.Slot> _todaysSlots;
+
+    private Guid? _myTruckId;
+    protected override void OnInitialized()
+    {
+        appState.IsInEditMode = true;
+
+    }
+
+    protected void SwitchOpen(Entities.Slot slot)
+    {
+        if (slot.IsOpen)
+        {
+            todayLogic.CloseSlot(slot.Id);
+        }
+        else
+        {
+            todayLogic.OpenSlot(slot.Id);
+        }
+        _todaysSlots = todayLogic.GetTodaysSlots(_myTruckId.Value);
+        StateHasChanged();
+    }
+
+    //protected string ToTimeOnly(DateTime dateTime)
+    //{
+    //    return dateTime.ToString("HH:mm");
+    //}
+
+    protected async override Task OnInitializedAsync()
+    {
+        var loggedIn = await identity.IsLoggedIn();
+        if (!loggedIn) return;
+        _myTruckId = await identity.GetMyTruckId();
+        if (_myTruckId == null) return;
+        _foodTruck = foodTruckLogic.GetTruck(_myTruckId.Value);
+        _todaySchedule = todayLogic.GetTodaysSchedule(_myTruckId.Value);
+        _todaysSlots = todayLogic.GetTodaysSlots(_myTruckId.Value);
+
+    }
+
+}
+
