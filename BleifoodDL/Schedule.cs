@@ -63,5 +63,14 @@ namespace Bleifood.DL
                 return connection.SelectById<Bleifood.Entities.Schedule>(id);
             }
         }
+
+        public IEnumerable<Entities.Schedule> SelectAll()
+        {
+            using (var database = DataConnection.GetDatabase())
+            {
+                var connection = new DataConnection(database);
+                return connection.SelectAll<Entities.Schedule>();
+            }
+        }
     }
 }

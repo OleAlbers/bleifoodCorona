@@ -13,5 +13,6 @@ namespace Bleifood.DL.Interfaces
         void DeleteOldSchedule(Guid truckId);
         void InsertSchedule(Bleifood.Entities.Schedule schedule);
         Bleifood.Entities.Schedule GetById(Guid id);
+        IEnumerable<Bleifood.Entities.Schedule> SelectAll();
     }
 }

@@ -1,46 +1,17 @@
-﻿@page "/"
+﻿@page "/{truck}"
 @using BL
 @inject BL.Interfaces.IFoodTruck foodTruckLogic
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
 
-@if (!_customer.PostAddress.IsValid()) {
-<h1>Willkommen bei Bleifood</h1>
-<p>Gib Bitte Deine Adresse ein damit wir schauen können wer Dich heute beliefern kann:</p>
-}
-<EditForm Model="_customer.PostAddress">
-    <div class="form-group quickEnterAdress">
-        @if (!_customer.PostAddress.IsValid())
-        {
-            <label>Adresse</label><span>(Mit Enter bestätigen)</span>
-        }
-        <input type="text" class="form-keepSpace form-control  @(_customer.PostAddress.IsValid()?"address-success":"") " name="FoodAddress" autocomplete="on" @bind-value="Address" placeholder="Straße Hausnummer, PLZ Ort">
-    </div>
-</EditForm>
-
-
-@if (_customer.PostAddress.IsValid()) {
-    if (_matches.Count==0)
-    {
-        <div><h4 class="hdr1">Ich habe leider keine Foodtrucks in Deiner Nähe gefunden</h4></div>
-    } else
-    {
-<div>
-    <h4 class="hdr4">Folgende Foodtrucks sind in Deiner Nähe:</h4>
-    @foreach (var truck in _matches)
-    {
-        <div class="buttonBox hdr1">
-            <p class="pull-left">
-                @truck.Name
-            </p>
-            <a href="@truck.Url" class="btn btn-default btn-sm pull-right">Angebot anzeigen</a>
-            <div class="clearfix"></div>
-        </div>
+@code {
+    @functions {
+        [Parameter]
+        public string Truck { get; set; }
     }
-</div>
-    }
-
 }
+
+<h1>@Truck</h1>
 
 @*<div class="popupAddress">
         <div class="easyBox full">
@@ -86,36 +57,3 @@
 
         </div>
     </div>*@
-
-@code {
-    private Entities.Customer _customer=new  Entities.Customer();
-    private List<Entities.FoodTruck> _matches = new List<Entities.FoodTruck>();
-    private string Address
-    {
-        get
-        {
-            return _customer.PostAddress.AsString;
-        }
-
-        set
-        {
-            _customer.PostAddress.AsString = value;
-            ReloadTrucks();
-        }
-    }
-
-
-    private async void ReloadTrucks() {
-        if (!_customer.PostAddress.IsValid()) return;
-        var myCoords= await geoCodeLogic.GetCoordinates(_customer.PostAddress.ToString());
-
-        _matches=foodTruckLogic.GetNearbyTrucks(myCoords, null).ToList();
-        this.StateHasChanged();
-
-    }
-
-    protected override void OnInitialized()
-    {
-
-    }
-}

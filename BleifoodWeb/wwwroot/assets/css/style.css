@@ -1776,6 +1776,11 @@ li.dropdown:hover .dropdown-menu {
   border-color: #de9799;
   color: #e54034;
 }
+.address-danger {
+    background-color: #fce2e3 !important;
+    border-color: #de9799 !important;
+    color: #e54034 !important;
+}
 .alert-danger hr {
   border-top-color: #d88486;
 }
@@ -1786,6 +1791,11 @@ li.dropdown:hover .dropdown-menu {
   background-color: #daeec0;
   border-color: #c4e49a;
   color: #54732c;
+}
+.address-success {
+    background-color: #daeec0 !important;
+    border-color: #c4e49a !important;
+    color: #54732c !important;
 }
 .alert-success hr {
   border-top-color: #b8df86;
@@ -3427,3 +3437,21 @@ body.preloader #ct_preloader {
 .btn i {
     padding-right: 6px;
 }
+
+
+
+
+.popupAddress {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    z-index: 9000;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+

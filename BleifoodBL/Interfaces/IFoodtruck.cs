@@ -31,10 +31,9 @@ namespace Bleifood.BL.Interfaces
 
         IEnumerable<Entities.Slot> GetSlots( Guid scheduleId);
 
-   
-
-        //void StartDay(Guid truckId);    // Reset slots etc.
 
         Guid? GetTruckFromUser(string userId);
+
+        IEnumerable<Entities.FoodTruck> GetNearbyTrucks(Entities.GeoCoordinate coordinate, Guid? myTruckId);
     }
 }

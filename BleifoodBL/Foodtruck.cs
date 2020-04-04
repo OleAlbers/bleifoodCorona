@@ -17,6 +17,8 @@ namespace Bleifood.BL
         private readonly DL.Interfaces.IPosition _dbPosition = new DL.Position();
         private readonly DL.Interfaces.ISchedule _dbSchedule = new Bleifood.DL.Schedule();
         private readonly DL.Interfaces.ISlot _dbSlot = new DL.Slot();
+        private readonly DL.Interfaces.IGeoCode _dlGeocode = new DL.GeoCode();
+        private readonly BL.Geocode _geocode = new Geocode();
 
         private bool CheckPermission(Guid? truckId)
         {
@@ -214,6 +216,28 @@ namespace Bleifood.BL
             {
                 _dbPlace.Update(modifiedPlace);
             }
+        }
+
+        public IEnumerable<Entities.FoodTruck> GetNearbyTrucks(GeoCoordinate userCoordinates, Guid? myTruckId)
+        {
+            var nearby = new List<Entities.FoodTruck>();
+            bool isEvenWeek = DateTime.Now.GetWeekOfYear() % 2 == 0;
+            var allPlaces = _dbPlace.SelectAll();
+            var allSchedules = _dbSchedule.SelectAll();
+            // TODO: Optimize!
+            foreach (var truck in GetAllTrucks().Where(q=>q.Id==myTruckId || q.Active))
+            {
+                var schedule = allSchedules.FirstOrDefault(q=>q.TruckId==truck.Id && q.Weekday==DateTime.Now.DayOfWeek && q.IsEven==isEvenWeek);
+                if (schedule == null || schedule.PlaceId==null) continue;
+                var place = allPlaces.FirstOrDefault(q => q.Id == schedule.PlaceId);
+                if (IsNearby(userCoordinates, place.Coordinates, place.Distance)) nearby.Add(truck);
+            }
+            return nearby;
+        }
+
+        public bool IsNearby(GeoCoordinate firstPlace, GeoCoordinate secondPlace, double maxDistance)
+        {
+            return _geocode.GetDistance(firstPlace, secondPlace)<=maxDistance;
         }
     }
 }
