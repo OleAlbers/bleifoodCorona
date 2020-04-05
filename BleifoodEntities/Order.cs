@@ -8,9 +8,9 @@ namespace Bleifood.Entities
 {
     public class Order : BaseEntity
     {
-        public decimal Tipp { get; set; }
+        public decimal Tip { get; set; }
         public Address CustomerAddress { get; set; }
-        public IEnumerable<OrderPosition> Positions { get; set; }
+        public List<OrderPosition> Positions { get; set; } = new List<OrderPosition>();
         public DateTime TimeSlot { get; set; }
         public string Comment { get; set; }
         public decimal Shipping { get; set; }

@@ -22,7 +22,7 @@ namespace Bleifood.Entities
         {
             get
             {
-                return Price.ToString(CultureInfo.GetCultureInfo("de-de"));
+                return string.Format(CultureInfo.GetCultureInfo("de-de"), "{0:0.00}", Price);
             }
             set
             {

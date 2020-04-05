@@ -5,7 +5,7 @@ namespace Bleifood.BL.Interfaces
 {
     public interface IBrowserStorage
     {
-        void StoreData<T>(T data);
-         Task<T> ReadData<T>() where T : new();
+         void StoreData<T>(T data);
+          Task<T> ReadData<T>() where T : new();
     }
 }

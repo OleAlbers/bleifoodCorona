@@ -3476,3 +3476,7 @@ body.preloader #ct_preloader {
 .card .top span {
     padding-top: 4px;
 }
+
+.orderTable span {
+    vertical-align: text-top;
+}

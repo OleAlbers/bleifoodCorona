@@ -97,11 +97,11 @@ namespace Bleifood.BL
         private string GetOrderSumText(Order order)
         {
             string footer = string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Versand", order.Shipping);
-            if (order.Tipp > 0)
+            if (order.Tip > 0)
             {
-                footer += string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Trinkgeld", order.Tipp);
+                footer += string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Trinkgeld", order.Tip);
             }
-            decimal fullprice = order.Shipping + order.Tipp;
+            decimal fullprice = order.Shipping + order.Tip;
             fullprice += order.Positions.Sum(q => (q.Amount * q.Position.Price));
             footer += "-----------------------------------------------------------------------\n";
             footer += string.Format("{0:90}\t\t{1:10}\n\n", "Total", fullprice);

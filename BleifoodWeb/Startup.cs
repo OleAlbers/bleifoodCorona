@@ -23,6 +23,7 @@ using Bleifood.BL;
 using Bleifood.BL.Interfaces;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Server;
+using Blazored.LocalStorage;
 
 namespace Bleifood.Web
 {
@@ -65,11 +66,13 @@ namespace Bleifood.Web
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazoredLocalStorage();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IMail, Mail>();
             services.AddScoped<IFoodTruck, FoodTruck>();
             services.AddScoped<IToday, Today>();
+            services.AddScoped<IBrowserStorage, BrowserStorage > ();
             services.AddScoped<Geocode>();
             services.AddScoped<Identity>();
             services.AddSingleton<AppState>();

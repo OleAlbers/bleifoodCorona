@@ -3,6 +3,7 @@
 @inject BL.Interfaces.IFoodTruck foodTruckLogic
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
+@inject BL.Interfaces.IBrowserStorage browserStorage
 
 @code {
     @functions {
@@ -42,9 +43,7 @@
                                     <span class="title">@product.Name</span>
 
                                     <p>@product.Subtitle</p>
-                                    <span class="price">
-                                        @product.Price <em>€</em>
-                                    </span>
+                                    <span class="price">@product.PriceAsText <em>€</em></span>
                                 </div>
                             </div>
                             @if (!isFirst)
@@ -57,7 +56,7 @@
                 </div>
             </div>
         }
-        @if (HasCategory(Entities.Position.Categories.Soup))
+        @if (HasCategory(Entities.Position.Categories.Salad))
         {
             <div class="menuBox type3 card">
                 <div class="top">
@@ -68,7 +67,7 @@
                     @{
                         bool isFirst = true;
 
-                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Salad))
                         {
                             <div class="media">
                                 <div class="pull-left">
@@ -83,9 +82,7 @@
                                     <span class="title">@product.Name</span>
 
                                     <p>@product.Subtitle</p>
-                                    <span class="price">
-                                        @product.Price <em>€</em>
-                                    </span>
+                                    <span class="price">@product.PriceAsText <em>€</em></span>
                                 </div>
                             </div>
                             @if (!isFirst)
@@ -100,7 +97,7 @@
         }
     </div>
     <div class="col-md-4 col-sm-6">
-        @if (HasCategory(Entities.Position.Categories.Soup))
+        @if (HasCategory(Entities.Position.Categories.Main))
         {
             <div class="menuBox type3 card">
                 <div class="top">
@@ -111,7 +108,7 @@
                     @{
                         bool isFirst = true;
 
-                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Main))
                         {
                             <div class="media">
                                 <div class="pull-left">
@@ -126,9 +123,7 @@
                                     <span class="title">@product.Name</span>
 
                                     <p>@product.Subtitle</p>
-                                    <span class="price">
-                                        @product.Price <em>€</em>
-                                    </span>
+                                    <span class="price">@product.PriceAsText <em>€</em></span>
                                 </div>
                             </div>
                             @if (!isFirst)
@@ -141,7 +136,7 @@
                 </div>
             </div>
         }
-        @if (HasCategory(Entities.Position.Categories.Soup))
+        @if (HasCategory(Entities.Position.Categories.SideOrder))
         {
             <div class="menuBox type3 card">
                 <div class="top">
@@ -152,7 +147,7 @@
                     @{
                         bool isFirst = true;
 
-                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.SideOrder))
                         {
                             <div class="media">
                                 <div class="pull-left">
@@ -167,9 +162,7 @@
                                     <span class="title">@product.Name</span>
 
                                     <p>@product.Subtitle</p>
-                                    <span class="price">
-                                        @product.Price <em>€</em>
-                                    </span>
+                                    <span class="price">@product.PriceAsText <em>€</em></span>
                                 </div>
                             </div>
                             @if (!isFirst)
@@ -189,7 +182,7 @@
         <div class="row">
             <div class="col-md-12 col-sm-6">
 
-                @if (HasCategory(Entities.Position.Categories.Soup))
+                @if (HasCategory(Entities.Position.Categories.Dessert))
                 {
                     <div class="menuBox type3 card">
                         <div class="top">
@@ -200,7 +193,7 @@
                             @{
                                 bool isFirst = true;
 
-                                @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                                @foreach (var product in GetFromCategory(Entities.Position.Categories.Dessert))
                                 {
                                     <div class="media">
                                         <div class="pull-left">
@@ -215,9 +208,7 @@
                                             <span class="title">@product.Name</span>
 
                                             <p>@product.Subtitle</p>
-                                            <span class="price">
-                                                @product.Price <em>€</em>
-                                            </span>
+                                            <span class="price">@product.PriceAsText <em>€</em></span>
                                         </div>
                                     </div>
                                     @if (!isFirst)
@@ -230,7 +221,7 @@
                         </div>
                     </div>
                 }
-                @if (HasCategory(Entities.Position.Categories.Soup))
+                @if (HasCategory(Entities.Position.Categories.Drink))
                 {
                     <div class="menuBox type3 card">
                         <div class="top">
@@ -241,7 +232,7 @@
                             @{
                                 bool isFirst = true;
 
-                                @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                                @foreach (var product in GetFromCategory(Entities.Position.Categories.Drink))
                                 {
                                     <div class="media">
                                         <div class="pull-left">
@@ -256,9 +247,7 @@
                                             <span class="title">@product.Name</span>
 
                                             <p>@product.Subtitle</p>
-                                            <span class="price">
-                                                @product.Price <em>€</em>
-                                            </span>
+                                            <span class="price">@product.PriceAsText <em>€</em></span>
                                         </div>
                                     </div>
                                     @if (!isFirst)
@@ -277,10 +266,39 @@
 </div>
 
 
+<div class="row">
+    <h3>Deine Bestellung:</h3>
+    <div class="pretty-table table-responsive">
+        <table class="table orderTable">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Anzahl</th>
+                    <th>Gericht</th>
+                    <th align="right">Einzelpreis</th>
+                    <th align="right">Gesamtpreis</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in _order.Positions)
+                {
+                <tr>
+                    <td>@(_order.Positions.IndexOf(item) + 1)</td>
+                    <td><a @onclick="(q=> Minus(item))"><i class="fas fa-minus-circle"></i></a> <span>@item.Amount </span><a @onclick="(q=>Plus(item))"><i class="fas fa-plus-circle"></i></a></td>
+                    <td>@item.Position.Name</td>
+                    <td align="right">@item.Position.Price.AsCurrency()</td>
+                    <td align="right" style="font-weight:bold">@((item.Amount*item.Position.Price).AsCurrency())</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @code {
     private Entities.FoodTruck _truck;
     private IEnumerable<Entities.Position> _positions;
+    private Entities.Order _order = new Entities.Order();
 
     public bool HasCategory(Entities.Position.Categories category)
     {
@@ -293,20 +311,60 @@
     }
 
 
-    public void AddToCart(Entities.Position position       )
+    public void AddToCart(Entities.Position position)
     {
-
+        var oldPosition = _order.Positions.FirstOrDefault(q => q.Position.Id == position.Id);
+        if (oldPosition != null)
+        {
+            oldPosition.Amount++;
+            return;
+        }
+        _order.Positions.Add(new Entities.OrderPosition
+        {
+            Position = position,
+            Amount = 1
+        });
     }
+
+
+    private void Minus(Entities.OrderPosition position)
+    {
+        position.Amount--;
+        if (position.Amount<1)
+        {
+            _order.Positions.Remove(position);
+        }
+    }
+
+    private void Plus(Entities.OrderPosition position)
+    {
+        position.Amount++;
+    }
+
     protected override void OnInitialized()
     {
-        _truck=foodTruckLogic.GetTruckByUrl(Truck);
+        _truck = foodTruckLogic.GetTruckByUrl(Truck);
         if (_truck == null) navigationManager.NavigateTo("/");   // wrong url
         _positions = foodTruckLogic.GetCard(_truck.Id);
     }
 
+    private async void GetAddressFromLocalStorage()
+    {
+        var customer = await browserStorage.ReadData<Entities.Customer>();
+        if (customer == null || !customer.PostAddress.IsValid()) navigationManager.NavigateTo("/"); // No Address Entered
+
+        _order.CustomerAddress = customer.PostAddress;
+        StateHasChanged();
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            GetAddressFromLocalStorage();
+        }
+    }
 }
-
-
 
 
 

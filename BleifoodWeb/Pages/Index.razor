@@ -3,10 +3,12 @@
 @inject BL.Interfaces.IFoodTruck foodTruckLogic
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
+@inject BL.Interfaces.IBrowserStorage browserStorage
 
-@if (!_customer.PostAddress.IsValid()) {
-<h1>Willkommen bei Bleifood</h1>
-<p>Gib Bitte Deine Adresse ein damit wir schauen können wer Dich heute beliefern kann:</p>
+@if (!_customer.PostAddress.IsValid())
+{
+    <h1>Willkommen bei Bleifood</h1>
+    <p>Gib Bitte Deine Adresse ein damit wir schauen können wer Dich heute beliefern kann:</p>
 }
 <EditForm Model="_customer.PostAddress">
     <div class="form-group quickEnterAdress">
@@ -19,25 +21,27 @@
 </EditForm>
 
 
-@if (_customer.PostAddress.IsValid()) {
-    if (_matches.Count==0)
+@if (_customer.PostAddress.IsValid())
+{
+    if (_matches.Count == 0)
     {
         <div><h4 class="hdr1">Ich habe leider keine Foodtrucks in Deiner Nähe gefunden</h4></div>
-    } else
-    {
-<div>
-    <h4 class="hdr4">Folgende Foodtrucks sind in Deiner Nähe:</h4>
-    @foreach (var truck in _matches)
-    {
-        <div class="buttonBox hdr1">
-            <p class="pull-left">
-                @truck.Name
-            </p>
-            <a href="@truck.Url" class="btn btn-default btn-sm pull-right">Angebot anzeigen</a>
-            <div class="clearfix"></div>
-        </div>
     }
-</div>
+    else
+    {
+        <div>
+            <h4 class="hdr4">Folgende Foodtrucks sind in Deiner Nähe:</h4>
+            @foreach (var truck in _matches)
+            {
+                <div class="buttonBox hdr1">
+                    <p class="pull-left">
+                        @truck.Name
+                    </p>
+                    <a href="@truck.Url" class="btn btn-default btn-sm pull-right">Angebot anzeigen</a>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        </div>
     }
 
 }
@@ -88,34 +92,54 @@
     </div>*@
 
 @code {
-    private Entities.Customer _customer=new  Entities.Customer();
+    private Entities.Customer _customer= new Entities.Customer();
     private List<Entities.FoodTruck> _matches = new List<Entities.FoodTruck>();
     private string Address
     {
         get
         {
-            return _customer.PostAddress.AsString;
+            return _customer?.PostAddress?.AsString;
         }
 
         set
         {
             _customer.PostAddress.AsString = value;
             ReloadTrucks();
+            StoreAddressToLocalStorage();
         }
     }
 
-
-    private async void ReloadTrucks() {
+    private void StoreAddressToLocalStorage()
+    {
         if (!_customer.PostAddress.IsValid()) return;
-        var myCoords= await geoCodeLogic.GetCoordinates(_customer.PostAddress.ToString());
-
-        _matches=foodTruckLogic.GetNearbyTrucks(myCoords, null).ToList();
-        this.StateHasChanged();
-
+        browserStorage.StoreData(_customer);
     }
 
-    protected override void OnInitialized()
+    private async void GetAddressFromLocalStorage()
     {
+        if (_customer.PostAddress.IsValid()) return;
+        var customer = await browserStorage.ReadData<Entities.Customer>();
+        if (customer==null) return;
 
+        _customer= customer;
+        ReloadTrucks();
+        StateHasChanged();
+    }
+
+    private async void ReloadTrucks()
+    {
+        if (!_customer.PostAddress.IsValid()) return;
+        var myCoords = await geoCodeLogic.GetCoordinates(_customer.PostAddress.ToString());
+
+        _matches = foodTruckLogic.GetNearbyTrucks(myCoords, null).ToList();
+        this.StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            GetAddressFromLocalStorage();
+        }
     }
 }

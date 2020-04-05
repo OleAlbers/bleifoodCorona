@@ -68,5 +68,10 @@ namespace Bleifood.BL
         {
             return new string(Enumerable.Repeat(AllowedCharacters, length).Select(q => q[_random.Next(q.Length)]).ToArray());
         }
+
+        public static string AsCurrency(this decimal price)
+        {
+            return string.Format(new CultureInfo("de-de"), "{0:0.00} €", price);
+        }
     }
 }
