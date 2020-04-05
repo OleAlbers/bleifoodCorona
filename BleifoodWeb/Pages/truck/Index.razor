@@ -11,7 +11,305 @@
     }
 }
 
-<h1>@Truck</h1>
+<h4 class="hdr1">@_truck.Name</h4>
+
+
+<div class="row">
+    <div class="col-md-4 col-sm-6">
+        @if (HasCategory(Entities.Position.Categories.Soup))
+        {
+            <div class="menuBox type3 card">
+                <div class="top">
+                    <i class="fas fa-utensil-spoon"></i>
+                    <span>Vorspeisen</span>
+                </div>
+                <div class="inner">
+                    @{
+                        bool isFirst = true;
+
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        {
+                            <div class="media">
+                                <div class="pull-left">
+                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        <a @onclick="(q=> AddToCart(product))">
+                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="media-body">
+                                    <span class="title">@product.Name</span>
+
+                                    <p>@product.Subtitle</p>
+                                    <span class="price">
+                                        @product.Price <em>€</em>
+                                    </span>
+                                </div>
+                            </div>
+                            @if (!isFirst)
+                            {
+                                <hr />
+                            }
+                            isFirst = false;
+                        }
+                    }
+                </div>
+            </div>
+        }
+        @if (HasCategory(Entities.Position.Categories.Soup))
+        {
+            <div class="menuBox type3 card">
+                <div class="top">
+                    <i class="fas fa-seedling"></i>
+                    <span>Salat</span>
+                </div>
+                <div class="inner">
+                    @{
+                        bool isFirst = true;
+
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        {
+                            <div class="media">
+                                <div class="pull-left">
+                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        <a @onclick="(q=> AddToCart(product))">
+                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="media-body">
+                                    <span class="title">@product.Name</span>
+
+                                    <p>@product.Subtitle</p>
+                                    <span class="price">
+                                        @product.Price <em>€</em>
+                                    </span>
+                                </div>
+                            </div>
+                            @if (!isFirst)
+                            {
+                                <hr />
+                            }
+                            isFirst = false;
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-4 col-sm-6">
+        @if (HasCategory(Entities.Position.Categories.Soup))
+        {
+            <div class="menuBox type3 card">
+                <div class="top">
+                    <i class="fas fa-utensils"></i>
+                    <span>Hauptgerichte</span>
+                </div>
+                <div class="inner">
+                    @{
+                        bool isFirst = true;
+
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        {
+                            <div class="media">
+                                <div class="pull-left">
+                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        <a @onclick="(q=> AddToCart(product))">
+                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="media-body">
+                                    <span class="title">@product.Name</span>
+
+                                    <p>@product.Subtitle</p>
+                                    <span class="price">
+                                        @product.Price <em>€</em>
+                                    </span>
+                                </div>
+                            </div>
+                            @if (!isFirst)
+                            {
+                                <hr />
+                            }
+                            isFirst = false;
+                        }
+                    }
+                </div>
+            </div>
+        }
+        @if (HasCategory(Entities.Position.Categories.Soup))
+        {
+            <div class="menuBox type3 card">
+                <div class="top">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <span>Beilagen</span>
+                </div>
+                <div class="inner">
+                    @{
+                        bool isFirst = true;
+
+                        @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                        {
+                            <div class="media">
+                                <div class="pull-left">
+                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        <a @onclick="(q=> AddToCart(product))">
+                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="media-body">
+                                    <span class="title">@product.Name</span>
+
+                                    <p>@product.Subtitle</p>
+                                    <span class="price">
+                                        @product.Price <em>€</em>
+                                    </span>
+                                </div>
+                            </div>
+                            @if (!isFirst)
+                            {
+                                <hr />
+                            }
+                            isFirst = false;
+                        }
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="clearfix visible-sm"></div>
+    <div class="col-md-4 col-sm-12">
+        <div class="row">
+            <div class="col-md-12 col-sm-6">
+
+                @if (HasCategory(Entities.Position.Categories.Soup))
+                {
+                    <div class="menuBox type3 card">
+                        <div class="top">
+                            <i class="fas fa-ice-cream"></i>
+                            <span>Dessert</span>
+                        </div>
+                        <div class="inner">
+                            @{
+                                bool isFirst = true;
+
+                                @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                                {
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                                <a @onclick="(q=> AddToCart(product))">
+                                                    <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="media-body">
+                                            <span class="title">@product.Name</span>
+
+                                            <p>@product.Subtitle</p>
+                                            <span class="price">
+                                                @product.Price <em>€</em>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (!isFirst)
+                                    {
+                                        <hr />
+                                    }
+                                    isFirst = false;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                @if (HasCategory(Entities.Position.Categories.Soup))
+                {
+                    <div class="menuBox type3 card">
+                        <div class="top">
+                            <i class="fas fa-wine-bottle"></i>
+                            <span>Getränke</span>
+                        </div>
+                        <div class="inner">
+                            @{
+                                bool isFirst = true;
+
+                                @foreach (var product in GetFromCategory(Entities.Position.Categories.Soup))
+                                {
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                                <a @onclick="(q=> AddToCart(product))">
+                                                    <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="media-body">
+                                            <span class="title">@product.Name</span>
+
+                                            <p>@product.Subtitle</p>
+                                            <span class="price">
+                                                @product.Price <em>€</em>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @if (!isFirst)
+                                    {
+                                        <hr />
+                                    }
+                                    isFirst = false;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private Entities.FoodTruck _truck;
+    private IEnumerable<Entities.Position> _positions;
+
+    public bool HasCategory(Entities.Position.Categories category)
+    {
+        return _positions.Any(q => q.Category == category);
+    }
+
+    public IEnumerable<Entities.Position> GetFromCategory(Entities.Position.Categories category)
+    {
+        return _positions.Where(q => q.Category == category).OrderBy(q => q.SortOrder);
+    }
+
+
+    public void AddToCart(Entities.Position position       )
+    {
+
+    }
+    protected override void OnInitialized()
+    {
+        _truck=foodTruckLogic.GetTruckByUrl(Truck);
+        if (_truck == null) navigationManager.NavigateTo("/");   // wrong url
+        _positions = foodTruckLogic.GetCard(_truck.Id);
+    }
+
+}
+
+
+
+
+
 
 @*<div class="popupAddress">
         <div class="easyBox full">

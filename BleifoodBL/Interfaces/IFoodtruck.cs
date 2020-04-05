@@ -9,6 +9,8 @@ namespace Bleifood.BL.Interfaces
 
         Entities.FoodTruck GetTruck(Guid truckId);
 
+        Entities.FoodTruck GetTruckByUrl(string url);
+
         IEnumerable<Entities.FoodTruck> GetAllTrucks(bool onlyActive = true);
 
         void UpdateTruck(Entities.FoodTruck foodtruck);

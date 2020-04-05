@@ -239,5 +239,11 @@ namespace Bleifood.BL
         {
             return _geocode.GetDistance(firstPlace, secondPlace)<=maxDistance;
         }
+
+        public Entities.FoodTruck GetTruckByUrl(string url)
+        {
+            return _dbFoodTruck.GetByUrl(url);
+            
+        }
     }
 }

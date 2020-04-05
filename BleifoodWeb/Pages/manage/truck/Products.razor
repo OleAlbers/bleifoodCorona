@@ -19,7 +19,7 @@
         </div>
         <EditForm Model="@_products" OnValidSubmit="HandleValidSubmit" Context="placesEdit">
             <DataAnnotationsValidator />
-            @foreach (var product in _products)
+            @foreach (var product in _products.OrderByDescending(q=>q.Created))
             {
                 <div class="easyBox">
                     <div class="simpleForm">

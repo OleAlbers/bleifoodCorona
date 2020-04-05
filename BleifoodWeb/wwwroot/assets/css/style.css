@@ -3455,3 +3455,24 @@ body.preloader #ct_preloader {
 }
 
 
+.roundedImg.addToCart {
+    background: #db500c;
+    cursor:pointer;
+}
+
+.addToCart i {
+    color: #f5f3eb;
+    padding-top: 15px;
+    padding-left: 12px;
+    font-size: 1.3em;
+}
+
+
+.card .top i {
+    font-size: 1.7em;
+    margin-top: -4px
+}
+
+.card .top span {
+    padding-top: 4px;
+}

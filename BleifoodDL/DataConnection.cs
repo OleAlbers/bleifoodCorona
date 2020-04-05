@@ -21,9 +21,7 @@ namespace Bleifood.DL
             _database = database;
         }
 
-   
-
-        private LiteDB.LiteCollection<T> GetCollection<T>()
+        public LiteDB.LiteCollection<T> GetCollection<T>()
         {
             return _database.GetCollection<T>();
         }
@@ -32,6 +30,8 @@ namespace Bleifood.DL
         {
             return GetCollection<T>().FindAll();
         }
+
+        
 
         public T SelectById<T>(Guid id)
         {

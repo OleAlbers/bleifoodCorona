@@ -8,8 +8,11 @@ namespace Bleifood.DL.Interfaces
 {
     public interface IFoodTruck
     {
-        void Insert(Bleifood.Entities.FoodTruck truck);
-        void Update(Bleifood.Entities.FoodTruck truck);
-        IEnumerable<Bleifood.Entities.FoodTruck> SelectAll();
+        void Insert(Entities.FoodTruck truck);
+        void Update(Entities.FoodTruck truck);
+        IEnumerable<Entities.FoodTruck> SelectAll();
+        Entities.FoodTruck GetByUrl(string url);
+        Entities.FoodTruck GetById(Guid id);
+
     }
 }
