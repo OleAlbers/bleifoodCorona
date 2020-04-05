@@ -25,6 +25,9 @@ namespace Bleifood.BL
         public string SmtpBCC { get { return "Smtp:BCC".FromConfig(); } }
         public string SmtpCC { get { return "Smtp:CC".FromConfig(); } }
 
+
+      
+
         public void OrderCustomer(Entities.Order order, Entities.FoodTruck truck)
         {
             string subject = "Deine Bestellung wurde aufgegeben";
@@ -61,7 +64,7 @@ namespace Bleifood.BL
             return $"Anbieter:\n{GetAddress(truck.PostAddress)}";
         }
 
-        private string GetCustomerAddress(Order order)
+        private string GetCustomerAddress(Entities.Order order)
         {
             return $"Besteller:\n{GetAddress(order.CustomerAddress)}";
         }
@@ -71,7 +74,7 @@ namespace Bleifood.BL
             return $"{address.Name}\n{address}\n{address.Mail}\n{address.Phone}\n\n";
         }
 
-        private string CreateOrderPositions(Order order)
+        private string CreateOrderPositions(Entities.Order order)
         {
             string body = "Bestellpositionen:\n"
                         + "-----------------\n";
@@ -94,7 +97,8 @@ namespace Bleifood.BL
             return $"{position.Position.Name:80}\t{position.Amount}\t{position.Position.Price:10}\t{position.Position.Price * position.Amount}\n";
         }
 
-        private string GetOrderSumText(Order order)
+      
+        private string GetOrderSumText(Entities.Order order)
         {
             string footer = string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Versand", order.Shipping);
             if (order.Tip > 0)

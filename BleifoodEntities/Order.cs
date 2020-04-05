@@ -16,7 +16,7 @@ namespace Bleifood.Entities
         public decimal Shipping { get; set; }
         public Guid TruckId { get; set; }
         public string UniqueKey { get; set; }
-        
-        
+        public decimal Total { get; set; }
     }
+
 }

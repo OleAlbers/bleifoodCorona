@@ -8,6 +8,6 @@ namespace Bleifood.BL.Interfaces
 {
     public interface IOrder
     {
-        void PlaceOrder(Bleifood.Entities.Order order);
+        void PlaceOrder(Entities.Order order);
     }
 }

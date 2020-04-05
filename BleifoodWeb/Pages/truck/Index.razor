@@ -1,6 +1,7 @@
 ﻿@page "/{truck}"
 @using BL
 @inject BL.Interfaces.IFoodTruck foodTruckLogic
+@inject BL.Interfaces.IOrder orderLogic;
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
 @inject BL.Interfaces.IBrowserStorage browserStorage
@@ -265,40 +266,92 @@
     </div>
 </div>
 
+@if (_order.Positions.Count > 0)
+{
+    <div class="row">
+        <h3>Deine Bestellung:</h3>
+        <div class="pretty-table table-responsive">
+            <table class="table orderTable">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Anzahl</th>
+                        <th>Gericht</th>
+                        <th align="right">Einzelpreis</th>
+                        <th align="right">Gesamtpreis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in _order.Positions)
+                    {
+                        <tr>
+                            <td>@(_order.Positions.IndexOf(item) + 1)</td>
+                            <td><a @onclick="(q => Minus(item))"><i class="fas fa-minus-circle"></i></a> <span>@item.Amount </span><a @onclick="(q => Plus(item))"><i class="fas fa-plus-circle"></i></a></td>
+                            <td>@item.Position.Name</td>
+                            <td align="right">@item.Position.Price.AsCurrency()</td>
+                            <td align="right" style="font-weight:bold">@((item.Amount * item.Position.Price).AsCurrency())</td>
+                        </tr>
+                    }
 
-<div class="row">
-    <h3>Deine Bestellung:</h3>
-    <div class="pretty-table table-responsive">
-        <table class="table orderTable">
-            <thead>
-                <tr>
-                    <th>Position</th>
-                    <th>Anzahl</th>
-                    <th>Gericht</th>
-                    <th align="right">Einzelpreis</th>
-                    <th align="right">Gesamtpreis</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var item in _order.Positions)
-                {
-                <tr>
-                    <td>@(_order.Positions.IndexOf(item) + 1)</td>
-                    <td><a @onclick="(q=> Minus(item))"><i class="fas fa-minus-circle"></i></a> <span>@item.Amount </span><a @onclick="(q=>Plus(item))"><i class="fas fa-plus-circle"></i></a></td>
-                    <td>@item.Position.Name</td>
-                    <td align="right">@item.Position.Price.AsCurrency()</td>
-                    <td align="right" style="font-weight:bold">@((item.Amount*item.Position.Price).AsCurrency())</td>
-                </tr>
-                }
-            </tbody>
-        </table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Trinkgeld</td>
+                        <td align="right"><InputNumber @bind-Value="_order.Tip" /></td>
+                        <td align="right" style="font-weight:bold">@_order.Tip.AsCurrency()</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Lieferkosten</td>
+                        <td align="right">@CalculateShipping().AsCurrency()</td>
+                        <td align="right" style="font-weight:bold">@CalculateShipping().AsCurrency()</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="font-weight:bold">SUMME</td>
+                        <td style="font-weight:bold"align="right">@CalculateAll().AsCurrency()</td>
+                        <td align="right" style="font-weight:bold; color:darkred">@CalculateAll().AsCurrency()</td>
+                    </tr>
+                </tbody>
+            </table>
+            @if (TotalFromPositions() < _truck.MinimumOrderAmount)
+            {
+                <div class="moreMoney"><span>Die MindestBestellmenge von @_truck.MinimumOrderAmount.AsCurrency() ist noch nicht erreicht</span></div>
+            }
+            else
+            {
+                <a @onclick="(q=> TakeOrder())" class="btn btn-default">Bestellen</a>
+            }
+            <div class="orderAddressSmall">
+                <strong>Lieferadresse:</strong><br />
+                @_order.CustomerAddress.Name<br />
+                @_order.CustomerAddress.Street<br />
+                @_order.CustomerAddress.Zip @_order.CustomerAddress.City<br />
+                @_order.CustomerAddress.Mail<br />
+                @_order.CustomerAddress.Phone<br />
+                <a @onclick="(q => ChangeAddress())">Adresse ändern</a>
+            </div>
+
+        </div>
     </div>
-</div>
+}
 
 @code {
     private Entities.FoodTruck _truck;
     private IEnumerable<Entities.Position> _positions;
     private Entities.Order _order = new Entities.Order();
+    private bool _askForAddress = false;
+    private bool _allowData = false;
+    private bool _takeOrder = false;
+
+   
+
+    private void ChangeAddress()
+    {
+        _askForAddress = true;
+    }
 
     public bool HasCategory(Entities.Position.Categories category)
     {
@@ -310,6 +363,41 @@
         return _positions.Where(q => q.Category == category).OrderBy(q => q.SortOrder);
     }
 
+    private void TakeOrder()
+    {
+        if (!_order.CustomerAddress.IsValid() || string.IsNullOrWhiteSpace(_order.CustomerAddress.Name))
+        {
+            _takeOrder = true;
+            _askForAddress = true;
+            return;
+        }
+        FinishOrder();
+    }
+
+    private void FinishOrder()
+    {
+        orderLogic.PlaceOrder(_order);
+        navigationManager.NavigateTo($"/{_truck.Url}/pay/?amount={_order.Total}&paypalKey={_order.UniqueKey}");
+    }
+
+    private decimal CalculateAll()
+    {
+        _order.Total=TotalFromPositions() + _order.Shipping +_order.Tip;
+        return _order.Total;
+    }
+
+    private decimal CalculateShipping()
+    {
+        var total = TotalFromPositions();
+        _order.Shipping = _truck.ShippingCost;
+        if (_truck.OfferNoShipping && _truck.MinumumNoShippingAmount < total) _order.Shipping = 0;
+        return _order.Shipping;
+    }
+
+    private decimal TotalFromPositions()
+    {
+        return _order.Positions.Sum(q => q.Amount * q.Position.Price);
+    }
 
     public void AddToCart(Entities.Position position)
     {
@@ -330,7 +418,7 @@
     private void Minus(Entities.OrderPosition position)
     {
         position.Amount--;
-        if (position.Amount<1)
+        if (position.Amount < 1)
         {
             _order.Positions.Remove(position);
         }
@@ -364,52 +452,72 @@
             GetAddressFromLocalStorage();
         }
     }
+
+    private void StoreAddressToLocalStorage()
+    {
+        if (!_order.CustomerAddress.IsValid()) return;
+        browserStorage.StoreData(_order.CustomerAddress);
+    }
+
+    private void SaveAddress()
+    {
+        _askForAddress = false;
+        StoreAddressToLocalStorage();
+        if (_takeOrder) FinishOrder();
+    }
 }
 
 
 
+@if (_askForAddress)
+{
+    <EditForm Model="_order.CustomerAddress">
+        <div class="popupAddress">
+            <div class="easyBox full">
+                <p>Fast fertig. Überprüfe bitte noch einmal Deine Kontaktdaten</p>
+                <p><strong>Wir verwenden Deine Daten ausschließlich um DIr das Essen liefern zu können und speichern nur das was dafür unbedingt notwendig ist.</strong></p>
+                <div class="row nomargin">
+                    <div class="col-md-5">
+                        <h4 class="hdr7">Deine Adresse</h4>
+                        <p>Damit Dein Essen Dich auch findet</p>
+                        <div class="form-group">
+                            <label>Dein Name</label>
+                            <input type="text" class="form-control" @bind-value="_order.CustomerAddress.Name" name="name" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Straße + Hausnummer</label>
+                            <input type="text" class="form-control" @bind-value="_order.CustomerAddress.Street" name="street" placeholder="ABC-Straße 3">
+                        </div>
+                        <div class="form-group">
+                            <label>Ort</label>
+                            <input type="text" class="form-control" @bind-value="_order.CustomerAddress.City" name="city" placeholder=" Hamburg">
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <h4 class="hdr7">Kontakt</h4>
+                        <div class="form-group">
+                            <label>E-Mail</label>
+                            <p>An diese Adresse wird Deine Bestellbestätigung geschickt</p>
+                            <input type="email" class="form-control" @bind-value="_order.CustomerAddress.Mail" name="mail" placeholder="john@doe.de">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon</label>
+                            <p>Hierüber kann Dich der Foodtrucker Dich erreichen. Wenn Du das nicht möchtest lass das Feld leer</p>
+                            <input type="tel" class="form-control" @bind-value="_order.CustomerAddress.Phone" name="phone" placeholder="040 12345">
+                        </div>
+                        <div class="form-group">
+                            <label>Datenverarbeitung</label>
+                            <input type="checkbox" class="form-control" @bind-value="_allowData" name="allowdata">Ich bin damit einverstanden, dass meine Daten gespeichert, verarbeitet und an den Foodtrucker weitergegeben werden.<br />
+                        </div>
+                    </div>
+                    @if (_allowData)
+                    {
+                        <a @onclick="(q => SaveAddress())" class="btn btn-default">Daten speichern</a>
+                    }
+                </div>
 
-@*<div class="popupAddress">
-        <div class="easyBox full">
-            <p>Bevor es losgehen kann brauchen wir noch Deine Lieferadresse</p>
-            <p><strong>Wir verwenden Deine Daten ausschließlich um DIr das Essen liefern zu können und speichern nur das was dafür unbedingt notwendig ist.</strong></p>
-            <div class="row nomargin">
-                <div class="col-md-5">
-                    <h4 class="hdr7">Deine Adresse</h4>
-                    <p>Damit Dein Essen Dich auch findet</p>
-                    <div class="form-group">
-                        <label>Dein Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Straße + Hausnummer</label>
-                        <input type="text" class="form-control" name="street" placeholder="ABC-Straße 3">
-                    </div>
-                    <div class="form-group">
-                        <label>PLZ + Ort</label>
-                        <input type="text" class="form-control" name="city" placeholder="20459 Hamburg">
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-5">
-                    <h4 class="hdr7">Kontakt</h4>
-                    <div class="form-group">
-                        <label>E-Mail</label>
-                        <p>An diese Adresse wird Deine Bestellbestätigung geschickt</p>
-                        <input type="email" class="form-control" name="mail" placeholder="john@doe.de">
-                    </div>
-                    <div class="form-group">
-                        <label>Telefon</label>
-                        <p>Hierüber kann Dich der Foodtrucker Dich erreichen. Wenn Du das nicht möchtest las das Feld leer</p>
-                        <input type="tel" class="form-control" name="phone" placeholder="040 12345">
-                    </div>
-                    <div class="form-group">
-                        <label>Datenverarbeitung</label>
-                        <input type="checkbox" class="form-control" name="allowdata">Ich bin damit einverstanden, dass meine Daten gespeichert, verarbeitet und an den Foodtrucker weitergegeben werden.<br />
-                    </div>
-                </div>
-                <input class="btn btn-default" type="submit" value="Submit">
             </div>
-
         </div>
-    </div>*@
+    </EditForm>
+}
