@@ -1,0 +1,51 @@
+﻿@page "/{truck}/pay"
+@using BL
+@inject BL.Interfaces.IFoodTruck foodTruckLogic
+@inject NavigationManager navigationManager
+
+@using Microsoft.AspNetCore.WebUtilities
+
+@code {
+    @functions {
+        [Parameter]
+        public string Truck { get; set; }
+    }
+}
+
+<h4 class="hdr1">@_truck.Name</h4>
+
+
+<div class="row">
+    <h4>Deine Bestellung wurde abgeschickt. </h4>
+    <p>Deine Bestellung wurde verschickt an:</p>
+    <p>
+        <strong>@_truck.Name</strong><br />
+        <i class="fas fa-home"></i>@_truck.PostAddress.Street, @_truck.PostAddress.Zip @_truck.PostAddress.City<br /><br />
+        <i class="fas fa-phone"></i>@_truck.PostAddress.Phone<br />
+        <i class="fas fa-at"></i>@_truck.PostAddress.Mail<br />
+    </p>
+    <p>
+        Du wirst in Kürze eine Bestätigungs-Email erhalten.
+    </p>
+    <p>Bitte überweise den Betrag von <strong>@_amount</strong> über folgenden <a href="@_truck.PaypalMe(_amount)" target="_blank">Paypal-Link</a></p>
+    <p>Gib bitte beim Kommentar den Code <strong>@_token</strong> an. Das macht es leichter Deine Zahlung zuzuordnen. Danke!</p>
+
+</div>
+
+@code {
+    private Entities.FoodTruck _truck;
+    private decimal _amount;
+    private string _token;
+
+    protected override void OnInitialized()
+    {
+        var url = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var queryValues = QueryHelpers.ParseQuery(url.Query);
+
+        _truck = foodTruckLogic.GetTruckByUrl(Truck);
+        if (_truck == null) navigationManager.NavigateTo("/");   // wrong url
+        _amount = decimal.Parse(queryValues["amount"]);
+        _token = queryValues["paypalKey"];
+    }
+
+}

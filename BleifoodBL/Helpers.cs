@@ -73,5 +73,17 @@ namespace Bleifood.BL
         {
             return string.Format(new CultureInfo("de-de"), "{0:0.00} €", price);
         }
+
+        public static Time  NextQuarter(this Time time)
+        {
+            var retTime = new Time(time.Hour, time.Minute+1);
+            while (retTime.Minute % 15 != 0) retTime.Minute++;
+            if (retTime.Minute==60)
+            {
+                retTime.Minute = 0;
+                retTime.Hour++;
+            }
+            return retTime;
+        }
     }
 }

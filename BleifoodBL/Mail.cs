@@ -15,7 +15,6 @@ namespace Bleifood.BL
     {
         private const string MailHeaderOrderFoodtruck = "Bleifood.de: Es ist eine Bestellung eingegangen:\n\n";
         private const string MailHeaderOrderCustomer = "Bleifood.de: Du hast etwas bestellt:\n\n";
-        private const string MailFooterCustomer = "(!)PRÜFE BITTE, OB DEINE ZAHLUNG BEI PAYPAL ANGEKOMMEN IST(!)";
 
         public string SmtpHost { get { return "Smtp:Host".FromConfig(); } }
         public string SmtpPort { get { return "Smtp:Port".FromConfig(); } }
@@ -27,39 +26,44 @@ namespace Bleifood.BL
 
 
       
+        private string CreateMainBody(Entities.Order order)
+        {
+            string body= $"BestellId (Paypal!): {order.UniqueKey}\n ";
+            body += $"Gewünschte Uhrzeit: {order.TimeSlot}\n\n ";
+            body += CreateOrderPositions(order);
+            return body;
+        }
 
-        public void OrderCustomer(Entities.Order order, Entities.FoodTruck truck)
+        public void OrderCustomer(Entities.Order order)
         {
             string subject = "Deine Bestellung wurde aufgegeben";
             string body = MailHeaderOrderCustomer;
-            body += $"BestellId: {order.UniqueKey}\n\n ";
-            body += CreateOrderPositions(order);
-            body += GetShopAddress(truck);
-            body += MailFooterCustomer;
-            SendMail(order.CustomerAddress.Mail, subject, body, truck.PostAddress.Mail);
+            body += CreateMainBody(order);
+           
+            body += GetShopAddress(order.Truck);
+            body += GetOrderPPFooter(order);
+            SendMail(order.CustomerAddress.Mail, subject, body, order.Truck.PostAddress.Mail);
         }
 
-        public void OrderFoodTruck(Entities.Order order, Entities.FoodTruck truck)
+        public void OrderFoodTruck(Entities.Order order)
         {
             string subject = "Eine Bestellung wurde aufgegeben";
             
             string body = MailHeaderOrderFoodtruck;
 
-            if (!truck.Active && truck.TestFinished == null)
+            if (!order.Truck.Active && order.Truck.TestFinished == null)
             {
                 body += "\n DU BEFINDEST DICH IM TESTMODUS!\n";
                 body+="Wenn Du mit der Bestellung zufrieden bist, klicke auf den folgenden Link um den Test abzuschließen:\n";
-                body += $"{GetHostName()}/manage/test/{truck.TestToken} \n";
+                body += $"{GetHostName()}/manage/test/{order.Truck.TestToken} \n";
                 body += $"====================================================================================================\n\n";
-
             }
-            body += $"BestellId (Paypal!): {order.UniqueKey}\n\n ";
-            body += CreateOrderPositions(order);
+            body += CreateMainBody(order);
             body += GetCustomerAddress(order);
-            SendMail(truck.PostAddress.Mail, subject, body, order.CustomerAddress.Mail);
+            SendMail(order.Truck.PostAddress.Mail, subject, body, order.CustomerAddress.Mail);
         }
 
-        private string GetShopAddress(Entities.FoodTruck  truck)
+        private string GetShopAddress(Entities.FoodTruck truck)
         {
             return $"Anbieter:\n{GetAddress(truck.PostAddress)}";
         }
@@ -73,6 +77,8 @@ namespace Bleifood.BL
         {
             return $"{address.Name}\n{address}\n{address.Mail}\n{address.Phone}\n\n";
         }
+
+    
 
         private string CreateOrderPositions(Entities.Order order)
         {
@@ -100,17 +106,24 @@ namespace Bleifood.BL
       
         private string GetOrderSumText(Entities.Order order)
         {
-            string footer = string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Versand", order.Shipping);
+            string footer = string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Versand", order.ShippingCost());
             if (order.Tip > 0)
             {
                 footer += string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Trinkgeld", order.Tip);
             }
-            decimal fullprice = order.Shipping + order.Tip;
-            fullprice += order.Positions.Sum(q => (q.Amount * q.Position.Price));
             footer += "-----------------------------------------------------------------------\n";
-            footer += string.Format("{0:90}\t\t{1:10}\n\n", "Total", fullprice);
+            footer += string.Format("{0:90}\t\t{1:10}\n\n", "Total", order.Total());
             return footer;
         }
+
+        private string GetOrderPPFooter(Entities.Order order)
+        {
+            string footer = $"Bitte begleiche den Betrag von {order.Total().AsCurrency()} (falls noch nicht geschehen) per Paypal über folgenden Link: \n";
+            footer += order.PaypalMe();
+            footer += $"\n\nGib als Bemerkung bitte den Code {order.UniqueKey} ein, damit Deine Zahlung leichter zugeordnet werden kann.\nGuten Appetit!";
+            return footer;
+        }
+ 
 
 
         private string GetHostName()

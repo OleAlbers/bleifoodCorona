@@ -8,8 +8,8 @@ namespace Bleifood.BL.Interfaces
 
         void Validate(ApplicationUser user, string token);
 
-        void OrderCustomer(Entities.Order order, Entities.FoodTruck truck);
+        void OrderCustomer(Entities.Order order);
 
-        void OrderFoodTruck(Entities.Order order, Entities.FoodTruck truck);
+        void OrderFoodTruck(Entities.Order order);
     }
 }

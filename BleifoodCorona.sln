@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorFood", "BlazorFood\BlazorFood.csproj", "{3427FDBD-47FD-4204-99D3-3364A84BA536}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BleifoodBL", "BleifoodBL\BleifoodBL.csproj", "{2B7E34F5-74C1-429A-A089-EDBBA448E5B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BleifoodDL", "BleifoodDL\BleifoodDL.csproj", "{0A8B9651-754F-444E-92E4-411C3CAC9AFC}"
@@ -13,18 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BleifoodEntities", "Bleifoo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BleifoodWeb", "BleifoodWeb\BleifoodWeb.csproj", "{1EC8A821-82E4-4E52-9D34-42EDA1A1EB99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dummy", "dummy\dummy.csproj", "{02DC4B13-1ABA-4596-863F-BB60721F18D9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3427FDBD-47FD-4204-99D3-3364A84BA536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3427FDBD-47FD-4204-99D3-3364A84BA536}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3427FDBD-47FD-4204-99D3-3364A84BA536}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3427FDBD-47FD-4204-99D3-3364A84BA536}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B7E34F5-74C1-429A-A089-EDBBA448E5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B7E34F5-74C1-429A-A089-EDBBA448E5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B7E34F5-74C1-429A-A089-EDBBA448E5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,10 +33,6 @@ Global
 		{1EC8A821-82E4-4E52-9D34-42EDA1A1EB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EC8A821-82E4-4E52-9D34-42EDA1A1EB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EC8A821-82E4-4E52-9D34-42EDA1A1EB99}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02DC4B13-1ABA-4596-863F-BB60721F18D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02DC4B13-1ABA-4596-863F-BB60721F18D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02DC4B13-1ABA-4596-863F-BB60721F18D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02DC4B13-1ABA-4596-863F-BB60721F18D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

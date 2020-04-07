@@ -25,6 +25,12 @@ namespace Bleifood.Entities
             }
         }
 
+        public Time(DateTime datetime)
+        {
+            Hour = datetime.Hour;
+            Minute = datetime.Minute;
+        }
+
         public Time()
         {
             Hour = 0;
@@ -41,16 +47,42 @@ namespace Bleifood.Entities
             return (Hour * 60 + Minute).CompareTo(other?.Hour * 60 + other?.Minute);
         }
 
+        public string AsString
+        {
+            get {
+                return ToString();
+            }
+            set
+            {
+                var parts = value.Split(":");
+                if (parts.Length != 2) return;
+                if (int.TryParse(parts[0], out int hour) && int.TryParse(parts[1], out int minute) && hour>=0 && minute>=0 && hour<=24 && minute<=60)
+                {
+                    Hour = hour;
+                    Minute = minute;
+                }
+            }
+        }
+
         public DateTime AsDateTime
         {
             get
             {
+                if (Hour == 0) return new DateTime(1900,1,1);
                 return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, Hour, Minute, 0);
             }
             set
             {
-                Hour = value.Hour;
-                Minute = value.Minute;
+                if (value.Year==1900)
+                {
+                    Hour = 0;
+                    Minute = 0;
+                }
+                else
+                {
+                    Hour = value.Hour;
+                    Minute = value.Minute;
+                }
             }
         }
 
@@ -68,7 +100,5 @@ namespace Bleifood.Entities
                 Minute += 60;
             }
         }
-
-        
     }
 }

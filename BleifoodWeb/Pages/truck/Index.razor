@@ -1,7 +1,8 @@
 ﻿@page "/{truck}"
 @using BL
+@using System.Globalization
 @inject BL.Interfaces.IFoodTruck foodTruckLogic
-@inject BL.Interfaces.IOrder orderLogic;
+@inject BL.Interfaces.IOrder orderLogic
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
 @inject BL.Interfaces.IBrowserStorage browserStorage
@@ -14,6 +15,20 @@
 }
 
 <h4 class="hdr1">@_truck.Name</h4>
+
+@if (_tooEarly)
+{
+    <h4>Noch geschlossen</h4>
+    <p>Du kannst erst ab @_truck.StartOrder Uhr bestellen. Mach Dir erst mal einen Kaffee und schau später noch mal vorbei</p>
+    return;
+}
+
+@if (_tooLate)
+{
+    <h4>Schon geschlossen</h4>
+    <p>Es wird leider nur bis @_truck.EndDelivery Uhr geliefert. Versuch es morgen gerne noch mal</p>
+    return;
+}
 
 
 <div class="row">
@@ -269,84 +284,145 @@
 @if (_order.Positions.Count > 0)
 {
     <div class="row">
-        <h3>Deine Bestellung:</h3>
-        <div class="pretty-table table-responsive">
-            <table class="table orderTable">
-                <thead>
-                    <tr>
-                        <th>Position</th>
-                        <th>Anzahl</th>
-                        <th>Gericht</th>
-                        <th align="right">Einzelpreis</th>
-                        <th align="right">Gesamtpreis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in _order.Positions)
-                    {
+        <EditForm Model="_order">
+            <h3>Deine Bestellung:</h3>
+            <div class="pretty-table table-responsive">
+                <table class="table orderTable">
+                    <thead>
                         <tr>
-                            <td>@(_order.Positions.IndexOf(item) + 1)</td>
-                            <td><a @onclick="(q => Minus(item))"><i class="fas fa-minus-circle"></i></a> <span>@item.Amount </span><a @onclick="(q => Plus(item))"><i class="fas fa-plus-circle"></i></a></td>
-                            <td>@item.Position.Name</td>
-                            <td align="right">@item.Position.Price.AsCurrency()</td>
-                            <td align="right" style="font-weight:bold">@((item.Amount * item.Position.Price).AsCurrency())</td>
+                            <th>Position</th>
+                            <th>Anzahl</th>
+                            <th>Gericht</th>
+                            <th align="right">Einzelpreis</th>
+                            <th align="right">Gesamtpreis</th>
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var item in _order.Positions)
+                        {
+                            <tr>
+                                <td>@(_order.Positions.IndexOf(item) + 1)</td>
+                                <td><a @onclick="(q => Minus(item))"><i class="fas fa-minus-circle"></i></a> <span>@item.Amount </span><a @onclick="(q => Plus(item))"><i class="fas fa-plus-circle"></i></a></td>
+                                <td>@item.Position.Name</td>
+                                <td align="right">@item.Position.Price.AsCurrency()</td>
+                                <td align="right" style="font-weight:bold">@((item.Amount * item.Position.Price).AsCurrency())</td>
+                            </tr>
+                        }
 
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Trinkgeld</td>
-                        <td align="right"><InputNumber @bind-Value="_order.Tip" /></td>
-                        <td align="right" style="font-weight:bold">@_order.Tip.AsCurrency()</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Lieferkosten</td>
-                        <td align="right">@CalculateShipping().AsCurrency()</td>
-                        <td align="right" style="font-weight:bold">@CalculateShipping().AsCurrency()</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td style="font-weight:bold">SUMME</td>
-                        <td style="font-weight:bold"align="right">@CalculateAll().AsCurrency()</td>
-                        <td align="right" style="font-weight:bold; color:darkred">@CalculateAll().AsCurrency()</td>
-                    </tr>
-                </tbody>
-            </table>
-            @if (TotalFromPositions() < _truck.MinimumOrderAmount)
-            {
-                <div class="moreMoney"><span>Die MindestBestellmenge von @_truck.MinimumOrderAmount.AsCurrency() ist noch nicht erreicht</span></div>
-            }
-            else
-            {
-                <a @onclick="(q=> TakeOrder())" class="btn btn-default">Bestellen</a>
-            }
-            <div class="orderAddressSmall">
-                <strong>Lieferadresse:</strong><br />
-                @_order.CustomerAddress.Name<br />
-                @_order.CustomerAddress.Street<br />
-                @_order.CustomerAddress.Zip @_order.CustomerAddress.City<br />
-                @_order.CustomerAddress.Mail<br />
-                @_order.CustomerAddress.Phone<br />
-                <a @onclick="(q => ChangeAddress())">Adresse ändern</a>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Trinkgeld</td>
+                            <td align="right">
+                                <InputSelectNumber @bind-Value="_order.Tip">
+                                    <option selected value="0">@(0m.AsCurrency())</option>
+                                    @for (decimal amount = 1; amount <= 25; amount++)
+                                        {
+                                        <option value="@amount">@amount.AsCurrency()</option>
+                                        }
+                                    /**/
+                                </InputSelectNumber>
+                            </td>
+                            <td align="right" style="font-weight:bold">@_order.Tip.AsCurrency()</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>Lieferkosten</td>
+                            <td align="right"></td>
+                            <td align="right" style="font-weight:bold">@_order.ShippingCost().AsCurrency()</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="font-weight:bold">SUMME</td>
+                            <td style="font-weight:bold" align="right"></td>
+                            <td align="right" style="font-weight:bold; color:darkred">@_order.Total().AsCurrency()</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" align="right">Gewünschte Lieferzeit:</td>
+                            <td>
+                                <InputSelect @bind-Value="@_order.TimeSlot.AsString">
+                                    <option value="00:00">(bitte wählen)</option>
+                                    @foreach (var timeOption in GetTimeOptions())
+                                        {
+                                        <option value="@timeOption.AsString">@timeOption.AsString</option>
+                                        }
+                                    /**/
+                                </InputSelect>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                @if (TotalFromPositions() < _truck.MinimumOrderAmount)
+                {
+                    <div class="moreMoney"><span>Die MindestBestellmenge von @_truck.MinimumOrderAmount.AsCurrency() ist noch nicht erreicht</span></div>
+                }
+                else
+                {
+                    <a @onclick="(q=> TakeOrder())" class="btn btn-default">Bestellen</a>
+                }
+                <div class="orderAddressSmall">
+                    <strong>Lieferadresse:</strong><br />
+                    @_order.CustomerAddress.Name<br />
+                    @_order.CustomerAddress.Street<br />
+                    @_order.CustomerAddress.Zip @_order.CustomerAddress.City<br />
+                    @_order.CustomerAddress.Mail<br />
+                    @_order.CustomerAddress.Phone<br />
+                    <a @onclick="(q => ChangeAddress())">Adresse ändern</a>
+                </div>
+
             </div>
-
-        </div>
+        </EditForm>
     </div>
 }
 
 @code {
     private Entities.FoodTruck _truck;
     private IEnumerable<Entities.Position> _positions;
-    private Entities.Order _order = new Entities.Order();
+    private Entities.Order _order;
     private bool _askForAddress = false;
     private bool _allowData = false;
     private bool _takeOrder = false;
+    private bool _tooLate = false;
+    private bool _tooEarly = false;
 
-   
+
+
+    private void CalculateTimes()
+    {
+        var startTime = GetStartTime(out bool isTooEarly);
+        _tooEarly = isTooEarly;
+        if (isTooEarly) return;
+
+        if (startTime.CompareTo(_truck.EndDelivery) > 0) _tooLate = true;
+    }
+
+    private Entities.Time GetStartTime(out bool isTooEarly)
+    {
+        isTooEarly = false;
+        var now = new Entities.Time(DateTime.Now);
+        if (now.CompareTo(_truck.StartOrder) < 0) isTooEarly = true;
+        now.Minute += 15;   // at least 15 minutes time to create meal
+        now = now.NextQuarter();
+
+        var minTime = _truck.StartDelivery;
+        if (now.CompareTo(minTime) > 0) minTime = now;
+        return minTime;
+    }
+
+    private List<Entities.Time> GetTimeOptions()
+    {
+        var timeOptions = new List<Entities.Time>();
+        var time = GetStartTime(out _);
+        while (time.CompareTo(_truck.EndDelivery) < 0)
+        {
+            timeOptions.Add(new Entities.Time(time.Hour, time.Minute));
+            time = time.NextQuarter();
+        }
+        return timeOptions;
+    }
 
     private void ChangeAddress()
     {
@@ -377,22 +453,12 @@
     private void FinishOrder()
     {
         orderLogic.PlaceOrder(_order);
-        navigationManager.NavigateTo($"/{_truck.Url}/pay/?amount={_order.Total}&paypalKey={_order.UniqueKey}");
+        navigationManager.NavigateTo($"/{_truck.Url}/pay/?amount={_order.Total()}&paypalKey={_order.UniqueKey}");
     }
 
-    private decimal CalculateAll()
-    {
-        _order.Total=TotalFromPositions() + _order.Shipping +_order.Tip;
-        return _order.Total;
-    }
 
-    private decimal CalculateShipping()
-    {
-        var total = TotalFromPositions();
-        _order.Shipping = _truck.ShippingCost;
-        if (_truck.OfferNoShipping && _truck.MinumumNoShippingAmount < total) _order.Shipping = 0;
-        return _order.Shipping;
-    }
+
+
 
     private decimal TotalFromPositions()
     {
@@ -433,7 +499,9 @@
     {
         _truck = foodTruckLogic.GetTruckByUrl(Truck);
         if (_truck == null) navigationManager.NavigateTo("/");   // wrong url
+        _order = new Entities.Order(_truck);
         _positions = foodTruckLogic.GetCard(_truck.Id);
+        CalculateTimes();
     }
 
     private async void GetAddressFromLocalStorage()

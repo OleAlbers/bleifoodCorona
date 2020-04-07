@@ -73,6 +73,7 @@ namespace Bleifood.Web
             services.AddScoped<IFoodTruck, FoodTruck>();
             services.AddScoped<IToday, Today>();
             services.AddScoped<IBrowserStorage, BrowserStorage > ();
+            services.AddScoped<IOrder, Order>();
             services.AddScoped<Geocode>();
             services.AddScoped<Identity>();
             services.AddSingleton<AppState>();
