@@ -26,7 +26,7 @@ Deine Personenbezogenen Daten hat lediglich (per E-Mail) der Mensch, der Dir das
 
 ## Anbieter
 ### Login-Daten
-Als Anbieter brauchen wir natürlich etwas mehr Daten von Dir. Das fängt schon mit Deinen Zugangsdaten, bestehend aus E-Mail und Passwort an. Diese werden in einer Datenbank gespeichert; E-Mail im Klartext, Passwörter verschlüsselt. Zusätzlich dazu auch Datum des letzten Anmeldens und Datum des erstellens
+Als Anbieter brauchen wir natürlich etwas mehr Daten von Dir. Das fängt schon mit Deinen Zugangsdaten, bestehend aus E-Mail und Passwort an. Diese werden in einer Datenbank gespeichert; E-Mail im Klartext, Passwörter gehashed. Zusätzlich dazu auch Datum des letzten Anmeldens und Datum des erstellens
 
 ### Angebotsdaten
 Alle weiteren Daten werden in einer anderen Datenbank gespeichert. Alle nun genannten Daten werden auch den Kunden angezeigt. 
