@@ -1,0 +1,42 @@
+﻿@page  "/manage/edit/mine/publish"
+@using Microsoft.AspNetCore.WebUtilities
+<h3>Veröffentlichen</h3>
+@inject NavigationManager navigationManager
+@inject BL.Interfaces.IFoodTruck truckLogic
+@inject Identity identity
+<div>
+    <div class="easyBox">
+        Damit die Leute bei Dir bestellen können musst Du Dein Angebot veröffentlichen. Möchtest Du das tun?
+        
+        <br /><br />
+        <a class="btn btn-success" style="float:left" @onclick="(()=>Activate())"><strong>Ja</strong></a>
+        <a class="btn btn-warning" style="float:right" @onclick="(()=>DontActivate())"><strong>Nein</strong></a>
+        <br /><br />
+    </div>
+</div>
+
+
+@code {
+   
+    private Entities.FoodTruck _truck;
+
+
+     private void Activate()
+    {
+        _truck.Active = true;
+        truckLogic.UpdateTruck(_truck);
+        navigationManager.NavigateTo("/manage/edit/mine", true);
+    }
+
+    private void DontActivate()
+    {
+        navigationManager.NavigateTo("/manage/edit/mine", true);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var myTruckId = await identity.GetMyTruckId();
+        if (myTruckId == null) return;
+        _truck = truckLogic.GetTruck(myTruckId.Value);
+    }
+}

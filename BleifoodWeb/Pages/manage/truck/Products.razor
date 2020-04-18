@@ -109,7 +109,7 @@
         var loggedIn = await identity.IsLoggedIn();
         if (!loggedIn) return;
         _myTruckId = await identity.GetMyTruckId();
-        if (_myTruckId == null) navigationManager.NavigateTo("/manage/edit/mine");
+        if (_myTruckId == null) navigationManager.NavigateTo("/manage/edit/mine", true);
 
         _products = foodTruckLogic.GetCard(_myTruckId.Value).ToList();
     }

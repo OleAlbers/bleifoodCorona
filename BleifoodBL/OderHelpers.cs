@@ -25,7 +25,7 @@ namespace Bleifood.BL
         public static decimal ShippingCost(this Entities.Order order)
         {
             decimal shipping = order.Truck.ShippingCost;
-            if (order.SumPositions() >= order.Truck.MinumumNoShippingAmount && order.Truck.OfferNoShipping) shipping = 0;
+            if (order.SumPositions() >= order.Truck.MinimumNoShippingAmount && order.Truck.OfferNoShipping) shipping = 0;
             return shipping;
         }
 

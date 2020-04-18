@@ -1,5 +1,5 @@
 ﻿@inject Identity identity
-
+@inject BL.Interfaces.IFoodTruck truckLogic
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="inner">
@@ -7,11 +7,11 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 @*<button type="button" class="navbar-toggle btn btn-primary" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>*@
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>*@
 
                 <div class="text-center">
                     <p class="address">Bleifood.de - Social Distancing in lecker                    </p>
@@ -28,11 +28,10 @@
             </div>
 
             <!-- TODO: Mobile Navigation-->
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <AuthorizeView>
                 <Authorized>
-                    @if ( _myTruckId!=null)
+                    @if (_myTruckId != null)
                     {
                         <div class="collapse navbar-collapse navbar-ex1-collapse">
                             <ul class="nav navbar-nav text-center" data-type="margin-top" data-pos="140" style="margin-top: 30px;">
@@ -50,8 +49,8 @@
                                     <a class="dropdown-toggle">Überprüfen</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="/manage/edit/mine/test">Eigenen Shop testen</a></li>
-                                        <li><a href="/manage/edit/mine/publish">Veröffentlichen</a></li>
-                                        <li class="disabledMenu"><a href="/manage/edit/mine/deactivate">Deaktivieren</a></li>
+                                        <li class="@(_truck.Active?"":"disabledMenu")"><a href="/manage/edit/mine/unpublish">Deaktivieren</a></li>
+                                        <li class="@(_truck.Active?"disabledMenu":"")"><a href="/manage/edit/mine/publish">Veröffentlichen</a></li>
                                     </ul>
                                 </li>
 
@@ -64,23 +63,32 @@
                             </ul>
                         </div>
                     }
-                   
+                    else
+                    {
+                        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                            <ul class="nav navbar-nav text-center" data-type="margin-top" data-pos="140" style="margin-top: 30px;">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle">Meine Daten</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/manage/edit/mine">Daten erstellen</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle">Account</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/manage/logout">Abmelden</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    }
                 </Authorized>
                 <NotAuthorized>
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav text-center" data-type="margin-top" data-pos="140" style="margin-top: 30px;">
-                            <li class="active"><a href="/">Heute</a></li>
-                            <li><a href="/tomorrow">Morgen</a></li>
-                            <li><a href="/week">Diese Woche</a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle">Hilfe</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="">Über Bleifood</a></li>
-                                    <li><a href="">Hilfe für Besteller</a></li>
-                                    <li><a href="">Hilfe für Anbieter</a></li>
-                                    <li><a href="">Datenschutz</a></li>
-                                </ul>
-                            </li>
+                            <li class="active"><a href="/">Adresse ändern</a></li>                   
+                          
                         </ul>
                     </div>
                 </NotAuthorized>
@@ -91,12 +99,12 @@
 
         <div class="btm"></div>
     </div>
-
 </nav>
 
 @code {
     private bool _isLoggedIn = false;
     private Guid? _myTruckId = null;
+    private Entities.FoodTruck _truck;
 
     protected async override Task OnInitializedAsync()
     {
@@ -104,6 +112,7 @@
         if (_isLoggedIn)
         {
             _myTruckId = await identity.GetMyTruckId();
+            if (_myTruckId!=null)            _truck = truckLogic.GetTruck(_myTruckId.Value);
         }
     }
 

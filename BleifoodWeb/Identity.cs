@@ -1,15 +1,15 @@
 ﻿using AspNetCore.Identity.LiteDB.Models;
+
 using Bleifood.BL.Interfaces;
 using Bleifood.Web.Models;
+
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bleifood.Web
 {
@@ -48,8 +48,6 @@ namespace Bleifood.Web
             return true;
         }
 
-
-        
         public async Task<bool> Validate(ValidateUser user)
         {
             var storedUser = await _userManager.FindByIdAsync(user.UserId);
@@ -115,8 +113,9 @@ namespace Bleifood.Web
         public async Task<Guid?> GetMyTruckId()
         {
             var currentUser = await GetCurrentUser();
+            if (currentUser == null) return null;
             IFoodTruck truckLogic = new BL.FoodTruck();
-            return truckLogic.GetTruckFromUser(currentUser.Id);            
+            return truckLogic.GetTruckFromUser(currentUser.Id);
         }
 
         public async Task<ApplicationUser> GetCurrentUser()
@@ -135,6 +134,5 @@ namespace Bleifood.Web
         {
             await _signinManager.SignOutAsync();
         }
-
     }
 }

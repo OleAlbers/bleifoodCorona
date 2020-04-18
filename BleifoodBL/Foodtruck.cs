@@ -4,7 +4,6 @@ using Bleifood.Entities;
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,9 +31,12 @@ namespace Bleifood.BL
 
         public void CreateTruck(Entities.FoodTruck foodtruck)
         {
+            foodtruck.Url = foodtruck.Url.ToLower().Trim();
+            foodtruck.Name = foodtruck.Name.Trim();
             CheckPermission(null);
             var existingTruck = GetAllTrucks().FirstOrDefault(q => q.Url.Equals(foodtruck.Url, StringComparison.InvariantCultureIgnoreCase));
-            if (existingTruck != null) throw new Bleifood.DL.Exceptions.TruckAlreadyExistsException();
+            if (existingTruck != null) throw new DL.Exceptions.TruckAlreadyExistsException();
+            if (Helpers.ForbiddenUrls.Contains(foodtruck.Url)) throw new DL.Exceptions.TruckAlreadyExistsException();
             foodtruck.EndDelivery = QuarterOnly(foodtruck.EndDelivery);
             foodtruck.StartDelivery = QuarterOnly(foodtruck.StartDelivery);
             foodtruck.StartOrder = QuarterOnly(foodtruck.StartOrder);
@@ -44,9 +46,9 @@ namespace Bleifood.BL
             CreateDefaultSchedule(foodtruck);
         }
 
-        public IEnumerable<Entities.FoodTruck> GetAllTrucks(bool onlyActive = true)
+        public IEnumerable<Entities.FoodTruck> GetAllTrucks(bool onlyActive = false)
         {
-            return _dbFoodTruck.SelectAll().Where(q => q.Active == true || onlyActive);
+            return _dbFoodTruck.SelectAll().Where(q => q.Active == true || !onlyActive);
         }
 
         public IEnumerable<Position> GetCard(Guid truckId)
@@ -69,7 +71,6 @@ namespace Bleifood.BL
             return _dbSlot.GetForSchedule(scheduleId).OrderBy(q => q.SlotTime);
         }
 
- 
         public Entities.FoodTruck GetTruck(Guid truckId)
         {
             return _dbFoodTruck.SelectAll().FirstOrDefault(q => q.Id == truckId);
@@ -92,7 +93,6 @@ namespace Bleifood.BL
 
         private void CreateWeekSchedule(bool evenWeek, Entities.FoodTruck truck)
         {
-            
             for (DayOfWeek weekday = DayOfWeek.Sunday; weekday <= DayOfWeek.Saturday; weekday++)
             {
                 var weekdaySchedule = new Schedule
@@ -111,15 +111,6 @@ namespace Bleifood.BL
             CreateWeekSchedule(true, foodTruck);
             CreateWeekSchedule(false, foodTruck);
         }
-
-        //public void StartDay(Guid truckId)
-        //{
-        //    var dayOfWeek = DateTime.Now.DayOfWeek;
-        //    bool isEven = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday) % 2 == 0;
-
-        //    var schedules = _dbSchedule.GetForFoodtruck(truckId);
-        //    var todaySchedule = schedules.FirstOrDefault(q => q.IsEven == isEven && q.Weekday == dayOfWeek);
-        //}
 
         public void UpdateCard(Guid truckId, IEnumerable<Position> positions)
         {
@@ -160,6 +151,13 @@ namespace Bleifood.BL
 
         public void UpdateTruck(Entities.FoodTruck foodtruck)
         {
+            foodtruck.Url = foodtruck.Url.ToLower().Trim();
+            foodtruck.Name = foodtruck.Name.Trim();
+            CheckPermission(foodtruck.Id);
+            var existingTruck = GetAllTrucks().FirstOrDefault(q => q.Id != foodtruck.Id && q.Url.Equals(foodtruck.Url, StringComparison.InvariantCultureIgnoreCase));
+            if (existingTruck != null) throw new DL.Exceptions.TruckAlreadyExistsException();
+            if (Helpers.ForbiddenUrls.Contains(foodtruck.Url)) throw new DL.Exceptions.TruckAlreadyExistsException();
+
             foodtruck.InDataBase = true;
             _dbFoodTruck.Update(foodtruck);
         }
@@ -180,7 +178,7 @@ namespace Bleifood.BL
         private async Task<GeoCoordinate> UpdateLocationForPlace(Place place)
         {
             Geocode geocode = new Geocode();
-            var coords= await geocode.GetCoordinates(BuildAddress(place));
+            var coords = await geocode.GetCoordinates(BuildAddress(place));
             return coords;
         }
 
@@ -192,11 +190,11 @@ namespace Bleifood.BL
             var deletedPlaces = new List<Guid>();
             foreach (var place in places)
             {
-                var coords=await  UpdateLocationForPlace(place);
+                var coords = await UpdateLocationForPlace(place);
                 place.Coordinates = coords;
-
             }
-            foreach (var oldPlace in oldPlaces) {
+            foreach (var oldPlace in oldPlaces)
+            {
                 if (!places.Any(q => q.Id == oldPlace.Id)) deletedPlaces.Add(oldPlace.Id);
             }
             foreach (var newPlace in places)
@@ -208,11 +206,11 @@ namespace Bleifood.BL
             {
                 _dbPlace.Delete(deletedPlace);
             }
-            foreach (var addedPlace in places.Where(q=>addedPlaces.Contains(q.Id)))
+            foreach (var addedPlace in places.Where(q => addedPlaces.Contains(q.Id)))
             {
                 _dbPlace.Insert(addedPlace);
             }
-            foreach (var modifiedPlace in places.Where(q=>!addedPlaces.Contains(q.Id)))
+            foreach (var modifiedPlace in places.Where(q => !addedPlaces.Contains(q.Id)))
             {
                 _dbPlace.Update(modifiedPlace);
             }
@@ -225,10 +223,10 @@ namespace Bleifood.BL
             var allPlaces = _dbPlace.SelectAll();
             var allSchedules = _dbSchedule.SelectAll();
             // TODO: Optimize!
-            foreach (var truck in GetAllTrucks().Where(q=>q.Id==myTruckId || q.Active))
+            foreach (var truck in GetAllTrucks().Where(q => q.Id == myTruckId || q.Active))
             {
-                var schedule = allSchedules.FirstOrDefault(q=>q.TruckId==truck.Id && q.Weekday==DateTime.Now.DayOfWeek && q.IsEven==isEvenWeek);
-                if (schedule == null || schedule.PlaceId==null) continue;
+                var schedule = allSchedules.FirstOrDefault(q => q.TruckId == truck.Id && q.Weekday == DateTime.Now.DayOfWeek && q.IsEven == isEvenWeek);
+                if (schedule == null || schedule.PlaceId == null) continue;
                 var place = allPlaces.FirstOrDefault(q => q.Id == schedule.PlaceId);
                 if (IsNearby(userCoordinates, place.Coordinates, place.Distance)) nearby.Add(truck);
             }
@@ -237,13 +235,12 @@ namespace Bleifood.BL
 
         public bool IsNearby(GeoCoordinate firstPlace, GeoCoordinate secondPlace, double maxDistance)
         {
-            return _geocode.GetDistance(firstPlace, secondPlace)<=maxDistance;
+            return _geocode.GetDistance(firstPlace, secondPlace) <= maxDistance;
         }
 
         public Entities.FoodTruck GetTruckByUrl(string url)
         {
             return _dbFoodTruck.GetByUrl(url);
-            
         }
     }
 }

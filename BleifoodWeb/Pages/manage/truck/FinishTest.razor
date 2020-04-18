@@ -1,0 +1,77 @@
+﻿@page  "/manage/test/{url}/{token}"
+@using Microsoft.AspNetCore.WebUtilities
+<h3>Test abgeschlossen</h3>
+@inject NavigationManager navigationManager
+@inject BL.Interfaces.IFoodTruck truckLogic
+
+@if (_errorMessage != null)
+{
+    <div>
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <i class="fa fa-ban"></i>@_errorMessage
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        <div class="easyBox">
+            Der Test war erfolgreich. Möchtest Du Deinen Foodtruck nun aktivieren?<br /><br />
+            <a class="btn btn-success" style="float:left" @onclick="(()=>Activate())"><strong>Ja</strong></a>
+            <a class="btn btn-warning" style="float:right" @onclick="(()=>DontActivate())"><strong>Nein</strong></a>
+        </div>
+    </div>
+}
+
+@code {
+    @functions {
+        [Parameter]
+        public string Url { get; set; }
+        [Parameter]
+        public string Token { get; set; }
+    }
+
+    private string _errorMessage = null;
+    private Entities.FoodTruck _truck;
+
+
+    private void Activate()
+    {
+        _truck.Active = true;
+        truckLogic.UpdateTruck(_truck);
+        navigationManager.NavigateTo("/manage/edit/mine", true);
+    }
+
+    private void DontActivate()
+    {
+        navigationManager.NavigateTo("/manage/edit/mine", true);
+    }
+
+    private bool TokenIsValid()
+    {
+        _errorMessage = null;
+        _truck = truckLogic.GetTruckByUrl(Url);
+        if (_truck == null)
+        {
+            _errorMessage = $"Ich finde keinen Truck mit dem Namen '{Url}'. Bitte überprüfe die Adresse";
+        }
+        else
+        {
+            if (_truck.TestFinished != null) return true;
+            if (_truck.TestToken != Token) _errorMessage = "Der Token ist falsch.";
+        }
+        return _errorMessage == null;
+    }
+
+    protected override void OnInitialized()
+    {
+        if (TokenIsValid())
+        {
+            _truck.TestToken = null;
+            _truck.TestFinished = DateTime.Now;
+            truckLogic.UpdateTruck(_truck);
+        }
+    }
+
+}

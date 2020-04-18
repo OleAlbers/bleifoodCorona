@@ -99,13 +99,38 @@
                         <input type="time" @bind-value="_foodTruck.StartOrder.AsDateTime" @onfocusout="@(q=> { ResetValidation("StartOrder.AsDateTime"); })" class="form-control" placeholder="05:00">
                         <ValidationMessage For="() => _foodTruck.StartOrder.AsDateTime" />
                     </div>
+                    <div class="header"><br /><h4 class="hdr4">Kosten</h4></div>
+                    <div class="form-group">
+                        <label>Mindestbestellmenge (in €)</label>
+
+                        <InputText class="form-control" name="price" @bind-Value="_foodTruck.MinimumOrderAmountAsText" placeholder="12,50" />
+                        <ValidationMessage For="() => _foodTruck.MinimumOrderAmount" />
+                    </div>
+                    <div class="form-group">
+                        <label>Lieferkosten (in €)</label>
+
+                        <InputText class="form-control" name="price" @bind-Value="_foodTruck.ShippingCostAsText" placeholder="12,50" />
+                        <ValidationMessage For="() => _foodTruck.ShippingCost" />
+                    </div>
+                    <div class="form-group">
+                        <label>Kostenlose Lieferung</label>
+                        <InputCheckbox class="form-control" @bind-Value="_foodTruck.OfferNoShipping" />Kostenlose Lieferung anbieten
+                    </div>
+                    @if (_foodTruck.OfferNoShipping)
+                    {
+                        <div class="form-group">
+                            <label>Mindestbestellmenge für kostenlose Lieferung (in €)</label>
+                            <InputText class="form-control" @bind-Value="_foodTruck.MinimumNoShippingAmountAsText" />
+                            <ValidationMessage For="() => _foodTruck.MinimumNoShippingAmount" />
+                        </div>
+                    }
                     @if (_foodTruck.InDataBase)
                     {
-                    <input class="btn btn-default" type="submit" value="Speichern" />
+                        <input class="btn btn-default" type="submit" value="Speichern" />
                     }
                     else
                     {
-                    <input class="btn btn-default" type="submit" value="Erstellen" />
+                        <input class="btn btn-default" type="submit" value="Erstellen" />
                     }
 
                 </div>
@@ -119,6 +144,7 @@
     private Entities.FoodTruck _foodTruck;
     private Guid? _myTruckId;
     private EditContext _editContext;
+    private string _creationError = null;
 
     protected override void OnInitialized()
     {
@@ -145,9 +171,9 @@
             _foodTruck = new Entities.FoodTruck
             {
                 Active = false,
-                EndDelivery = new Entities.Time(20,0),
-                StartDelivery = new Entities.Time(10,0),
-                StartOrder = new Entities.Time(8,0),
+                EndDelivery = new Entities.Time(20, 0),
+                StartDelivery = new Entities.Time(10, 0),
+                StartOrder = new Entities.Time(8, 0),
                 TakeAway = false,
                 PostAddress = new Entities.Address(),
                 InDataBase = false,
@@ -164,7 +190,7 @@
     private void ValidateStartDelivery()
     {
 
-        if (_foodTruck.StartDelivery.CompareTo(_foodTruck.EndDelivery)>=0)
+        if (_foodTruck.StartDelivery.CompareTo(_foodTruck.EndDelivery) >= 0)
         {
             var messageStore = new ValidationMessageStore(_editContext);
             messageStore.Add(_editContext.Field("EndDelivery"), "Die späteste Lieferzeit muss später sein als die früheste Lieferzeit");
@@ -177,7 +203,7 @@
     private void ValidateStartOrder()
     {
         var messageStore = new ValidationMessageStore(_editContext);
-        if (_foodTruck.StartOrder.CompareTo(_foodTruck.StartDelivery)>=0)
+        if (_foodTruck.StartOrder.CompareTo(_foodTruck.StartDelivery) >= 0)
         {
             messageStore.Add(_editContext.Field("StartOrder"), "Die früheste Bestellzeit darf nicht später sein als die früheste Lieferzeit");
             _editContext.NotifyValidationStateChanged();
@@ -193,14 +219,37 @@
         if (!_editContext.Validate()) return;
         if (!_foodTruck.InDataBase)
         {
-            foodTruckLogic.CreateTruck(_foodTruck);
-            navigationManager.NavigateTo("/manage/edit/mine/done");
+            try
+            {
+                foodTruckLogic.CreateTruck(_foodTruck);
+            }
+            catch (DL.Exceptions.TruckAlreadyExistsException)
+            {
+                _creationError = "Ein Truck mit dieser Url existiert bereits";
+            }
+            catch (Exception)
+            {
+                _creationError = "Es ist ein unbekannter Fehler aufgetreten";
+            }
+
+            navigationManager.NavigateTo("/manage/edit/mine/done", true);
         }
         else
         {
-            foodTruckLogic.UpdateTruck(_foodTruck);
-        }
+            try
+            {
+                foodTruckLogic.UpdateTruck(_foodTruck);
+            }
+            catch (DL.Exceptions.TruckAlreadyExistsException)
+            {
+                _creationError = "Ein Truck mit dieser Url existiert bereits";
+            }
+            catch (Exception ex)
+            {
+                 _creationError = "Es ist ein unbekannter Fehler aufgetreten";
+            }
 
+        }
     }
 }
 

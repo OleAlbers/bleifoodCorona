@@ -3,6 +3,7 @@
 @inject BL.Interfaces.IFoodTruck foodTruckLogic
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
+@inject Identity identity
 @inject BL.Interfaces.IBrowserStorage browserStorage
 
 @if (!_customer.PostAddress.IsValid())
@@ -20,12 +21,18 @@
     </div>
 </EditForm>
 
+<AuthorizeView>
+    <NotAuthorized>
+        Sorry. Wir sind noch gar nicht richtig da :)
+
+    </NotAuthorized>
+</AuthorizeView>
 
 @if (_customer.PostAddress.IsValid())
 {
     if (_matches.Count == 0)
     {
-        <div><h4 class="hdr1">Ich habe leider keine Foodtrucks in Deiner Nähe gefunden</h4></div>
+        <div><h4 class="hdr5">Ich habe leider keine Foodtrucks in Deiner Nähe gefunden</h4></div>
     }
     else
     {
@@ -35,6 +42,10 @@
             {
                 <div class="buttonBox hdr1">
                     <p class="pull-left">
+                        @if (!truck.Active)
+                        {
+                            <i title="Noch nicht aktiviert. Nur DU kannst ihn sehen" class="fas fa-eye-slash"></i>
+                        }
                         @truck.Name
                     </p>
                     <a href="@truck.Url" class="btn btn-default btn-sm pull-right">Angebot anzeigen</a>
@@ -46,54 +57,12 @@
 
 }
 
-@*<div class="popupAddress">
-        <div class="easyBox full">
-            <p>Bevor es losgehen kann brauchen wir noch Deine Lieferadresse</p>
-            <p><strong>Wir verwenden Deine Daten ausschließlich um DIr das Essen liefern zu können und speichern nur das was dafür unbedingt notwendig ist.</strong></p>
-            <div class="row nomargin">
-                <div class="col-md-5">
-                    <h4 class="hdr7">Deine Adresse</h4>
-                    <p>Damit Dein Essen Dich auch findet</p>
-                    <div class="form-group">
-                        <label>Dein Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Straße + Hausnummer</label>
-                        <input type="text" class="form-control" name="street" placeholder="ABC-Straße 3">
-                    </div>
-                    <div class="form-group">
-                        <label>PLZ + Ort</label>
-                        <input type="text" class="form-control" name="city" placeholder="20459 Hamburg">
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-5">
-                    <h4 class="hdr7">Kontakt</h4>
-                    <div class="form-group">
-                        <label>E-Mail</label>
-                        <p>An diese Adresse wird Deine Bestellbestätigung geschickt</p>
-                        <input type="email" class="form-control" name="mail" placeholder="john@doe.de">
-                    </div>
-                    <div class="form-group">
-                        <label>Telefon</label>
-                        <p>Hierüber kann Dich der Foodtrucker Dich erreichen. Wenn Du das nicht möchtest las das Feld leer</p>
-                        <input type="tel" class="form-control" name="phone" placeholder="040 12345">
-                    </div>
-                    <div class="form-group">
-                        <label>Datenverarbeitung</label>
-                        <input type="checkbox" class="form-control" name="allowdata">Ich bin damit einverstanden, dass meine Daten gespeichert, verarbeitet und an den Foodtrucker weitergegeben werden.<br />
-                    </div>
-                </div>
-                <input class="btn btn-default" type="submit" value="Submit">
-            </div>
-
-        </div>
-    </div>*@
 
 @code {
-    private Entities.Customer _customer= new Entities.Customer();
+    private Entities.Customer _customer = new Entities.Customer();
     private List<Entities.FoodTruck> _matches = new List<Entities.FoodTruck>();
+    private Guid? _myTruckId = null;
+
     private string Address
     {
         get
@@ -119,9 +88,9 @@
     {
         if (_customer.PostAddress.IsValid()) return;
         var customer = await browserStorage.ReadData<Entities.Customer>();
-        if (customer==null) return;
+        if (customer == null) return;
 
-        _customer= customer;
+        _customer = customer;
         ReloadTrucks();
         StateHasChanged();
     }
@@ -131,7 +100,7 @@
         if (!_customer.PostAddress.IsValid()) return;
         var myCoords = await geoCodeLogic.GetCoordinates(_customer.PostAddress.ToString());
 
-        _matches = foodTruckLogic.GetNearbyTrucks(myCoords, null).ToList();
+        _matches = foodTruckLogic.GetNearbyTrucks(myCoords, _myTruckId).ToList();
         this.StateHasChanged();
     }
 
@@ -140,6 +109,7 @@
         if (firstRender)
         {
             GetAddressFromLocalStorage();
+            _myTruckId = await identity.GetMyTruckId();
         }
     }
 }

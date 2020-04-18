@@ -14,30 +14,25 @@ namespace Bleifood.Entities
         public enum Categories { Dessert, SideOrder, Main, Drink, Soup, Salad }
         public Guid TruckId { get; set; }
         public int SortOrder { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Subtitle { get; set; }
         public decimal Price { get; set; }
-        [RegularExpression("\\d+(,\\d{1,2})?", ErrorMessage = "Bitte einen gültigen Geldbetrag eingeben")]
+        [Required, RegularExpression("\\d+(,\\d{1,2})?", ErrorMessage = "Bitte einen gültigen Geldbetrag eingeben")]
         public string PriceAsText
         {
             get
             {
-                return string.Format(CultureInfo.GetCultureInfo("de-de"), "{0:0.00}", Price);
+                return Price.FromCurrency();
             }
             set
             {
-                try
-                {
-                    Price = decimal.Parse(value, CultureInfo.GetCultureInfo("de-de"));
-                }
-                catch (Exception)
-                {
-                    Price = 0;
-                }
+                Price = value.ToCurrency();
             }
         }
+        [Required]
         public Categories Category { get; set; }
+        [Required]
         public VeganTypes Vegan { get; set; }
-
     }
 }

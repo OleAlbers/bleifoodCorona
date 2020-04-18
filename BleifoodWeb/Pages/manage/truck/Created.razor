@@ -1,15 +1,26 @@
 ﻿@page  "/manage/edit/mine/done"
 <h3>Foodtruck erstellt</h3>
 @inject Identity identity
+@inject NavigationManager navigationManager
 
-@code {
-
-}
 
 <AuthorizeView>
     <h1>Du hast Deine Daten erfolgreich eingetragen</h1>
-    <p>Drücke jetzt <strong>F5</strong> um die Seite neu zu laden und weitere Daten einzugeben</p>
+    <a class="btn btn-default" @onclick="(()=>GotoEdit())">OK</a>
 </AuthorizeView>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
+
+    private void GotoEdit()
+    {
+        navigationManager.NavigateTo("/manage/edit/mine", true);
+    }
+}
 
 
 @*TODO: Refresh Nav automatically*@

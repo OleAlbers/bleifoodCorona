@@ -45,6 +45,8 @@ namespace Bleifood.BL
             SendMail(order.CustomerAddress.Mail, subject, body, order.Truck.PostAddress.Mail);
         }
 
+
+
         public void OrderFoodTruck(Entities.Order order)
         {
             string subject = "Eine Bestellung wurde aufgegeben";
@@ -55,7 +57,7 @@ namespace Bleifood.BL
             {
                 body += "\n DU BEFINDEST DICH IM TESTMODUS!\n";
                 body+="Wenn Du mit der Bestellung zufrieden bist, klicke auf den folgenden Link um den Test abzuschließen:\n";
-                body += $"{GetHostName()}/manage/test/{order.Truck.TestToken} \n";
+                body += $"{GetHostName()}manage/test/{order.Truck.Url}/{order.Truck.TestToken} \n";
                 body += $"====================================================================================================\n\n";
             }
             body += CreateMainBody(order);
@@ -95,24 +97,24 @@ namespace Bleifood.BL
 
         private string GetOrderPositionHeader()
         {
-            return string.Format("{0:80}\t{1}\t{2:10}\t{3}\n", "Bezeichnung", "Menge", "Preis", "Summe");
+            return string.Format("{0}\t{1:0000000000}\t{2:0000000000}\t{3}\n", "Menge", "Preis", "Summe", "Bezeichnung");
         }
 
         private string GetOrderPositionText(OrderPosition position)
         {
-            return $"{position.Position.Name:80}\t{position.Amount}\t{position.Position.Price:10}\t{position.Position.Price * position.Amount}\n";
+            return $"{position.Amount}\t{position.Position.Price.AsCurrency():0000000000}\t{(position.Position.Price * position.Amount).AsCurrency():0000000000}\t{position.Position.Name}\n";
         }
 
       
         private string GetOrderSumText(Entities.Order order)
         {
-            string footer = string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Versand", order.ShippingCost());
+            string footer = string.Format("1\t{0:00000000}\t{0:0000000000}\tVersand\n",  order.ShippingCost().AsCurrency());
             if (order.Tip > 0)
             {
-                footer += string.Format("{0:80}\t1\t{1:10}\t{1:10}\n", "Trinkgeld", order.Tip);
+                footer += string.Format("1\t{0:0000000000}\t{0:0000000000}\tTrinkgeld\n",  order.Tip.AsCurrency());
             }
             footer += "-----------------------------------------------------------------------\n";
-            footer += string.Format("{0:90}\t\t{1:10}\n\n", "Total", order.Total());
+            footer += string.Format("\t\t{0:0000000000}\tTotal\n\n",  order.Total().AsCurrency());
             return footer;
         }
 
@@ -131,7 +133,7 @@ namespace Bleifood.BL
             return "AppSettings:BaseUrl".FromConfig();
         }
 
-        private void SendMail(string recipient, string subject, string body, string replyTo)
+        public async void SendMail(string recipient, string subject, string body, string replyTo)
         {
             SmtpClient client = new SmtpClient(SmtpHost, int.Parse(SmtpPort));
             if (SmtpUser != null)
@@ -152,7 +154,8 @@ namespace Bleifood.BL
             if (SmtpBCC != null) message.Bcc.Add(SmtpBCC);
             if (SmtpCC != null) message.Bcc.Add(SmtpCC);
 
-            client.Send(message);
+            await client.SendMailAsync(message);
+      
         }
 
         public void SendMail(ApplicationUser user, string subject, string body)
@@ -169,7 +172,7 @@ namespace Bleifood.BL
         {
             string subject = "Bitte bestätige Deine Anmeldung";
             string body = "Du hast Dich bei bleifood.de angemeldet. Bitte klicke auf den folgenden Link um die Registrierung abzuschließen:\n\n";
-            body += $"{GetHostName()}/manage/validate/?userId={Encode(user.Id)}&auth={Encode(token)} \n";
+            body += $"{GetHostName()}manage/validate/?userId={Encode(user.Id)}&auth={Encode(token)} \n";
             SendMail(user, subject, body);
         }
     }

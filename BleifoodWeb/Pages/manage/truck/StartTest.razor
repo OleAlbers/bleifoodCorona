@@ -1,0 +1,51 @@
+﻿@page  "/manage/edit/mine/test"
+@using Microsoft.AspNetCore.WebUtilities
+<h3>Shop testen</h3>
+@inject NavigationManager navigationManager
+@inject BL.Interfaces.IFoodTruck truckLogic
+@inject Identity identity
+
+
+<div>
+    <div class="easyBox">
+        <h4 class="hdr5">
+            Testen geht ganz einfach:
+        </h4>
+        Solange Du angemeldet bist kannst Du (aber nur Du) Deinen Foodtruck sehen. Bevor Du veröffentlichen kannst musst Du einmal bei Dir selbst eine Testbestellung durchführen. (Du brauchst nicht bei Dir selbst per Paypal bezahlen, solltest aber prüfen, ob beim Bezahlfenster auch wirklich Du als Empfänger angezeigt wirst).<br />
+        Am Ende der Test-Bestellung wirst Du eine Bestell-Email bekommen wir Du sie auch zukünftig sehen wirst bei einer "echten" Bestellung.<br />
+        In dieser E-Mail befindet sich ein Link zum Abschließen des Tests. Wenn Du zufrieden bist mit Deinen Daten klick auf diesen Link.
+
+        <h4 class="hdr3">Erst danach kannst Du Deinen Truck veröffentlichen</h4><br /><br />
+        Damit wollen wir sicher stellen, dass Du nicht versehentlich etwas Falsches eingegeben hast und beispielsweise die Bestellung oder das Geld nie bei Dir ankommt.<br />
+        <br />
+        <a class="btn btn-default" @onclick="(()=>DoTest())">Test starten</a>
+    </div>
+</div>
+
+
+@code {
+
+
+    private string _errorMessage = null;
+    private Entities.FoodTruck _truck;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        var loggedIn = await identity.IsLoggedIn();
+        if (!loggedIn) return;
+        var myTruckId = await identity.GetMyTruckId();
+        if (myTruckId == null) return;
+        _truck = truckLogic.GetTruck(myTruckId.Value);
+    }
+
+
+
+    private void DoTest()
+    {
+        navigationManager.NavigateTo($"/{_truck.Url}");
+    }
+
+
+
+}

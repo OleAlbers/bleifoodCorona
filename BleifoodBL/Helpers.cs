@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace Bleifood.BL
 {
-    
+
 
     public static class Helpers
     {
         private static Random _random = new Random();
         const string AllowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        public static readonly string[] ForbiddenUrls = { "manage", "edit", "mine", "truck", "admin", "help" };
 
         public static List<KeyValuePair<string, string>> Configuration { get; set; }
 
@@ -74,13 +75,13 @@ namespace Bleifood.BL
             return string.Format(new CultureInfo("de-de"), "{0:0.00} €", price);
         }
 
-        public static Time  NextQuarter(this Time time)
+        public static Time NextQuarter(this Time time)
         {
-            var retTime = new Time(time.Hour, time.Minute+1);
+            var retTime = new Time(time.Hour, time.Minute + 1);
             while (retTime.Minute % 15 != 0) retTime.Minute++;
-            if (retTime.Minute==60)
+            if (retTime.Minute >= 60)
             {
-                retTime.Minute = 0;
+                retTime.Minute -= 60;
                 retTime.Hour++;
             }
             return retTime;

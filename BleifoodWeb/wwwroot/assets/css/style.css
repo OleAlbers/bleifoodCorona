@@ -3464,9 +3464,17 @@ body.preloader #ct_preloader {
     color: #f5f3eb;
     padding-top: 15px;
     padding-left: 12px;
-    font-size: 1.3em;
+    /*font-size: 1.3em;*/
 }
 
+
+a .fas.fa-minus-circle {
+    cursor: pointer;
+}
+
+a .fas.fa-plus-circle {
+    cursor: pointer;
+}
 
 .card .top i {
     font-size: 1.7em;

@@ -23,10 +23,12 @@ namespace Bleifood.Entities
         public string Url { get; set; }
 
 
-        public bool Active { get; set; }
-
+        public bool Active { get; set; } = false;
+        [Required]
         public Time StartDelivery { get; set; }
+        [Required]
         public Time EndDelivery { get; set; }
+        [Required]
         public Time StartOrder { get; set; }
         public bool TakeAway { get; set; }
         public string UserId { get; set; }
@@ -34,10 +36,46 @@ namespace Bleifood.Entities
         public string InfoText { get; set; }
         public string TestToken { get; set; }
         public DateTime? TestFinished { get; set; }
+        [Required]
         public decimal MinimumOrderAmount { get; set; }
-        public decimal MinumumNoShippingAmount { get; set; }
-        public bool OfferNoShipping { get; set; }
-        public decimal ShippingCost { get; set; }
+        public string MinimumOrderAmountAsText
+        {
+            get
+            {
+                return MinimumOrderAmount.FromCurrency();
+            }
+            set
+            {
+                MinimumOrderAmount = value.ToCurrency();
+            }
+        }
+        [Required]
+        public decimal MinimumNoShippingAmount { get; set; }
+        public string MinimumNoShippingAmountAsText
+        {
+            get
+            {
+                return MinimumNoShippingAmount.FromCurrency();
+            } set
+            {
 
+                MinimumNoShippingAmount = value.ToCurrency();
+            }
+        }
+        public bool OfferNoShipping { get; set; }
+        [Required, Range(1,100)]
+        public decimal ShippingCost { get; set; }
+        public string ShippingCostAsText
+        {
+            get
+            {
+                return ShippingCost.FromCurrency();
+            }
+            set
+            {
+
+                ShippingCost = value.ToCurrency();
+            }
+        }
     }
 }

@@ -43,6 +43,11 @@ namespace Bleifood.Web
         {
             services.AddSingleton<ILiteDbContext, LiteDbContext>(x => new LiteDbContext(new LiteDatabase("d:\\home\\bleifood.identity.liteDb"))); // TODO: Encrypt
 
+            //services.AddSignalR().AddAzureSignalR(options =>
+            //{
+            //    options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Required;
+            //});
+
             //services.AddSingleton<ILiteDbContext, LiteDbContext>();
             services.AddIdentity<ApplicationUser, AspNetCore.Identity.LiteDB.IdentityRole>(options =>
             {

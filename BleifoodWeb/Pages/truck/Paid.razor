@@ -20,9 +20,9 @@
     <p>Deine Bestellung wurde verschickt an:</p>
     <p>
         <strong>@_truck.Name</strong><br />
-        <i class="fas fa-home"></i>@_truck.PostAddress.Street, @_truck.PostAddress.Zip @_truck.PostAddress.City<br /><br />
-        <i class="fas fa-phone"></i>@_truck.PostAddress.Phone<br />
-        <i class="fas fa-at"></i>@_truck.PostAddress.Mail<br />
+        <i class="fas fa-home"></i> @_truck.PostAddress.Street, @_truck.PostAddress.Zip @_truck.PostAddress.City<br /><br />
+        <i class="fas fa-phone"></i> <a href="tel:@_truck.PostAddress.Phone">@_truck.PostAddress.Phone</a><br />
+        <i class="fas fa-at"></i> <a href="mailto:@_truck.PostAddress.Mail">@_truck.PostAddress.Mail</a><br />
     </p>
     <p>
         Du wirst in Kürze eine Bestätigungs-Email erhalten.
@@ -43,7 +43,7 @@
         var queryValues = QueryHelpers.ParseQuery(url.Query);
 
         _truck = foodTruckLogic.GetTruckByUrl(Truck);
-        if (_truck == null) navigationManager.NavigateTo("/");   // wrong url
+        if (_truck == null) navigationManager.NavigateTo("/", true);   // wrong url
         _amount = decimal.Parse(queryValues["amount"]);
         _token = queryValues["paypalKey"];
     }

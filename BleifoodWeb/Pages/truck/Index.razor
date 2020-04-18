@@ -6,6 +6,7 @@
 @inject BL.Geocode geoCodeLogic
 @inject NavigationManager navigationManager
 @inject BL.Interfaces.IBrowserStorage browserStorage
+@inject Identity identity
 
 @code {
     @functions {
@@ -14,7 +15,13 @@
     }
 }
 
-<h4 class="hdr1">@_truck.Name</h4>
+<h4 class="hdr1">
+    @if (!_truck.Active)
+    {
+        <i title="Noch nicht aktiviert. Nur DU kannst ihn sehen" class="fas fa-eye-slash"></i>
+    }
+    @_truck.Name
+</h4>
 
 @if (_tooEarly)
 {
@@ -48,10 +55,8 @@
                         {
                             <div class="media">
                                 <div class="pull-left">
-                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                        <a @onclick="(q=> AddToCart(product))">
+                                    <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
                                             <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                        </a>
                                     </div>
                                 </div>
 
@@ -87,10 +92,8 @@
                         {
                             <div class="media">
                                 <div class="pull-left">
-                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                        <a @onclick="(q=> AddToCart(product))">
+                                    <div  @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
                                             <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                        </a>
                                     </div>
                                 </div>
 
@@ -128,10 +131,10 @@
                         {
                             <div class="media">
                                 <div class="pull-left">
-                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                        <a @onclick="(q=> AddToCart(product))">
+                                    <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        
                                             <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                        </a>
+                                        
                                     </div>
                                 </div>
 
@@ -167,10 +170,10 @@
                         {
                             <div class="media">
                                 <div class="pull-left">
-                                    <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                        <a @onclick="(q=> AddToCart(product))">
+                                    <div @onclick="(q=> AddToCart(product))"  class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        
                                             <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                        </a>
+                                        
                                     </div>
                                 </div>
 
@@ -213,10 +216,10 @@
                                 {
                                     <div class="media">
                                         <div class="pull-left">
-                                            <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                                <a @onclick="(q=> AddToCart(product))">
+                                            <div @onclick="(q=> AddToCart(product))"  class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                                
                                                     <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                                </a>
+                                                
                                             </div>
                                         </div>
 
@@ -252,10 +255,10 @@
                                 {
                                     <div class="media">
                                         <div class="pull-left">
-                                            <div class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                                <a @onclick="(q=> AddToCart(product))">
+                                            <div @onclick="(q=> AddToCart(product))"  class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                                
                                                     <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                                </a>
+                                                
                                             </div>
                                         </div>
 
@@ -321,6 +324,8 @@
                                         <option value="@amount">@amount.AsCurrency()</option>
                                         }
                                     /**/
+                                    /**/
+                                    /**/
                                 </InputSelectNumber>
                             </td>
                             <td align="right" style="font-weight:bold">@_order.Tip.AsCurrency()</td>
@@ -348,7 +353,7 @@
                                         {
                                         <option value="@timeOption.AsString">@timeOption.AsString</option>
                                         }
-                                    /**/
+                           
                                 </InputSelect>
                             </td>
                         </tr>
@@ -361,7 +366,7 @@
                 }
                 else
                 {
-                    <a @onclick="(q=> TakeOrder())" class="btn btn-default">Bestellen</a>
+                    <a style="float:right" @onclick="(q=> TakeOrder())" class="btn btn-default">Bestellen</a>
                 }
                 <div class="orderAddressSmall">
                     <strong>Lieferadresse:</strong><br />
@@ -370,7 +375,7 @@
                     @_order.CustomerAddress.Zip @_order.CustomerAddress.City<br />
                     @_order.CustomerAddress.Mail<br />
                     @_order.CustomerAddress.Phone<br />
-                    <a @onclick="(q => ChangeAddress())">Adresse ändern</a>
+                    <a class="hdr7" style="cursor:pointer" @onclick="(q => ChangeAddress())">Adresse ändern</a>
                 </div>
 
             </div>
@@ -387,6 +392,7 @@
     private bool _takeOrder = false;
     private bool _tooLate = false;
     private bool _tooEarly = false;
+    private Guid? _myTruckId = null;
 
 
 
@@ -457,9 +463,6 @@
     }
 
 
-
-
-
     private decimal TotalFromPositions()
     {
         return _order.Positions.Sum(q => q.Amount * q.Position.Price);
@@ -480,7 +483,6 @@
         });
     }
 
-
     private void Minus(Entities.OrderPosition position)
     {
         position.Amount--;
@@ -496,9 +498,10 @@
     }
 
     protected override void OnInitialized()
+
     {
         _truck = foodTruckLogic.GetTruckByUrl(Truck);
-        if (_truck == null) navigationManager.NavigateTo("/");   // wrong url
+        if (_truck == null) navigationManager.NavigateTo("/", true);   // wrong url
         _order = new Entities.Order(_truck);
         _positions = foodTruckLogic.GetCard(_truck.Id);
         CalculateTimes();
@@ -509,15 +512,16 @@
         var customer = await browserStorage.ReadData<Entities.Customer>();
         if (customer == null || !customer.PostAddress.IsValid()) navigationManager.NavigateTo("/"); // No Address Entered
 
-        _order.CustomerAddress = customer.PostAddress;
+        _order.CustomerAddress = customer?.PostAddress;
         StateHasChanged();
+    } 
 
-    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             GetAddressFromLocalStorage();
+            _myTruckId = await identity.GetMyTruckId();
         }
     }
 
@@ -539,7 +543,8 @@
 
 @if (_askForAddress)
 {
-    <EditForm Model="_order.CustomerAddress">
+    <EditForm Model="@_order.CustomerAddress" OnValidSubmit="HandleValidSubmitAddress" Context="customerContext">
+        <DataAnnotationsValidator />
         <div class="popupAddress">
             <div class="easyBox full">
                 <p>Fast fertig. Überprüfe bitte noch einmal Deine Kontaktdaten</p>
@@ -551,14 +556,17 @@
                         <div class="form-group">
                             <label>Dein Name</label>
                             <input type="text" class="form-control" @bind-value="_order.CustomerAddress.Name" name="name" placeholder="John Doe">
+                            <ValidationMessage For="() => _order.CustomerAddress.Name" />
                         </div>
                         <div class="form-group">
                             <label>Straße + Hausnummer</label>
                             <input type="text" class="form-control" @bind-value="_order.CustomerAddress.Street" name="street" placeholder="ABC-Straße 3">
+                            <ValidationMessage For="() => _order.CustomerAddress.Street" />
                         </div>
                         <div class="form-group">
                             <label>Ort</label>
                             <input type="text" class="form-control" @bind-value="_order.CustomerAddress.City" name="city" placeholder=" Hamburg">
+                            <ValidationMessage For="() => _order.CustomerAddress.City" />
                         </div>
                     </div>
                     <div class="col-md-2"></div>
@@ -568,11 +576,13 @@
                             <label>E-Mail</label>
                             <p>An diese Adresse wird Deine Bestellbestätigung geschickt</p>
                             <input type="email" class="form-control" @bind-value="_order.CustomerAddress.Mail" name="mail" placeholder="john@doe.de">
+                            <ValidationMessage For="() => _order.CustomerAddress.Mail" />
                         </div>
                         <div class="form-group">
                             <label>Telefon</label>
                             <p>Hierüber kann Dich der Foodtrucker Dich erreichen. Wenn Du das nicht möchtest lass das Feld leer</p>
                             <input type="tel" class="form-control" @bind-value="_order.CustomerAddress.Phone" name="phone" placeholder="040 12345">
+                            <ValidationMessage For="() => _order.CustomerAddress.Phone" />
                         </div>
                         <div class="form-group">
                             <label>Datenverarbeitung</label>
@@ -581,11 +591,17 @@
                     </div>
                     @if (_allowData)
                     {
-                        <a @onclick="(q => SaveAddress())" class="btn btn-default">Daten speichern</a>
+                        <input class="btn btn-default" type="submit" value="Daten speichern" />
                     }
                 </div>
 
             </div>
         </div>
     </EditForm>
+}
+@code  {
+    private async void HandleValidSubmitAddress()
+    {
+        SaveAddress();
+    }
 }

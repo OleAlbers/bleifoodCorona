@@ -73,10 +73,7 @@
 
     private async void HandleValidSubmit()
     {
-        //_formInValid = !_editContext.Validate();
-        //if (_formInValid) return;
-
-
+      
         var success = await (identity.Register(_registerUser));
         if (success)
         {

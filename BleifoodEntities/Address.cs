@@ -1,10 +1,4 @@
-﻿using Bleifood.Entities.Attributes;
-using Bleifood.Entities.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bleifood.Entities.Validators;
 
 namespace Bleifood.Entities
 {
@@ -12,14 +6,21 @@ namespace Bleifood.Entities
     {
         [Required]
         public string Name { get; set; }
+
         [Required]
         public string Street { get; set; }
-        [Required]
+
+        //[Required]
         public string Zip { get; set; }
+
         [Required]
         public string City { get; set; }
+
         public string Phone { get; set; }
+
+        [Required, System.ComponentModel.DataAnnotations.EmailAddress(ErrorMessage ="Keine gültige E-MailAdresse")]
         public string Mail { get; set; }
+
         public override string ToString()
         {
             if (string.IsNullOrWhiteSpace(Street) && string.IsNullOrWhiteSpace(City)) return null;
@@ -46,6 +47,13 @@ namespace Bleifood.Entities
             return !string.IsNullOrEmpty(Street) && !string.IsNullOrEmpty(City);
         }
 
+        //[Required]
+        public string ZipCity
+        {
+            get { return $"{Zip} {City}"; } 
+            set { SplitCity(value); }
+        }
+
         public string AsString
         {
             get
@@ -54,16 +62,15 @@ namespace Bleifood.Entities
             }
             set
             {
-                    Street = null;
+                Street = null;
                 Zip = null;
                 City = null;
 
                 int commaPos = value.IndexOf(',');
-                if (commaPos <1) return;
+                if (commaPos < 1) return;
                 Street = value.Substring(0, commaPos);
                 SplitCity(value.Substring(commaPos + 1).Trim());
             }
         }
     }
-
 }
