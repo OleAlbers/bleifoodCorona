@@ -56,7 +56,7 @@
                             <div class="media">
                                 <div class="pull-left">
                                     <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                        <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
                                     </div>
                                 </div>
 
@@ -92,8 +92,8 @@
                         {
                             <div class="media">
                                 <div class="pull-left">
-                                    <div  @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+                                    <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+                                        <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
                                     </div>
                                 </div>
 
@@ -132,9 +132,9 @@
                             <div class="media">
                                 <div class="pull-left">
                                     <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                        
-                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                        
+
+                                        <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+
                                     </div>
                                 </div>
 
@@ -170,10 +170,10 @@
                         {
                             <div class="media">
                                 <div class="pull-left">
-                                    <div @onclick="(q=> AddToCart(product))"  class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                        
-                                            <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                        
+                                    <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+
+                                        <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+
                                     </div>
                                 </div>
 
@@ -216,10 +216,10 @@
                                 {
                                     <div class="media">
                                         <div class="pull-left">
-                                            <div @onclick="(q=> AddToCart(product))"  class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                                
-                                                    <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                                
+                                            <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+
+                                                <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+
                                             </div>
                                         </div>
 
@@ -255,10 +255,10 @@
                                 {
                                     <div class="media">
                                         <div class="pull-left">
-                                            <div @onclick="(q=> AddToCart(product))"  class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
-                                                
-                                                    <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
-                                                
+                                            <div @onclick="(q=> AddToCart(product))" class="roundedImg addToCart" data-size="54" title="Zur Bestellung hinzufügen">
+
+                                                <i class="fa fa-2x fa-cart-arrow-down" title="Zur Bestellung hinzufügen"></i>
+
                                             </div>
                                         </div>
 
@@ -326,6 +326,9 @@
                                     /**/
                                     /**/
                                     /**/
+                                    /**/
+                                    /**/
+                                    /**/
                                 </InputSelectNumber>
                             </td>
                             <td align="right" style="font-weight:bold">@_order.Tip.AsCurrency()</td>
@@ -353,7 +356,10 @@
                                         {
                                         <option value="@timeOption.AsString">@timeOption.AsString</option>
                                         }
-                           
+                                    /**/
+                                    /**/
+                                    /**/
+
                                 </InputSelect>
                             </td>
                         </tr>
@@ -366,18 +372,27 @@
                 }
                 else
                 {
-                    <a style="float:right" @onclick="(q=> TakeOrder())" class="btn btn-default">Bestellen</a>
+                    <a style="float:right" @onclick="(q=> TakeOrder())" class="btn btn-default">Jetzt kostenpflichtig bestellen</a>
                 }
-                <div class="orderAddressSmall">
-                    <strong>Lieferadresse:</strong><br />
-                    @_order.CustomerAddress.Name<br />
-                    @_order.CustomerAddress.Street<br />
-                    @_order.CustomerAddress.Zip @_order.CustomerAddress.City<br />
-                    @_order.CustomerAddress.Mail<br />
-                    @_order.CustomerAddress.Phone<br />
-                    <a class="hdr7" style="cursor:pointer" @onclick="(q => ChangeAddress())">Adresse ändern</a>
-                </div>
 
+                <div class="col-md-3">
+                    <div class="orderAddressSmall">
+                        <h4>Lieferadresse:</h4>
+                        @if (_order != null && _order.CustomerAddress != null)
+                        {
+                        <p>
+                            @_order.CustomerAddress.Name<br />
+                            @_order.CustomerAddress.Street<br />
+                            @_order.CustomerAddress.Zip @_order.CustomerAddress.City<br />
+                            @_order.CustomerAddress.Mail<br />
+                            @_order.CustomerAddress.Phone<br />
+
+                            <a style="cursor:pointer" @onclick="(q => ChangeAddress())">Adresse ändern</a>
+                        </p>
+                        }
+                        <hr>
+                    </div>
+                </div>
             </div>
         </EditForm>
     </div>
@@ -433,6 +448,7 @@
     private void ChangeAddress()
     {
         _askForAddress = true;
+        _takeOrder = false;
     }
 
     public bool HasCategory(Entities.Position.Categories category)
@@ -509,12 +525,18 @@
 
     private async void GetAddressFromLocalStorage()
     {
-        var customer = await browserStorage.ReadData<Entities.Customer>();
-        if (customer == null || !customer.PostAddress.IsValid()) navigationManager.NavigateTo("/"); // No Address Entered
+         var  customer = new Entities.Customer();
+
+        customer.PostAddress= await browserStorage.ReadData<Entities.Address>();
+        if (customer.PostAddress == null || !customer.PostAddress.IsValid())
+        {
+            navigationManager.NavigateTo("/"); // No Address Entered
+            return;
+        }
 
         _order.CustomerAddress = customer?.PostAddress;
         StateHasChanged();
-    } 
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -585,13 +607,16 @@
                             <ValidationMessage For="() => _order.CustomerAddress.Phone" />
                         </div>
                         <div class="form-group">
-                            <label>Datenverarbeitung</label>
-                            <input type="checkbox" class="form-control" @bind-value="_allowData" name="allowdata">Ich bin damit einverstanden, dass meine Daten gespeichert, verarbeitet und an den Foodtrucker weitergegeben werden.<br />
+                            <label>Datenverarbeitung &amp; AGB</label>
+                            <input type="checkbox" class="form-control" @bind-value="_allowData" name="allowdata">
+                            <p>
+                                Ich stimme den Bestimmungen zur <a href="https://olealbers.github.io/bleifoodCorona/dsgvo" target="_blank">Datenverarbeitung</a> und den <a href="https://olealbers.github.io/bleifoodCorona/agb" target="_blank">AGB</a> zu
+                            </p>
                         </div>
                     </div>
                     @if (_allowData)
                     {
-                        <input class="btn btn-default" type="submit" value="Daten speichern" />
+                        <input class="btn btn-default" type="submit" value="@(_takeOrder?"Kostenpflichtig bestellen":"Daten speichern")" />
                     }
                 </div>
 

@@ -26,7 +26,7 @@
                         <a @onclick="@(q=>Delete(product.Id))" class="right btn btn-primary btn-xs"><i class="fa fa-trash"></i><span>Speise löschen</span></a>
                         <div class="form-group">
                             <label>Name der Speise</label>
-                            <InputText class="form-control" name="name" @bind-Value="product.Name" placeholder="Besorger Burger XXL" />
+                            <InputText class="form-control" name="name" @bind-Value="product.Name" placeholder="Big BBQ-Burger XXL" />
                             <ValidationMessage For="() => product.Name" />
                         </div>
                         <div class="form-group">

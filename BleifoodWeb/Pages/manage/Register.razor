@@ -45,6 +45,14 @@
                 <input type="password" class="form-control" name="pass2" @bind-value="_registerUser.PasswordRepeat" placeholder="Wiederhole Dein passwort">
                 <div><ValidationMessage For="() => _registerUser.PasswordRepeat" /></div>
             </div>
+            <div class="form-group">
+                <label>Datenverarbeitung &amp; AGB</label>
+                <input type="checkbox" class="form-control" @bind-value="_registerUser.Agb" name="allowdata">
+                <p>
+                    Ich stimme den Bestimmungen zur <a href="https://olealbers.github.io/bleifoodCorona/dsgvo" target="_blank">Datenverarbeitung</a> und den <a href="https://olealbers.github.io/bleifoodCorona/agb" target="_blank">AGB</a> zu
+                </p>
+                <div><ValidationMessage For="() => _registerUser.Agb" /></div>
+            </div>
             <input disabled="@_formInValid" class="btn btn-default" type="submit" value="Abschicken" />
             <div><ValidationSummary></ValidationSummary></div>
         </div>

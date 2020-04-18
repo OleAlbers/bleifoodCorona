@@ -67,11 +67,13 @@
     {
         get
         {
+            _customer = _customer ?? new Entities.Customer();
             return _customer?.PostAddress?.AsString;
         }
 
         set
         {
+            _customer = _customer ?? new Entities.Customer();
             _customer.PostAddress.AsString = value;
             ReloadTrucks();
             StoreAddressToLocalStorage();
@@ -81,16 +83,21 @@
     private void StoreAddressToLocalStorage()
     {
         if (!_customer.PostAddress.IsValid()) return;
-        browserStorage.StoreData(_customer);
+        browserStorage.StoreData(_customer.PostAddress);
     }
 
     private async void GetAddressFromLocalStorage()
     {
         if (_customer.PostAddress.IsValid()) return;
-        var customer = await browserStorage.ReadData<Entities.Customer>();
-        if (customer == null) return;
+        _customer = _customer ?? new Entities.Customer();
 
-        _customer = customer;
+        _customer.PostAddress= await browserStorage.ReadData<Entities.Address>();
+        if (_customer.PostAddress == null)
+        {
+            _customer = null;
+            return;
+        }
+
         ReloadTrucks();
         StateHasChanged();
     }
