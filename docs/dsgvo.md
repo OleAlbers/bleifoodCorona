@@ -42,7 +42,7 @@ Wir bieten Dir sowohl einen Auszug der Daten als auch ein Löschen an. Das passi
 # Nicht Kommerziell
 Bitte versteht, dass dies kein kommerzielles Produkt ist. Hier verdient niemand Geld an der Plattform. Im Gegenteil: Kosten für Hosting, E-Mailversand, Geo-Api etc. entstehen. Was auch bedeutet, dass kein 24/7 - Support möglich ist. Auch nicht im Bereich Datenschutz.
 
-Und ja: Datenschutz ist wichtig. Deshalb wird ja so wenig gespeichert wie irgendwie möglich.
+Und ja: Datenschutz ist wichtig. Deshalb wird ja so wenig gespeichert wie irgendwie möglich bei Bleifood. 
 
 
 
